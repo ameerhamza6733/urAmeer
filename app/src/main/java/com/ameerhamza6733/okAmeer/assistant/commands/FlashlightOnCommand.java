@@ -21,9 +21,8 @@ public class FlashlightOnCommand implements Command {
             @Override
             public boolean handleMessage(Message message) {
                 Intent i = new Intent(context, FlashLightActivtyReceiver.class);
-                i.putExtra(FlashLightActivtyReceiver.EXTRA_ON_OF, true);
-                i.putExtra(FlashLightActivtyReceiver.EXTRA_STRING,predicate);
-              //  i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("onOrOff", true);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
                 return true;
             }
@@ -31,11 +30,12 @@ public class FlashlightOnCommand implements Command {
         handler.sendEmptyMessageDelayed(0, 500);
 
 
+
     }
 
     @Override
     public String getDefaultPhrase() {
-        return "فلیش روشنی آن,لائٹ آن,روشنی جلاؤ,لائٹ جلاؤ";
+        return "فلیش روشنی آن,لائٹ آن,روشنی جلاؤ,لائٹ جلاؤ,Flashlight";
     }
 
     @Override

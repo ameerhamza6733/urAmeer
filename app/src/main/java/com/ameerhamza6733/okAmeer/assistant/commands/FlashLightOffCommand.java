@@ -16,8 +16,8 @@ public class FlashLightOffCommand implements Command {
     public void execute(Context context, String predicate) {
         Log.d("Flashlight","turing of flash light");
         Intent i = new Intent(context, FlashLightActivtyReceiver.class);
-        i.putExtra(FlashLightActivtyReceiver.EXTRA_ON_OF, false);
-       // i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.putExtra("onOrOff", false);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);
     }
 

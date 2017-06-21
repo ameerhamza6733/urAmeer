@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">My dsd</string>
+    <string name="no_flashlight_access">Sorry your device does not provide access to the flashlight...</string>
+    <string name="turn_off">بند کرو</string>
+    <string name="flashlight_activated">Flashlight Activated</string>
 </resources>
