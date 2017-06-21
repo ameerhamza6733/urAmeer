@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.ameerhamza6733.okAmeer.assistant.commands.FlashLightOffCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.FlashlightOnCommand;
+import com.ameerhamza6733.okAmeer.assistant.commands.setAlarm;
 
 /**
  * Created by AmeerHamza on 6/17/2017.
@@ -15,7 +16,7 @@ public class CommandInvoker {
     public static Command[] getCommands() {
         if(commands==null)
         {
-            commands = new Command[] {new FlashlightOnCommand(),new FlashLightOffCommand()};
+            commands = new Command[] {new FlashlightOnCommand(),new FlashLightOffCommand(),new setAlarm()};
         }
         return commands;
     }

@@ -9,4 +9,5 @@ import android.content.Context;
 public interface Command {
      void execute(Context context, String predicate);
     String getDefaultPhrase ();
+    String getTtsPhrase();
 }

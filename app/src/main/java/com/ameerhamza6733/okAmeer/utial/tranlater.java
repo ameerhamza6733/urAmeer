@@ -55,9 +55,14 @@ public class tranlater  {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
             try {
                 url= "https://translate.googleapis.com/translate_a/single?"+
-                "client=gtx&"+
+                        "client=gtx&"+
                         "sl=" + tranlater.this.SourceLeng +
                         "&tl=" + tranlater.this.TragmentLeng +
                         "&dt=t&q=" + URLEncoder.encode(tranlater.this.Query, "UTF-8");
@@ -66,10 +71,6 @@ public class tranlater  {
             }
             Log.d(TAGg,"TranableText"+Query);
 
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
             try {
                 Log.d(TAGg,url);
                 URL obj = new URL(url);

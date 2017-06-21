@@ -3,16 +3,54 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent"
     android:background="@color/cardview_light_background"
+    android:orientation="vertical"
     tools:context="com.ameerhamza6733.okAmeer.MainActivity">
 
-    <ImageButton
-        android:id="@+id/speakButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_weight="0.15"
-      android:background="@color/cardview_light_background"
-        app:srcCompat="@drawable/ic_microphone" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="383dp"
+        android:background="#fafafa"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/avatar_girl_happy"
+            android:id="@+id/imageView" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fafafa">
+
+        <ImageButton
+            android:id="@+id/speakButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="13dp"
+            android:background="#fafafa"
+            app:srcCompat="@drawable/caller_id_mic" />
+
+        <ImageButton
+            android:background="#fafafa"
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/speakButton"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
+            app:srcCompat="@drawable/ic_action_name" />
+    </RelativeLayout>
 </LinearLayout>

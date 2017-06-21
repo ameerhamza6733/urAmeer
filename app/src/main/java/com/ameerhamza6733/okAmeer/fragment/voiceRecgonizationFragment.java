@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.assistant.CommandInvoker;
 import com.ameerhamza6733.okAmeer.interfacess.tranlaterCallback;
+import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 import com.ameerhamza6733.okAmeer.utial.tranlater;
 
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
@@ -106,36 +107,36 @@ public class voiceRecgonizationFragment extends DialogFragment {
         ActivityCompat.requestPermissions(activity, strArr, REQUEST_RECORD_AUDIO_PERMISSION_CODE);
     }
     private void showResults(Bundle results) {
-        ArrayList<String> matches = results.getStringArrayList("results_recognition");
-        if ( matches != null) {
+        final ArrayList<String> matches = results.getStringArrayList("results_recognition");
+        assert matches != null;
+        new tranlater(new tranlaterCallback() {
+            @Override
+            public void onError(String str) {
 
-           new tranlater(new tranlaterCallback() {
-               @Override
-               public void onError(String str) {
+                Toast.makeText(getActivity(),str,Toast.LENGTH_LONG).show();
+                voiceRecgonizationFragment.this.dismiss();
+            }
 
-                   Toast.makeText(getActivity(),str,Toast.LENGTH_LONG).show();
-                   voiceRecgonizationFragment.this.dismiss();
-               }
+            @Override
+            public void onSuccess(final String str) {
+                Toast.makeText(getActivity(),str,Toast.LENGTH_LONG).show();
 
-               @Override
-               public void onSuccess(final String str) {
-                   Toast.makeText(getActivity(),str,Toast.LENGTH_LONG).show();
+                if (str!=null)
+                {
 
-                   if (str!=null)
-                   {
+                    CommandInvoker.excute(getActivity(),str);
 
-                       CommandInvoker.excute(getActivity(),str);
-                       new Handler().postDelayed(new Runnable() {
-                           public void run() {
-                               voiceRecgonizationFragment.this.dismiss();
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            voiceRecgonizationFragment.this.dismiss();
+                            new myTextToSpeech(getActivity(),"hi",matches.get(0));
 
-                           }
-                       }, 100);
+                        }
+                    }, 100);
 
-                   }
-               }
-           }, matches.get(0),TRANSLATER_SOURCE_LAN,TRANLATER_TARGET_LEN).excute();
-        }
+                }
+            }
+        }, matches.get(0),TRANSLATER_SOURCE_LAN,TRANLATER_TARGET_LEN).excute();
 
     }
 }
