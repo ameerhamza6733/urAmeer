@@ -2,6 +2,7 @@ package com.ameerhamza6733.okAmeer.assistant.commands.Receivers;
 
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,6 +11,8 @@ import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -18,16 +21,20 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.ameerhamza6733.okAmeer.MainActivity;
 import com.ameerhamza6733.okAmeer.R;
+import com.ameerhamza6733.okAmeer.fragment.voiceRecgonizationFragment;
 
 import java.io.IOException;
+
+import static java.lang.System.exit;
 
 
 /**
  * Created by AmeerHamza on 6/17/2017.
  */
 
-public class FlashLightActivtyReceiver extends Activity implements SurfaceHolder.Callback {
+public class FlashLightActivtyReceiver extends FragmentActivity implements SurfaceHolder.Callback {
     /**
      * Holds a SurfaceView which is required for some Android phones to show the flash.
      * It is held statically because a reference must be maintained even though the activity is closed.
@@ -45,6 +52,8 @@ public class FlashLightActivtyReceiver extends Activity implements SurfaceHolder
     private static Camera mCamera;
     private static boolean currentlyOn = false;
 
+    private static voiceRecgonizationFragment newIntance;
+
     /**
      * Called when the activity is created, based off of the intent details either turn on or off the flashlight
      */
@@ -54,6 +63,9 @@ public class FlashLightActivtyReceiver extends Activity implements SurfaceHolder
         Log.d("flashlight", "oncreate");
         setContentView(R.layout.activity_flashlight);
         currentlyOn = false;
+        Intent i= getIntent();
+        currentlyOn=i.getBooleanExtra("onOrOff",false);
+
         setFinishOnTouchOutside(false);
         // Make us non-modal, so that others can receive touch events.
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
@@ -61,18 +73,18 @@ public class FlashLightActivtyReceiver extends Activity implements SurfaceHolder
         // ...but notify us that it happened.
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
 
+        turnOnOrOff(currentlyOn);
         findViewById(R.id.turnOff).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+
+                newIntance =  voiceRecgonizationFragment.newInstance("hi",true);
+                newIntance.show(getSupportFragmentManager(), "fragment_voice_input");
             }
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        moveTaskToBack(true);
-    }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -93,6 +105,7 @@ public class FlashLightActivtyReceiver extends Activity implements SurfaceHolder
      * @param onOrOff - true for on, false for off
      */
     private void turnOnOrOff(boolean onOrOff) {
+        Log.d("flashLight","onOf"+onOrOff);
         if (onOrOff) {
             Intent i = new Intent(this, FlashLightActivtyReceiver.class);
             i.putExtra("onOrOff", false);
@@ -131,33 +144,23 @@ public class FlashLightActivtyReceiver extends Activity implements SurfaceHolder
                 mCamera.startPreview();
             } catch (Exception e) {
                 Toast.makeText(this, getString(R.string.no_flashlight_access), Toast.LENGTH_LONG).show();
-                finish();
-                return;
+
+               super.onBackPressed();
             }
 
         } else {
             // finish the activity because it can now be safely closed
-            finish();
+            Intent i = new Intent(FlashLightActivtyReceiver.this,MainActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+
 
         }
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        setIntent(getIntent().putExtra("onOrOff", intent.getBooleanExtra("onOrOff", false)));
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        boolean onOrOff = getIntent().getBooleanExtra("onOrOff", false);
-        if (onOrOff != currentlyOn) {
-            currentlyOn = onOrOff;
-            turnOnOrOff(onOrOff);
 
-        }
-    }
+
 
     /**
      * Called when the activity is finished. Ensure all variables are cleaned up and flashlight is turned off.
@@ -174,6 +177,9 @@ public class FlashLightActivtyReceiver extends Activity implements SurfaceHolder
             mCamera.stopPreview();
             mCamera.release();
             mCamera = null;
+            newIntance=null;
+
+
         }
         super.onDestroy();
     }

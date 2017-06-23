@@ -19,12 +19,12 @@ public class setAlarm implements Command {
         try {
             int time[] = praseAlramTime(predicate);
             if (time != null) {
-                Log.d("setAlarm", "hour" + time[0]);
+                Log.d("setAlarm", "hour" + time[0]+time[1]);
 
                 Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
                 i.putExtra(AlarmClock.EXTRA_MESSAGE, "New Alarm");
                 i.putExtra(AlarmClock.EXTRA_HOUR, time[0]);
-                i.putExtra(AlarmClock.EXTRA_MINUTES, time[0]);
+                i.putExtra(AlarmClock.EXTRA_MINUTES, time[1]);
                 context.startActivity(i);
             }
         } catch (Exception e) {
@@ -47,13 +47,13 @@ public class setAlarm implements Command {
         if (rawTime.length() == 4) {
 
 
-            time[0] = Integer.parseInt(rawTime.substring(0, 1));
-            time[1] = Integer.parseInt(rawTime.substring(2, 3));
+            time[0] = Integer.parseInt(rawTime.substring(0, 2));
+            time[1] = Integer.parseInt(rawTime.substring(2, 4));
 
             return time;
         } else if (rawTime.length() == 3) {
-            time[0] = Integer.parseInt(rawTime.substring(0, 1));
-            time[1] = Integer.parseInt(String.valueOf(rawTime.charAt(2)));
+            time[0] = Integer.parseInt(String.valueOf(rawTime.charAt(0)));
+            time[1] = Integer.parseInt(rawTime.substring(1,3));
             return time;
 
         }

@@ -1,8 +1,13 @@
 package com.ameerhamza6733.okAmeer.fragment;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
+
 import android.speech.SpeechRecognizer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -17,8 +22,10 @@ import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.assistant.CommandInvoker;
+import com.ameerhamza6733.okAmeer.interfacess.NonHindiQurary;
 import com.ameerhamza6733.okAmeer.interfacess.tranlaterCallback;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
+import com.ameerhamza6733.okAmeer.utial.sendHiEnglishDateToActivtys;
 import com.ameerhamza6733.okAmeer.utial.tranlater;
 
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
@@ -26,22 +33,31 @@ import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapte
 
 import java.util.ArrayList;
 
-public class voiceRecgonizationFragment extends DialogFragment {
-   // static final /* synthetic */ boolean $assertionsDisabled = (!voiceRecgonizationFragment.class.desiredAssertionStatus() ? true : $assertionsDisabled);
-    private static final String LANGUAGES = "hi";
+public class voiceRecgonizationFragment extends DialogFragment  {
+    private String LANGUAGES = "hi";
+    private boolean isTranslateNeeded = true;
+
     private static final int REQUEST_RECORD_AUDIO_PERMISSION_CODE = 1;
     private static final String TAG = "voiceRecgonizationFragm";
     private static final String TRANLATER_TARGET_LEN = "ur";
     private static final String TRANSLATER_SOURCE_LAN = "hi";
-    private static final String TRANSLATER_TYPE = "Google";
+
+
+    private static final String BUNDLE_KEY_EXTRA_TRANSLATE_NEED = "BUNDLE_KEY_TRANSLATE_NEED";
+    private static final String BUNDLE_KEY_EXTRA_LANGUAGES = "BUNDLE_KEY_EXTRA_LANGUAGES";
+
 
     private RecognitionProgressView recognitionProgressView;
     protected SpeechRecognizer speechRecognizer;
+    private sendHiEnglishDateToActivtys sendDateToNOnHidni;
+    private Bundle results;
 
-    public static voiceRecgonizationFragment newInstance(String title) {
+
+    public static voiceRecgonizationFragment newInstance(String LANGUAGES, boolean isTranslateNeeded) {
         voiceRecgonizationFragment frag = new voiceRecgonizationFragment();
         Bundle args = new Bundle();
-        args.putString("title", title);
+        args.putString(BUNDLE_KEY_EXTRA_LANGUAGES, LANGUAGES);
+        args.putBoolean(BUNDLE_KEY_EXTRA_TRANSLATE_NEED, isTranslateNeeded);
         frag.setArguments(args);
         return frag;
     }
@@ -55,6 +71,8 @@ public class voiceRecgonizationFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         int[] colors = new int[]{ContextCompat.getColor(getActivity(), R.color.color1), ContextCompat.getColor(getActivity(), R.color.color2), ContextCompat.getColor(getActivity(), R.color.color3), ContextCompat.getColor(getActivity(), R.color.color4), ContextCompat.getColor(getActivity(), R.color.color5)};
         Log.d(TAG, "onViewCreated");
+        LANGUAGES = getArguments().getString(BUNDLE_KEY_EXTRA_LANGUAGES);
+        isTranslateNeeded = getArguments().getBoolean(BUNDLE_KEY_EXTRA_TRANSLATE_NEED);
         int[] heights = new int[]{60, 76, 58, 80, 55};
         requestPermission();
         this.speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getActivity());
@@ -64,36 +82,111 @@ public class voiceRecgonizationFragment extends DialogFragment {
         this.recognitionProgressView.setBarMaxHeightsInDp(heights);
         this.recognitionProgressView.play();
         startRecognition();
+
         this.recognitionProgressView.postDelayed(new Runnable() {
             public void run() {
+                startRecognition();
             }
-        }, 10);
+        }, 50);
         this.recognitionProgressView.setRecognitionListener(new RecognitionListenerAdapter() {
             public void onResults(Bundle results) {
+
+               voiceRecgonizationFragment.this. results=results;
                 voiceRecgonizationFragment.this.showResults(results);
             }
+
+            @Override
+            public void onEndOfSpeech() {
+                Log.d(TAG,"onEndOfSpeech");
+            }
+
+            @Override
+            public void onError(int error) {
+                super.onError(error);
+                Log.d(TAG,"onError code"+error);
+                if(error==7){
+                   new Handler().postDelayed(new Runnable() {
+                       @Override
+                       public void run() {
+                           voiceRecgonizationFragment.this.dismiss();
+
+                       }
+                   },1000);
+                }
+
+            }
         });
+
     }
 
 
-    public void onDestroy() {
-        if (this.speechRecognizer != null) {
-            this.speechRecognizer.destroy();
-            Log.d(TAG, "onDestroy");
+    private void showResults(Bundle results) {
+        final ArrayList<String> matches = results.getStringArrayList("results_recognition");
+
+
+
+        if (isTranslateNeeded) {
+            if (matches != null)
+                yas(matches);
+            else {
+                Toast.makeText(getActivity(), "please try again..", Toast.LENGTH_LONG).show();
+                voiceRecgonizationFragment.this.dismiss();
+
+            }
+
+
+        } else {
+            Log.d(TAG,"no need tralate.."+getActivity().getClass().getSimpleName());
+            if (matches != null) {
+                try {
+                    sendDateToNOnHidni = new sendHiEnglishDateToActivtys();
+                    sendDateToNOnHidni.setEnglishDateActivtys(getActivity(),matches.get(0),getActivity().getClass().getSimpleName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
         }
-        super.onDestroy();
+
     }
 
-    private void startRecognition() {
-        Intent intent = new Intent("android.speech.action.RECOGNIZE_SPEECH");
-        intent.putExtra("calling_package", getActivity().getPackageName());
-        intent.putExtra("android.speech.extra.LANGUAGE_MODEL", "free_form");
-        intent.putExtra("android.speech.extra.LANGUAGE", LANGUAGES);
-        intent.putExtra("android.speech.extras.SPEECH_INPUT_MINIMUM_LENGTH_MILLIS", 1000);
-        intent.putExtra("android.speech.extras.SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS", 1000);
-        intent.putExtra("android.speech.extras.SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS", 1000);
-        this.speechRecognizer.startListening(intent);
+    private void yas(final ArrayList<String> matches) {
+        Log.d(TAG, "match" + matches.get(0));
+        new tranlater(new tranlaterCallback() {
+            @Override
+            public void onError(String str) {
+
+                Toast.makeText(getActivity(), str, Toast.LENGTH_LONG).show();
+                voiceRecgonizationFragment.this.dismiss();
+            }
+
+            @Override
+            public void onSuccess(final String str) {
+                if(isAdded())
+                Toast.makeText(getActivity(), str, Toast.LENGTH_LONG).show();
+
+                if (str != null) {
+
+                    new myTextToSpeech(getActivity(), LANGUAGES, matches.get(0));
+
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+
+                            CommandInvoker.excute(getActivity(), str);
+                            voiceRecgonizationFragment.this.dismiss();
+
+
+                        }
+                    }, 100);
+
+                }
+            }
+        }, matches.get(0), TRANSLATER_SOURCE_LAN, TRANLATER_TARGET_LEN).excute();
+
     }
+
 
 
     private void requestPermission() {
@@ -106,37 +199,26 @@ public class voiceRecgonizationFragment extends DialogFragment {
         strArr[0] = "android.permission.RECORD_AUDIO";
         ActivityCompat.requestPermissions(activity, strArr, REQUEST_RECORD_AUDIO_PERMISSION_CODE);
     }
-    private void showResults(Bundle results) {
-        final ArrayList<String> matches = results.getStringArrayList("results_recognition");
-        assert matches != null;
-        new tranlater(new tranlaterCallback() {
-            @Override
-            public void onError(String str) {
 
-                Toast.makeText(getActivity(),str,Toast.LENGTH_LONG).show();
-                voiceRecgonizationFragment.this.dismiss();
-            }
+    private void startRecognition() {
+        Intent intent = new Intent("android.speech.action.RECOGNIZE_SPEECH");
+        intent.putExtra("calling_package", getActivity().getPackageName());
+        intent.putExtra("android.speech.extra.LANGUAGE_MODEL", "free_form");
+        intent.putExtra("android.speech.extra.LANGUAGE", LANGUAGES);
 
-            @Override
-            public void onSuccess(final String str) {
-                Toast.makeText(getActivity(),str,Toast.LENGTH_LONG).show();
-
-                if (str!=null)
-                {
-
-                    CommandInvoker.excute(getActivity(),str);
-
-                    new Handler().postDelayed(new Runnable() {
-                        public void run() {
-                            voiceRecgonizationFragment.this.dismiss();
-                            new myTextToSpeech(getActivity(),"hi",matches.get(0));
-
-                        }
-                    }, 100);
-
-                }
-            }
-        }, matches.get(0),TRANSLATER_SOURCE_LAN,TRANLATER_TARGET_LEN).excute();
-
+        this.speechRecognizer.startListening(intent);
     }
+
+    public void onDestroy() {
+        if (this.speechRecognizer != null) {
+          recognitionProgressView.stop();
+
+            this.speechRecognizer.destroy();
+            Log.d(TAG, "onDestroy");
+        }if(this.recognitionProgressView!=null)
+            this.recognitionProgressView=null;
+        super.onDestroy();
+    }
+
+
 }

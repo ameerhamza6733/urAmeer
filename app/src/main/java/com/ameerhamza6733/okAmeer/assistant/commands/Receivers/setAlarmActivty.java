@@ -12,5 +12,6 @@ public class setAlarmActivty extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_alarm_activty);
+
     }
 }

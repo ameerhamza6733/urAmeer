@@ -2,6 +2,7 @@ package com.ameerhamza6733.okAmeer.assistant;
 
 import android.content.Context;
 
+import com.ameerhamza6733.okAmeer.assistant.commands.CallCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.FlashLightOffCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.FlashlightOnCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.setAlarm;
@@ -16,7 +17,7 @@ public class CommandInvoker {
     public static Command[] getCommands() {
         if(commands==null)
         {
-            commands = new Command[] {new FlashlightOnCommand(),new FlashLightOffCommand(),new setAlarm()};
+            commands = new Command[] {new FlashlightOnCommand(),new FlashLightOffCommand(),new setAlarm(),new CallCommand()};
         }
         return commands;
     }

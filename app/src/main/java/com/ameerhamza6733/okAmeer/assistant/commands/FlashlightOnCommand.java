@@ -22,7 +22,7 @@ public class FlashlightOnCommand implements Command {
             public boolean handleMessage(Message message) {
                 Intent i = new Intent(context, FlashLightActivtyReceiver.class);
                 i.putExtra("onOrOff", true);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                 context.startActivity(i);
                 return true;
             }
