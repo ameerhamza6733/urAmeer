@@ -24,6 +24,6 @@ public class CallCommand implements Command {
 
     @Override
     public String getTtsPhrase() {
-       return null;
+       return "आप किसी कॉल करना चाहते हैं";
     }
 }

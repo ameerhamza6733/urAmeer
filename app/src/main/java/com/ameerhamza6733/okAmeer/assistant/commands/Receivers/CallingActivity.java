@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.ContactsContract;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,13 +18,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.fragment.voiceRecgonizationFragment;
 import com.ameerhamza6733.okAmeer.interfacess.NonHindiQurary;
+import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class CallingActivity extends AppCompatActivity implements NonHindiQurary {
@@ -32,9 +37,13 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
     protected Spinner callpickerSpinner;
     private ImageView CallOk;
     private ImageView CallCancle;
-    private boolean isSpinnerTouch=false;
-    protected String[] items;
+    private boolean blockContectInternt = false;
+    protected ArrayList<String> spinnerList;
     protected ArrayAdapter<String> adapter;
+    protected HashMap<String, String> mHashMapContacts = new HashMap<>();
+    private CountDownTimer countDownTimer;
+    protected TextView mMakingCallingIn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,34 +51,67 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
         setContentView(R.layout.activity_calling);
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                newIntance =  voiceRecgonizationFragment.newInstance("en-hi",false);
-                newIntance.show(getSupportFragmentManager(), "CallingActivity");
-                newIntance.setStyle(1, R.style.AppTheme);
+                try {
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    newIntance = voiceRecgonizationFragment.newInstance("en-hi", false);
+                    newIntance.show(fragmentManager, "CallingActivity");
+                    newIntance.setStyle(1, R.style.AppTheme);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
 
             }
-        }, 100);
+        }, 1000);
         callpickerSpinner = (Spinner) findViewById(R.id.caling_spinner);
-       items = new String[] {"Contact" };
-
-       adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, items);
-
+        spinnerList = new ArrayList<>();
+        spinnerList.add("contact");
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, spinnerList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         callpickerSpinner.setAdapter(adapter);
 
-        callpickerSpinner.setOnTouchListener(new View.OnTouchListener() {
+        mMakingCallingIn = (TextView) findViewById(R.id.making_call_in);
+        CallOk = (ImageView) findViewById(R.id.caling_yas);
+        CallOk.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Log.d("calingActivty","spinner listerner");
-                if(!isSpinnerTouch)
-                pickContact();
-                isSpinnerTouch=true;
+            public void onClick(View v) {
+                Toast.makeText(CallingActivity.this, "item" + callpickerSpinner.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
 
-                return true;
+                //  makeCallNow(callpickerSpinner.getSelectedItem().toString());
+                CallingActivity.this.makeCallNow(CallingActivity.this.callpickerSpinner.getSelectedItem().toString());
+
+            }
+        });
+        CallCancle = (ImageView) findViewById(R.id.caling_cancle);
+        CallCancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CallingActivity.this.countDownTimer.cancel();
+                CallingActivity.this.mMakingCallingIn.setText("Call canceled");
             }
         });
 
+
     }
+
+    protected void startMakingCalling() {
+        new myTextToSpeech(CallingActivity.this, "hi", "आपकी कॉल की जा रही है");
+        countDownTimer = new CountDownTimer(3000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+               CallingActivity.this. mMakingCallingIn.setText("Making call in : " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                CallingActivity.this. mMakingCallingIn.setText("done!");
+                makeCallNow(CallingActivity.this.callpickerSpinner.getSelectedItem().toString());
+            }
+
+
+
+        }.start();
+    }
+
 
     @Override
     public void onNonHindiQuraryRecived(String Queary) {
@@ -77,13 +119,14 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
 
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request it is that we're responding to
         if (requestCode == PICK_CONTACT_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                isSpinnerTouch=false;
+                blockContectInternt = false;
                 // Get the URI that points to the selected contact
                 Uri contactUri = data.getData();
                 // We only need the NUMBER column, because there will be only one row in the result
@@ -102,21 +145,45 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
                 // Retrieve the phone number from the NUMBER column
                 int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
                 String number = cursor.getString(column);
-                Log.d("callingActivty","number from phone book="+number);
+                Log.d("callingActivty", "number from phone book=" + number);
 
                 // Do something with the phone number...
             }
         }
     }
+
     private void pickContact() {
         Intent pickContactIntent = new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
         pickContactIntent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE); // Show user only contacts w/ phone numbers
         startActivityForResult(pickContactIntent, PICK_CONTACT_REQUEST);
     }
-    private class myContentNameFinder extends AsyncTask<Void,Void,Void>{
+
+    private void makeCallNow(String s) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mHashMapContacts.get(s)));
+            Log.d("callingActivity", "trying to make call at " + mHashMapContacts.get(s));
+            CallingActivity.this.startActivity(intent);
+        } catch (SecurityException SE) {
+            Toast.makeText(this, "SecurityException" + SE.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        if (countDownTimer != null)
+            countDownTimer.cancel();
+        super.onDestroy();
+
+    }
+
+    protected class myContentNameFinder extends AsyncTask<Void, Void, Void> {
         private String Queary;
-        boolean isFound=false;
-        private List<String> NameListFounded = new ArrayList<>();
+        boolean isFound = false;
+
+        private List<String> mNameListFounded = new ArrayList<>();
 
 
         public myContentNameFinder(String queary) {
@@ -126,7 +193,7 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                Log.d("callingActivty","requiredName="+Queary);
+                Log.d("callingActivty", "requiredName=" + Queary);
                 ContentResolver cr = getContentResolver();
                 Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
                         null, null, null, null);
@@ -135,25 +202,25 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
                     while (cur.moveToNext()) {
                         String id = cur.getString(
                                 cur.getColumnIndex(ContactsContract.Contacts._ID));
-                         String name = cur.getString(cur.getColumnIndex(
+                        String name = cur.getString(cur.getColumnIndex(
                                 ContactsContract.Contacts.DISPLAY_NAME));
-                       if(name.toLowerCase().contains(Queary.toLowerCase()))
-                       {
-                           Log.d("callingActivty","requiredName found"+name);
-                           NameListFounded.add(name);
-                           isFound=true;
-                       }
+                        Log.d("callingActivty", "Name from phone Book " + name);
+                        if (Queary.toLowerCase().contains(name.toLowerCase())) {
+                            Log.d("callingActivty", "requiredName found" + name);
+                            mNameListFounded.add(name);
+                            isFound = true;
+                        }
                         if (cur.getInt(cur.getColumnIndex(
                                 ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
                             Cursor pCur = cr.query(
                                     ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                                     null,
-                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?",
+                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
                                     new String[]{id}, null);
                             while (pCur.moveToNext()) {
                                 String phoneNo = pCur.getString(pCur.getColumnIndex(
                                         ContactsContract.CommonDataKinds.Phone.NUMBER));
-
+                                mHashMapContacts.put(name, phoneNo);
 
 
                             }
@@ -161,8 +228,7 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
                         }
                     }
                 }
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
 
             }
@@ -172,14 +238,37 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            CallingActivity.this.newIntance.dismiss();
-            if(isFound){
-                Log.d("callingActivity","name found onPostExecute"+NameListFounded.get(0));
-               CallingActivity.this.items[0]=NameListFounded.get(0);
-                CallingActivity.this.adapter.notifyDataSetChanged();
+            try {
+                CallingActivity.this.newIntance.dismiss();
+                if (isFound){
+                    updateSpinner();
+
+                }
+
+
+                else
+                    Toast.makeText(CallingActivity.this, "Name not found", Toast.LENGTH_LONG).show();
+                isFound = false;
+            } catch (Exception s) {
+                // Toast.makeText(CallingActivity.this, "Exception:" + s.getMessage(), Toast.LENGTH_LONG).show();
+
             }
 
+        }
 
+        private void updateSpinner() {
+            if (mNameListFounded.size() == 1) {
+
+
+                spinnerList.set(0, mNameListFounded.get(0));
+                adapter.notifyDataSetChanged();
+                startMakingCalling();
+
+            } else if (mNameListFounded.size() > 1) {
+                spinnerList.addAll(mNameListFounded);
+                adapter.notifyDataSetChanged();
+                callpickerSpinner.performClick();
+            }
         }
     }
 }

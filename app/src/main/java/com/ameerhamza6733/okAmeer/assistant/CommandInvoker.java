@@ -1,11 +1,14 @@
 package com.ameerhamza6733.okAmeer.assistant;
 
 import android.content.Context;
+import android.os.Handler;
 
 import com.ameerhamza6733.okAmeer.assistant.commands.CallCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.FlashLightOffCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.FlashlightOnCommand;
+import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.CallingActivity;
 import com.ameerhamza6733.okAmeer.assistant.commands.setAlarm;
+import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 
 /**
  * Created by AmeerHamza on 6/17/2017.
@@ -21,10 +24,10 @@ public class CommandInvoker {
         }
         return commands;
     }
-    public static boolean excute(Context context,String phrase)
+    public static boolean excute(final Context context, String phrase)
     {
         boolean isCommandFound=false;
-        for (Command command : getCommands())
+        for (final Command command : getCommands())
         {
             String[] activationPhrases = command.getDefaultPhrase().split(",");
             for(String activatingParts : activationPhrases)
@@ -33,6 +36,19 @@ public class CommandInvoker {
              {
                  isCommandFound=true;
                  command.execute(context,phrase);
+
+
+                try {
+
+
+
+
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+
              }
             }
         }

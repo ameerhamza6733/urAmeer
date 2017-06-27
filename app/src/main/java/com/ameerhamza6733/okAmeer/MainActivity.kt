@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
 import com.ameerhamza6733.okAmeer.fragment.voiceRecgonizationFragment
+import com.ameerhamza6733.okAmeer.utial.myTextToSpeech
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,11 +21,14 @@ class MainActivity : AppCompatActivity() {
         mSpeakButton.setOnClickListener {
             val fm = this@MainActivity.supportFragmentManager
             val newFragment = voiceRecgonizationFragment.newInstance("hi",true);
-            
+
             newFragment.setStyle(1, R.style.AppTheme)
 
-            newFragment.show(fm, "fragment_voice_input")
+                      newFragment.show(fm, "fragment_voice_input")
         }
+        myTextToSpeech(this, "hi", "")
+
+
 
     }
 

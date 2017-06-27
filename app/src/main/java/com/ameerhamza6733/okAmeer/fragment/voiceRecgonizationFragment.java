@@ -51,6 +51,7 @@ public class voiceRecgonizationFragment extends DialogFragment  {
     protected SpeechRecognizer speechRecognizer;
     private sendHiEnglishDateToActivtys sendDateToNOnHidni;
     private Bundle results;
+    private boolean handler ;
 
 
     public static voiceRecgonizationFragment newInstance(String LANGUAGES, boolean isTranslateNeeded) {
@@ -92,7 +93,11 @@ public class voiceRecgonizationFragment extends DialogFragment  {
             public void onResults(Bundle results) {
 
                voiceRecgonizationFragment.this. results=results;
-                voiceRecgonizationFragment.this.showResults(results);
+                try {
+                    voiceRecgonizationFragment.this.showResults(results);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -101,14 +106,20 @@ public class voiceRecgonizationFragment extends DialogFragment  {
             }
 
             @Override
-            public void onError(int error) {
+            public void onError(final int error) {
                 super.onError(error);
                 Log.d(TAG,"onError code"+error);
-                if(error==7){
-                   new Handler().postDelayed(new Runnable() {
+                if(!(error==8) ){
+                  handler= new Handler().postDelayed(new Runnable() {
                        @Override
                        public void run() {
-                           voiceRecgonizationFragment.this.dismiss();
+
+                          try {
+                              Toast.makeText(getActivity(),"SpeechRecognizer Error code "+error,Toast.LENGTH_LONG).show();
+                              voiceRecgonizationFragment.this.dismiss();
+                          }catch (IllegalArgumentException  i) {
+                              i.printStackTrace();
+                          }
 
                        }
                    },1000);
@@ -120,7 +131,7 @@ public class voiceRecgonizationFragment extends DialogFragment  {
     }
 
 
-    private void showResults(Bundle results) {
+    private void showResults(Bundle results) throws Exception {
         final ArrayList<String> matches = results.getStringArrayList("results_recognition");
 
 
@@ -169,9 +180,9 @@ public class voiceRecgonizationFragment extends DialogFragment  {
 
                 if (str != null) {
 
-                    new myTextToSpeech(getActivity(), LANGUAGES, matches.get(0));
 
-                    new Handler().postDelayed(new Runnable() {
+
+                    handler= new Handler().postDelayed(new Runnable() {
                         public void run() {
 
                             CommandInvoker.excute(getActivity(), str);
@@ -216,7 +227,13 @@ public class voiceRecgonizationFragment extends DialogFragment  {
             this.speechRecognizer.destroy();
             Log.d(TAG, "onDestroy");
         }if(this.recognitionProgressView!=null)
+        {
+            this.recognitionProgressView.stop();
             this.recognitionProgressView=null;
+
+        }
+
+
         super.onDestroy();
     }
 

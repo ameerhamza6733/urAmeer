@@ -13,6 +13,7 @@ import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.FlashLightActivty
  * Created by AmeerHamza on 6/17/2017.
  */
 
+
 public class FlashlightOnCommand implements Command {
     @Override
     public void execute(final Context context, final String predicate) {

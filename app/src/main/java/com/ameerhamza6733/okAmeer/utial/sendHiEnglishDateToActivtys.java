@@ -19,11 +19,10 @@ public class sendHiEnglishDateToActivtys  {
         nonHindiQurary = (NonHindiQurary) context;
 
 
-        if(ActivtyName.equals("CallingActivity"))
-        {
+
 
             nonHindiQurary.onNonHindiQuraryRecived(date);
-        }
+
 
     }
 }
