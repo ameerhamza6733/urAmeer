@@ -3,4 +3,9 @@
     <string name="no_flashlight_access">Sorry your device does not provide access to the flashlight...</string>
     <string name="turn_off">بند کرو</string>
     <string name="flashlight_activated">Flashlight Activated</string>
+    <string name="kis_Time_Pay_set_Karna_ha">आप का अलार्म सेट किया जा रहा है</string>
+    <string name="Kis_Ko_message_likha_na">किस को मैसेज लिखना है</string>
+    <string name="Aur_Message_kay_ha">और मैसेज किया है</string>
+    <string name="Aap_ka_Message_Send_Kiya_ja_raha_ha">आपका मैसेज सेंड किया जा रहा है</string>
+    <string name="Sorry_App_Kiss_Ko_Sms_Send_Karna_Chaatay_ha">माफ कीजिए आप किस को मैसेज सेंड करना चाहते</string>
 </resources>

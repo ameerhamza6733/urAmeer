@@ -7,6 +7,7 @@ import com.ameerhamza6733.okAmeer.assistant.commands.CallCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.FlashLightOffCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.FlashlightOnCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.CallingActivity;
+import com.ameerhamza6733.okAmeer.assistant.commands.sendSmsCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.setAlarm;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 
@@ -20,7 +21,7 @@ public class CommandInvoker {
     public static Command[] getCommands() {
         if(commands==null)
         {
-            commands = new Command[] {new FlashlightOnCommand(),new FlashLightOffCommand(),new setAlarm(),new CallCommand()};
+            commands = new Command[] {new FlashlightOnCommand(),new FlashLightOffCommand(),new setAlarm(),new CallCommand(),new sendSmsCommand()};
         }
         return commands;
     }
@@ -39,8 +40,7 @@ public class CommandInvoker {
 
 
                 try {
-
-
+                    myTextToSpeech.intiTextToSpeech(context,"hi",command.getTtsPhrase(context));
 
 
                 }catch (Exception e)

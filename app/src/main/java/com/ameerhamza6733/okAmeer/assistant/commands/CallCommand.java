@@ -23,7 +23,7 @@ public class CallCommand implements Command {
     }
 
     @Override
-    public String getTtsPhrase() {
+    public String getTtsPhrase(Context context) {
        return "आप किसी कॉल करना चाहते हैं";
     }
 }

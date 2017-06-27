@@ -8,14 +8,15 @@ import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.ContactsContract;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,31 +31,79 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class CallingActivity extends AppCompatActivity implements NonHindiQurary {
+public class smsActivity extends AppCompatActivity implements NonHindiQurary {
 
-    private static final int PICK_CONTACT_REQUEST = 1;
+    private static final int PICK_CONTACT_REQUEST = 14;
     private voiceRecgonizationFragment newIntance;
-    protected Spinner callpickerSpinner;
-    private ImageView CallOk;
-    private ImageView CallCancle;
-    private boolean blockContectInternt = false;
-    private ArrayList<String> spinnerList;
+    private Spinner callpickerSpinner;
+    private ImageView smsOk;
+    private ImageView smsCancle;
+    private boolean getSmsBody = false;
+    private ArrayList<String> senderNameList;
     private ArrayAdapter<String> adapter;
     private HashMap<String, String> mHashMapContacts = new HashMap<>();
     private CountDownTimer countDownTimer;
-    private TextView mMakingCallingIn;
+    protected TextView mSedingSmsIn;
+    private  boolean isSenderNameFound=false;
+    private EditText mSmsBody;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calling);
+        setContentView(R.layout.activity_sms);
+        showVoiceRegonizerDiloge("en-hi");
+        callpickerSpinner = (Spinner) findViewById(R.id.caling_spinner);
+        senderNameList = new ArrayList<>();
+        senderNameList.add("contact");
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, senderNameList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        callpickerSpinner.setAdapter(adapter);
+
+        mSedingSmsIn = (TextView) findViewById(R.id.making_call_in);
+        mSmsBody= (EditText) findViewById(R.id.smsBodayEdittext);
+        smsOk = (ImageView) findViewById(R.id.caling_yas);
+        smsOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(smsActivity.this, "item" + callpickerSpinner.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
+
+                //  makeCallNow(callpickerSpinner.getSelectedItem().toString());
+              //  smsActivity.this.sendItNow(smsActivity.this.callpickerSpinner.getSelectedItem().toString());
+
+            }
+        });
+        smsCancle = (ImageView) findViewById(R.id.caling_cancle);
+        smsCancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                smsActivity.this.countDownTimer.cancel();
+                smsActivity.this.mSedingSmsIn.setText("Call canceled");
+            }
+        });
+        callpickerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if( !parent.getItemAtPosition(position).toString().equals("contact"))
+                    askSms();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+    }
+
+    private void showVoiceRegonizerDiloge(final String LANGUAGE) {
         new Handler().postDelayed(new Runnable() {
             public void run() {
                 try {
                     FragmentManager fragmentManager = getSupportFragmentManager();
-                    newIntance = voiceRecgonizationFragment.newInstance("en-hi", false);
-                    newIntance.show(fragmentManager, "CallingActivity");
+                    newIntance = voiceRecgonizationFragment.newInstance(LANGUAGE, false);
+                    newIntance.show(fragmentManager, "smsActivity");
                     newIntance.setStyle(1, R.style.AppTheme);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -63,48 +112,21 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
 
             }
         }, 1000);
-        callpickerSpinner = (Spinner) findViewById(R.id.caling_spinner);
-        spinnerList = new ArrayList<>();
-        spinnerList.add("contact");
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, spinnerList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        callpickerSpinner.setAdapter(adapter);
-
-        mMakingCallingIn = (TextView) findViewById(R.id.making_call_in);
-        CallOk = (ImageView) findViewById(R.id.caling_yas);
-        CallOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(CallingActivity.this, "item" + callpickerSpinner.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-
-                //  makeCallNow(callpickerSpinner.getSelectedItem().toString());
-                CallingActivity.this.makeCallNow(CallingActivity.this.callpickerSpinner.getSelectedItem().toString());
-
-            }
-        });
-        CallCancle = (ImageView) findViewById(R.id.caling_cancle);
-        CallCancle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CallingActivity.this.countDownTimer.cancel();
-                CallingActivity.this.mMakingCallingIn.setText("Call canceled");
-            }
-        });
-
-
     }
 
-    protected void startMakingCalling() {
-        myTextToSpeech.intiTextToSpeech(CallingActivity.this, "hi", "आपकी कॉल की जा रही है");
+    protected void startSendingSms(final String smsBody) {
+        voiceRecgonizerDismiss();
+        myTextToSpeech.intiTextToSpeech(smsActivity.this, "hi", getResources().getString(R.string.Aap_ka_Message_Send_Kiya_ja_raha_ha));
+        mSmsBody.setText(smsBody);
         countDownTimer = new CountDownTimer(3000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-               CallingActivity.this. mMakingCallingIn.setText("Making call in : " + millisUntilFinished / 1000);
+                smsActivity.this. mSedingSmsIn.setText("Seding sms in : " + millisUntilFinished / 1000);
             }
 
             public void onFinish() {
-                CallingActivity.this. mMakingCallingIn.setText("done!");
-                makeCallNow(CallingActivity.this.callpickerSpinner.getSelectedItem().toString());
+                smsActivity.this. mSedingSmsIn.setText("done!");
+                sendItNow(smsActivity.this.callpickerSpinner.getSelectedItem().toString(),smsBody);
             }
 
 
@@ -115,9 +137,29 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
 
     @Override
     public void onNonHindiQuraryRecived(String Queary) {
+        if(Queary.toLowerCase().equals("nahi karna message"))
+        {
+            Toast.makeText(smsActivity.this,"App ka message cancel kar dea gay ha ",Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        if(!isSenderNameFound)
         new myContentNameFinder(Queary).execute();
+        else if(getSmsBody){
+            startSendingSms(Queary);
+
+        }
 
 
+
+
+    }
+
+    private void voiceRecgonizerDismiss() {
+       try {
+           newIntance.dismiss();
+       }catch (Exception e){
+           e.printStackTrace();
+       }
     }
 
     @Override
@@ -126,7 +168,7 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
         if (requestCode == PICK_CONTACT_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                blockContectInternt = false;
+
                 // Get the URI that points to the selected contact
                 Uri contactUri = data.getData();
                 // We only need the NUMBER column, because there will be only one row in the result
@@ -158,11 +200,12 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
         startActivityForResult(pickContactIntent, PICK_CONTACT_REQUEST);
     }
 
-    private void makeCallNow(String s) {
+    private void sendItNow(String senderNumber, String smsBody) {
         try {
-            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mHashMapContacts.get(s)));
-            Log.d("callingActivity", "trying to make call at " + mHashMapContacts.get(s));
-            CallingActivity.this.startActivity(intent);
+            Uri uri = Uri.parse("smsto:"+senderNumber);
+            Intent it = new Intent(Intent.ACTION_SENDTO, uri);
+            it.putExtra("sms_body", smsBody);
+            startActivity(it);
         } catch (SecurityException SE) {
             Toast.makeText(this, "SecurityException" + SE.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -182,7 +225,7 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
 
     private class myContentNameFinder extends AsyncTask<Void, Void, Void> {
         private String Queary;
-        boolean isFound = false;
+
 
         private List<String> mNameListFounded = new ArrayList<>();
 
@@ -206,10 +249,10 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
                         String name = cur.getString(cur.getColumnIndex(
                                 ContactsContract.Contacts.DISPLAY_NAME));
                         Log.d("callingActivty", "Name from phone Book " + name);
-                        if (Queary.toLowerCase().contains(name.toLowerCase())) {
+                        if (Queary.toLowerCase().contains(name.toLowerCase()) || name.toLowerCase().contains(Queary.toLowerCase())) {
                             Log.d("callingActivty", "requiredName found" + name);
                             mNameListFounded.add(name);
-                            isFound = true;
+                            isSenderNameFound = true;
                         }
                         if (cur.getInt(cur.getColumnIndex(
                                 ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
@@ -240,16 +283,22 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             try {
-                CallingActivity.this.newIntance.dismiss();
-                if (isFound){
+                voiceRecgonizerDismiss();
+                if (isSenderNameFound){
                     updateSpinner();
+                    myTextToSpeech.intiTextToSpeech(smsActivity.this,"hi",getResources().getString(R.string.Aur_Message_kay_ha));
+
 
                 }
 
 
-                else
-                    Toast.makeText(CallingActivity.this, "Name not found", Toast.LENGTH_LONG).show();
-                isFound = false;
+                else{
+                    myTextToSpeech.intiTextToSpeech(smsActivity.this,"hi",getResources().getString(R.string.Sorry_App_Kiss_Ko_Sms_Send_Karna_Chaatay_ha));
+                    showVoiceRegonizerDiloge("en-hi");
+
+                }
+
+
             } catch (Exception s) {
                 // Toast.makeText(CallingActivity.this, "Exception:" + s.getMessage(), Toast.LENGTH_LONG).show();
 
@@ -258,18 +307,26 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
         }
 
         private void updateSpinner() {
+            getSmsBody=true;
             if (mNameListFounded.size() == 1) {
 
 
-                spinnerList.set(0, mNameListFounded.get(0));
+                senderNameList.set(0, mNameListFounded.get(0));
                 adapter.notifyDataSetChanged();
-                startMakingCalling();
+                askSms();
+
 
             } else if (mNameListFounded.size() > 1) {
-                spinnerList.addAll(mNameListFounded);
+                senderNameList.addAll(mNameListFounded);
                 adapter.notifyDataSetChanged();
                 callpickerSpinner.performClick();
             }
         }
     }
+
+    private void askSms() {
+        showVoiceRegonizerDiloge("en-hi");
+    }
 }
+
+

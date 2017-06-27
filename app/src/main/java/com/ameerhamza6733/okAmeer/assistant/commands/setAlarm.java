@@ -6,6 +6,7 @@ import android.provider.AlarmClock;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.assistant.Command;
 import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.setAlarmActivty;
 
@@ -14,6 +15,7 @@ import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.setAlarmActivty;
  */
 
 public class setAlarm implements Command {
+
     @Override
     public void execute(Context context, String predicate) {
 
@@ -33,8 +35,8 @@ public class setAlarm implements Command {
     }
 
     @Override
-    public String getTtsPhrase() {
-        return "आप का अलार्म सेट किया जा रहा है";
+    public String getTtsPhrase(Context context) {
+        return context.getResources().getString(R.string.kis_Time_Pay_set_Karna_ha) ;
     }
     //  praseAlramTime()
 }

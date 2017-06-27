@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:layout_margin="16dp"
+
+        tools:context="com.ameerhamza6733.okAmeer.assistant.commands.Receivers.CallingActivity">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/making_call_in"
+                android:layout_width="303dp"
+                android:layout_height="wrap_content"
+                android:text="Send Sms" />
+
+            <Spinner
+                android:id="@+id/caling_spinner"
+                android:layout_width="match_parent"
+
+
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:layout_toEndOf="@+id/making_call_in"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_toRightOf="@+id/making_call_in" />
+
+            <ImageButton
+                android:id="@+id/caling_cancle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:layout_marginStart="18dp"
+                android:background="@color/cardview_light_background"
+                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+                android:layout_marginTop="23dp"
+                android:layout_below="@+id/smsBodayEdittext"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <ImageButton
+                android:id="@+id/caling_yas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/cardview_light_background"
+                app:srcCompat="@android:drawable/ic_menu_call"
+                android:layout_alignTop="@+id/caling_cancle"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="18dp"
+                android:layout_marginEnd="18dp" />
+
+            <EditText
+                android:id="@+id/smsBodayEdittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/caling_spinner"
+                android:ems="10"
+                android:focusable="false"
+                android:inputType="textPersonName"
+                android:hint="Sms" />
+
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

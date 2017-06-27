@@ -40,7 +40,7 @@ public class FlashlightOnCommand implements Command {
     }
 
     @Override
-    public String getTtsPhrase() {
+    public String getTtsPhrase(Context context) {
         return null;
     }
 }

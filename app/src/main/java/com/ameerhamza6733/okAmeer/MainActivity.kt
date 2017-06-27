@@ -26,10 +26,15 @@ class MainActivity : AppCompatActivity() {
 
                       newFragment.show(fm, "fragment_voice_input")
         }
-        myTextToSpeech(this, "hi", "")
+        myTextToSpeech.intiTextToSpeech(this, "hi", "")
 
 
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        myTextToSpeech.stop();
     }
 
 

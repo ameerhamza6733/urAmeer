@@ -31,7 +31,7 @@ public class setAlarmActivty extends AppCompatActivity implements NonHindiQurary
                 setAlramNow(time);
             }else {
                 Toast.makeText(this,"الارم کا ٹائم کیا ہے",Toast.LENGTH_LONG).show();
-                new myTextToSpeech(this,"hi","आप कितने बजे का अलार्म सेट करना चाहते हैं");
+                 myTextToSpeech.intiTextToSpeech(this,"hi","आप कितने बजे का अलार्म सेट करना चाहते हैं");
                 strtVoiceRegonizerFragment();
             }
         } catch (Exception e) {
@@ -107,4 +107,10 @@ public class setAlarmActivty extends AppCompatActivity implements NonHindiQurary
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("setAlramActivty","onDestroy");
+        myTextToSpeech.stop();
+    }
 }
