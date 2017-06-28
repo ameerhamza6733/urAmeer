@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
 import com.ameerhamza6733.okAmeer.fragment.voiceRecgonizationFragment
+import com.ameerhamza6733.okAmeer.interfacess.NonHindiQurary
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech
 
 

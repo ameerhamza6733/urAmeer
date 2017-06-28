@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">My dsd</string>
-    <string name="no_flashlight_access">Sorry your device does not provide access to the flashlight...</string>
+    <string name="no_flashlight_access">Sorry your device does not provide access to the flashlight…</string>
     <string name="turn_off">بند کرو</string>
     <string name="flashlight_activated">Flashlight Activated</string>
     <string name="kis_Time_Pay_set_Karna_ha">आप का अलार्म सेट किया जा रहा है</string>
@@ -8,4 +8,22 @@
     <string name="Aur_Message_kay_ha">और मैसेज किया है</string>
     <string name="Aap_ka_Message_Send_Kiya_ja_raha_ha">आपका मैसेज सेंड किया जा रहा है</string>
     <string name="Sorry_App_Kiss_Ko_Sms_Send_Karna_Chaatay_ha">माफ कीजिए आप किस को मैसेज सेंड करना चाहते</string>
+    <string name="Aap_Ka__Gaana_Lagaaya_Ja_Raha_Ha">आप का गाना लगाया जा रहा है</string>
+    <string name="Aap_ka_Gaana_band_Kea_Ja_Raha_ha">गाना बंद किया जा रहा है</string>
+    <string name="Agala_Gaana_Lagaaya_Ja_Raha_Ha">अगला गाना लगाया जा रहा है</string>
+    <string name="Previois_Song_lagya_ja_Raha">पिछला गाना लगाओ</string>
+    <string name="Volume_Zayada_ke_Ja_rahi_ha">आवाज ज्यादा की जा रही है</string>
+    <string name="Volume_kam_kiya_ja_raha_ha">वॉल्यूम कम किया जा रहा है</string>
+
+
+    <string name="kis_Time_Pay_set_Karna_ha_en">kis time par set karna hai</string>
+    <string name="Kis_Ko_message_likha_na_en">Kisko message likhna hai</string>
+    <string name="Aur_Message_kay_ha_en">aur message kya likhna hai</string>
+    <string name="Aap_ka_Message_Send_Kiya_ja_raha_ha_en">aap ka message send kiya ja raha hai</string>
+    <string name="Sorry_App_Kiss_Ko_Sms_Send_Karna_Chaatay_ha_en">sorry aap Kis Ko message likhna Chahte Hain</string>
+    <string name="Aap_Ka__Gaana_Lagaaya_Ja_Raha_Ha_en">aap ka gana Lagaya ja raha hai</string>
+    <string name="Aap_ka_Gaana_band_Kea_Ja_Raha_ha_en">aap ka gana band Kiya ja raha hai</string>
+    <string name="Agala_Gaana_Lagaaya_Ja_Raha_Ha_en">next gana Lagaya ja raha hai</string>
+    <string name="Previois_Song_lagya_ja_Raha_en">previous gana Lagaya ja raha hai</string>
+    <string name="Volume_Zayada_ke_Ja_rahi_ha_en">volume Zyada Kiya ja raha hai</string>
 </resources>

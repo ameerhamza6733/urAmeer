@@ -14,7 +14,7 @@ import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.setAlarmActivty;
  * Created by AmeerHamza on 6/20/2017.
  */
 
-public class setAlarm implements Command {
+public class setAlarmCommand implements Command {
 
     @Override
     public void execute(Context context, String predicate) {

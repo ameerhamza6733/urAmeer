@@ -1,14 +1,18 @@
 package com.ameerhamza6733.okAmeer.assistant;
 
 import android.content.Context;
-import android.os.Handler;
 
 import com.ameerhamza6733.okAmeer.assistant.commands.CallCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.FlashLightOffCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.FlashlightOnCommand;
-import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.CallingActivity;
+import com.ameerhamza6733.okAmeer.assistant.commands.decreaseVolumeCommand;
+import com.ameerhamza6733.okAmeer.assistant.commands.increaseVolumeCommand;
+import com.ameerhamza6733.okAmeer.assistant.commands.nextSongCommand;
+import com.ameerhamza6733.okAmeer.assistant.commands.pauseMuusicCommand;
+import com.ameerhamza6733.okAmeer.assistant.commands.playMusicCommand;
+import com.ameerhamza6733.okAmeer.assistant.commands.previousSongCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.sendSmsCommand;
-import com.ameerhamza6733.okAmeer.assistant.commands.setAlarm;
+import com.ameerhamza6733.okAmeer.assistant.commands.setAlarmCommand;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 
 /**
@@ -21,7 +25,8 @@ public class CommandInvoker {
     public static Command[] getCommands() {
         if(commands==null)
         {
-            commands = new Command[] {new FlashlightOnCommand(),new FlashLightOffCommand(),new setAlarm(),new CallCommand(),new sendSmsCommand()};
+            commands = new Command[] {new FlashlightOnCommand(),new FlashLightOffCommand(),new setAlarmCommand(),new CallCommand(),new sendSmsCommand(),new pauseMuusicCommand(),new previousSongCommand(),new nextSongCommand(),new playMusicCommand()
+            ,new increaseVolumeCommand(),new decreaseVolumeCommand()};
         }
         return commands;
     }
@@ -33,6 +38,8 @@ public class CommandInvoker {
             String[] activationPhrases = command.getDefaultPhrase().split(",");
             for(String activatingParts : activationPhrases)
             {
+                if(isCommandFound)
+                    break;
              if(phrase.trim().contains(activatingParts.trim()))
              {
                  isCommandFound=true;
@@ -43,10 +50,12 @@ public class CommandInvoker {
                     myTextToSpeech.intiTextToSpeech(context,"hi",command.getTtsPhrase(context));
 
 
+
                 }catch (Exception e)
                 {
                     e.printStackTrace();
                 }
+
 
 
              }

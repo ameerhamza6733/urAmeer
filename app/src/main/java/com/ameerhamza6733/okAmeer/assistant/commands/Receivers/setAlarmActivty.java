@@ -58,7 +58,7 @@ public class setAlarmActivty extends AppCompatActivity implements NonHindiQurary
     }
 
     private void setAlramNow(int[] time) {
-        Log.d("setAlarm", "hour" + time[0]+time[1]);
+        Log.d("setAlarmCommand", "hour" + time[0]+time[1]);
 
         Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
         i.putExtra(AlarmClock.EXTRA_MESSAGE, "New Alarm");

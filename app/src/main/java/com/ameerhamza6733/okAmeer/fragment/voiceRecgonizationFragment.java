@@ -148,8 +148,9 @@ public class voiceRecgonizationFragment extends DialogFragment  {
 
 
         } else {
-            Log.d(TAG,"no need tralate.."+getActivity().getClass().getSimpleName());
+
             if (matches != null) {
+                Log.d(TAG,"no need tralate.."+getActivity().getClass().getSimpleName()+"Text = "+matches.get(0));
                 try {
                     sendDateToNOnHidni = new sendHiEnglishDateToActivtys();
                     sendDateToNOnHidni.setEnglishDateActivtys(getActivity(),matches.get(0),getActivity().getClass().getSimpleName());

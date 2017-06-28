@@ -14,7 +14,9 @@ public class CallCommand implements Command {
     @Override
     public void execute(Context context, String predicate) {
 
-        context.startActivity(new Intent(context, CallingActivity.class));
+        Intent intent =  new Intent(context, CallingActivity.class);
+
+        context.startActivity(intent);
     }
 
     @Override

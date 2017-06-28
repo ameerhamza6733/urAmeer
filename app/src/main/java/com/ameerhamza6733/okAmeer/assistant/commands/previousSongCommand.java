@@ -6,29 +6,28 @@ import android.util.Log;
 
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.assistant.Command;
-import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.smsActivity;
 
 /**
- * Created by AmeerHamza on 6/27/2017.
+ * Created by AmeerHamza on 6/28/2017.
  */
 
-public class sendSmsCommand implements Command{
+public class previousSongCommand implements Command {
     @Override
     public void execute(Context context, String predicate) {
-        Log.d("sendSmsCommand","excute");
-        Intent intent =  new Intent(context, smsActivity.class);
-
-        context.startActivity(intent);
+        Intent i = new Intent("com.android.music.musicservicecommand");
+        i.putExtra("command", "previous");
+       context. sendBroadcast(i);
+        Log.d("Music","previousSongCommand");
 
     }
 
     @Override
     public String getDefaultPhrase() {
-        return "SMS,میسج";
+        return "پچھلا گانا لگاؤ,";
     }
 
     @Override
     public String getTtsPhrase(Context context) {
-        return context.getString(R.string.Kis_Ko_message_likha_na);
+        return context.getResources().getString(R.string.Previois_Song_lagya_ja_Raha);
     }
 }

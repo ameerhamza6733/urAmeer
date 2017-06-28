@@ -69,7 +69,7 @@ public class smsActivity extends AppCompatActivity implements NonHindiQurary {
                 Toast.makeText(smsActivity.this, "item" + callpickerSpinner.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
 
                 //  makeCallNow(callpickerSpinner.getSelectedItem().toString());
-              //  smsActivity.this.sendItNow(smsActivity.this.callpickerSpinner.getSelectedItem().toString());
+                smsActivity.this.sendItNow(smsActivity.this.callpickerSpinner.getSelectedItem().toString(),mSmsBody.getText().toString());
 
             }
         });

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.assistant.Command;
 import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.FlashLightActivtyReceiver;
 
