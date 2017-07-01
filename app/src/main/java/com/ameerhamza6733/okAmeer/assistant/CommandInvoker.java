@@ -11,7 +11,9 @@ import com.ameerhamza6733.okAmeer.assistant.commands.nextSongCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.pauseMuusicCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.playMusicCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.previousSongCommand;
+import com.ameerhamza6733.okAmeer.assistant.commands.readSmsCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.sendSmsCommand;
+import com.ameerhamza6733.okAmeer.assistant.commands.sendWhatsAppCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.setAlarmCommand;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 
@@ -25,8 +27,8 @@ public class CommandInvoker {
     public static Command[] getCommands() {
         if(commands==null)
         {
-            commands = new Command[] {new FlashlightOnCommand(),new FlashLightOffCommand(),new setAlarmCommand(),new CallCommand(),new sendSmsCommand(),new pauseMuusicCommand(),new previousSongCommand(),new nextSongCommand(),new playMusicCommand()
-            ,new increaseVolumeCommand(),new decreaseVolumeCommand()};
+            commands = new Command[] {new FlashlightOnCommand(),new FlashLightOffCommand(),new setAlarmCommand(),new CallCommand(),new readSmsCommand(),new sendSmsCommand(),new pauseMuusicCommand(),new previousSongCommand(),new nextSongCommand(),new playMusicCommand()
+            ,new increaseVolumeCommand(),new decreaseVolumeCommand(),new sendWhatsAppCommand()};
         }
         return commands;
     }

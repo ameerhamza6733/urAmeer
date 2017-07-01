@@ -6,11 +6,14 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
 import com.ameerhamza6733.okAmeer.fragment.voiceRecgonizationFragment
-import com.ameerhamza6733.okAmeer.interfacess.NonHindiQurary
+import com.ameerhamza6733.okAmeer.interfacess.mttsListener
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), mttsListener {
+    override fun onFinsh() {
+       // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private val speechRecognizer: SpeechRecognizer? = null
 
@@ -19,9 +22,10 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
         val mSpeakButton = findViewById(R.id.speakButton) as ImageButton
+
         mSpeakButton.setOnClickListener {
             val fm = this@MainActivity.supportFragmentManager
-            val newFragment = voiceRecgonizationFragment.newInstance("hi",true);
+            val newFragment = voiceRecgonizationFragment.newInstance("hi",true,true);
 
             newFragment.setStyle(1, R.style.AppTheme)
 
@@ -37,6 +41,9 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         myTextToSpeech.stop();
     }
+
+
+
 
 
 }

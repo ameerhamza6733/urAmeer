@@ -1,35 +1,41 @@
 package com.ameerhamza6733.okAmeer.assistant.commands;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
-import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.assistant.Command;
+
 import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.smsActivity;
 
 /**
- * Created by AmeerHamza on 6/27/2017.
+ * Created by AmeerHamza on 6/30/2017.
  */
 
-public class sendSmsCommand implements Command{
+public class sendWhatsAppCommand implements Command {
     @Override
     public void execute(Context context, String predicate) {
-        Log.d("sendSmsCommand","excute");
-        Intent intent =  new Intent(context, smsActivity.class);
 
-        intent.putExtra("EXTRA_SMS_OR_WHATS_APP","sms");
+        Intent intent =  new Intent(context, smsActivity.class);
+        intent.putExtra("EXTRA_SMS_OR_WHATS_APP","WhatsApp");
+
         context.startActivity(intent);
+
 
     }
 
+
+
     @Override
     public String getDefaultPhrase() {
-        return "SMS,میسج";
+        return "WhatsApp";
     }
 
     @Override
     public String getTtsPhrase(Context context) {
-        return context.getString(R.string.Kis_Ko_message_likha_na);
+        return null;
     }
 }

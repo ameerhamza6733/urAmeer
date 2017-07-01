@@ -78,7 +78,7 @@ public class FlashLightActivtyReceiver extends FragmentActivity implements Surfa
             @Override
             public void onClick(View view) {
 
-                newIntance =  voiceRecgonizationFragment.newInstance("hi",true);
+                newIntance =  voiceRecgonizationFragment.newInstance("hi",true,true);
                 newIntance.show(getSupportFragmentManager(), "fragment_voice_input");
             }
         });

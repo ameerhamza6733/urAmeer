@@ -13,6 +13,7 @@
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_SMS"/>
 
     <application
         android:allowBackup="true"
@@ -22,7 +23,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-            <intent-filter>
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.speech.action.WEB_SEARCH" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -31,7 +36,29 @@
         <activity android:name=".assistant.commands.Receivers.FlashLightActivtyReceiver" />
         <activity android:name=".assistant.commands.Receivers.setAlarmActivty" />
         <activity android:name=".assistant.commands.Receivers.CallingActivity" />
-        <activity android:name=".assistant.commands.Receivers.smsActivity"></activity>
+        <activity android:name=".assistant.commands.Receivers.smsActivity" />
+        <activity
+            android:name=".handsetReceiverActivty"
+            android:launchMode="singleInstance"
+            android:showOnLockScreen="true">
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.speech.action.WEB_SEARCH" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.speech.action.VOICE_SEARCH_HANDS_FREE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.sec.action.SVOICE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".assistant.commands.Receivers.smsUnreadActivity"></activity>
+        <service android:name=".utial.TTSService"/>
     </application>
 
 </manifest>

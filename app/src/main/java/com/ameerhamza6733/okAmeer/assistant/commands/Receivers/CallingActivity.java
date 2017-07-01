@@ -12,9 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -23,14 +21,14 @@ import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.fragment.voiceRecgonizationFragment;
-import com.ameerhamza6733.okAmeer.interfacess.NonHindiQurary;
+import com.ameerhamza6733.okAmeer.interfacess.noNeedCommander;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class CallingActivity extends AppCompatActivity implements NonHindiQurary {
+public class CallingActivity extends AppCompatActivity implements noNeedCommander {
 
     private static final int PICK_CONTACT_REQUEST = 1;
     private voiceRecgonizationFragment newIntance;
@@ -53,7 +51,7 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
             public void run() {
                 try {
                     FragmentManager fragmentManager = getSupportFragmentManager();
-                    newIntance = voiceRecgonizationFragment.newInstance("en-hi", false);
+                    newIntance = voiceRecgonizationFragment.newInstance("en-hi", false,false);
                     newIntance.show(fragmentManager, "CallingActivity");
                     newIntance.setStyle(1, R.style.AppTheme);
                 } catch (Exception e) {
@@ -94,7 +92,7 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
 
     }
 
-    protected void startMakingCalling() {
+    protected void startMakingCalling() throws Exception {
         myTextToSpeech.intiTextToSpeech(CallingActivity.this, "hi", "आपकी कॉल की जा रही है");
         countDownTimer = new CountDownTimer(3000, 1000) {
 
@@ -114,7 +112,7 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
 
 
     @Override
-    public void onNonHindiQuraryRecived(String Queary) {
+    public void onNoCommandrExcute(String Queary) {
         new myContentNameFinder(Queary).execute();
 
 
@@ -175,7 +173,11 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
 
         if (countDownTimer != null)
             countDownTimer.cancel();
-        myTextToSpeech.stop();
+        try {
+            myTextToSpeech.stop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         super.onDestroy();
 
     }
@@ -257,7 +259,7 @@ public class CallingActivity extends AppCompatActivity implements NonHindiQurary
 
         }
 
-        private void updateSpinner() {
+        private void updateSpinner() throws Exception {
             if (mNameListFounded.size() == 1) {
 
 

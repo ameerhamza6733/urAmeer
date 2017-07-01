@@ -11,10 +11,10 @@ import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.fragment.voiceRecgonizationFragment;
-import com.ameerhamza6733.okAmeer.interfacess.NonHindiQurary;
+import com.ameerhamza6733.okAmeer.interfacess.noNeedCommander;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 
-public class setAlarmActivty extends AppCompatActivity implements NonHindiQurary {
+public class setAlarmActivty extends AppCompatActivity implements noNeedCommander {
 
     public static final String EXTRA_TIME="extraTime";
     private voiceRecgonizationFragment newIntance;
@@ -45,7 +45,7 @@ public class setAlarmActivty extends AppCompatActivity implements NonHindiQurary
             public void run() {
                 try {
                     FragmentManager fragmentManager = getSupportFragmentManager();
-                     newIntance = voiceRecgonizationFragment.newInstance("hi", false);
+                     newIntance = voiceRecgonizationFragment.newInstance("hi", false,false);
                     newIntance.show(fragmentManager, setAlarmActivty.this.getClass().getSimpleName());
                     newIntance.setStyle(1, R.style.AppTheme);
                 } catch (Exception e) {
@@ -91,7 +91,7 @@ public class setAlarmActivty extends AppCompatActivity implements NonHindiQurary
     }
 
     @Override
-    public void onNonHindiQuraryRecived(String Queary) {
+    public void onNoCommandrExcute(String Queary) {
         try {
             int time[] = praseAlramTime(Queary);
             if (time != null)
@@ -111,6 +111,10 @@ public class setAlarmActivty extends AppCompatActivity implements NonHindiQurary
     protected void onDestroy() {
         super.onDestroy();
         Log.d("setAlramActivty","onDestroy");
-        myTextToSpeech.stop();
+        try {
+            myTextToSpeech.stop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

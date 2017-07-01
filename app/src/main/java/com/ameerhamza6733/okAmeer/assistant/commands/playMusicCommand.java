@@ -40,7 +40,7 @@ public class playMusicCommand implements Command {
     }
 
     private void nowPlayMusic(final Context context)  throws Exception{
-        new CountDownTimer(3000, 500) {
+        new CountDownTimer(5000, 500) {
 
             public void onTick(long millisUntilFinished) {
 

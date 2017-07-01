@@ -3,8 +3,11 @@ package com.ameerhamza6733.okAmeer.utial;
 import android.content.Context;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+
+import com.ameerhamza6733.okAmeer.interfacess.mttsListener;
 
 import java.util.Locale;
 
@@ -15,6 +18,7 @@ import java.util.Locale;
 public class myTextToSpeech {
 
     private static TextToSpeech textToSpeech;
+    private static mttsListener mTextToSpechDone;
 
 
 //    public myTextToSpeech(Context context, String language, String text) {
@@ -38,8 +42,9 @@ public class myTextToSpeech {
 //        }
 
 
-    public static void intiTextToSpeech(Context context, final String language, final String text) {
-        textToSpeech = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
+    public static void intiTextToSpeech(Context context, final String language, final String text) throws Exception{
+        mTextToSpechDone = (mttsListener) context;
+        textToSpeech = new TextToSpeech(context.getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
                 if (status == TextToSpeech.SUCCESS) {
@@ -52,11 +57,31 @@ public class myTextToSpeech {
                     }
                 }
 
+
+            }
+
+
+        });
+        textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+            @Override
+            public void onStart(String utteranceId) {
+
+            }
+
+            @Override
+            public void onDone(String utteranceId) {
+                mTextToSpechDone.onFinsh();
+
+            }
+
+            @Override
+            public void onError(String utteranceId) {
+
             }
         });
     }
 
-    public static void stop() {
+    public static void stop() throws Exception {
         if (textToSpeech != null)
             textToSpeech.shutdown();
 
