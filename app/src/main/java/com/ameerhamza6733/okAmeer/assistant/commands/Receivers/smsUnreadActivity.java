@@ -1,18 +1,22 @@
 package com.ameerhamza6733.okAmeer.assistant.commands.Receivers;
 
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.fragment.voiceRecgonizationFragment;
-import com.ameerhamza6733.okAmeer.interfacess.mttsListener;
 import com.ameerhamza6733.okAmeer.interfacess.noNeedCommander;
 import com.ameerhamza6733.okAmeer.utial.SMSUtils;
 import com.ameerhamza6733.okAmeer.utial.SmsMmsMessage;
@@ -29,7 +33,7 @@ import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.view.CardListView;
 
-public class smsUnreadActivity extends AppCompatActivity implements noNeedCommander,mttsListener {
+public class smsUnreadActivity extends AppCompatActivity implements noNeedCommander {
 
     private ContentResolver resolver;
     final Uri SMS_INBOX = Uri.parse("content://sms/inbox");
@@ -44,6 +48,7 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
     private ArrayList<Card> cards;
     private CardListView listView;
     private CardArrayAdapter mCardArrayAdapter;
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +76,16 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
 
             }
 
+
             mCardArrayAdapter = new CardArrayAdapter(this, cards);
 
             listView = (CardListView) findViewById(R.id.myList);
             if (listView != null) {
                 listView.setAdapter(mCardArrayAdapter);
             }
+
+
+
             try {
                 intiTextToSpeech("hi-IN", "आपको कई मैसेज आए हैं  क्या आप चाहते हैं इसे सुनना");
             } catch (Exception e) {
@@ -86,10 +95,24 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
 
         }
 
-        showVoiceRegoniztionFragment();
 
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String s = intent.getStringExtra("com.service.message");
+                showVoiceRegoniztionFragment();
+            }
+        };
 
+        FloatingActionButton febRetry = (FloatingActionButton) findViewById(R.id.febRetry);
+        febRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showVoiceRegoniztionFragment();
+            }
+        });
     }
+
 
     private void intiTextToSpeech(final String LEN, final String text) {
         mTextToSpeechHandler = new Handler();
@@ -98,8 +121,8 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
             public void run() {
                 try {
                     Intent i = new Intent(smsUnreadActivity.this, TTSService.class);
-                    i.putExtra("toSpeak", "आपको कई मैसेज आए हैं  क्या आप चाहते हैं इसे सुनना");
-                    i.putExtra("Language","hi-IN");
+                    i.putExtra("toSpeak", text);
+                    i.putExtra("Language", LEN);
                     smsUnreadActivity.this.startService(i);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -112,21 +135,21 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
 
     private void showVoiceRegoniztionFragment() {
 
-            handler = new Handler();
-            runnable = new Runnable() {
-                @Override
-                public void run() {
-                   try {
-                       FragmentManager fragmentManager = getSupportFragmentManager();
-                       newIntance = voiceRecgonizationFragment.newInstance("hi", true, false);
-                       newIntance.show(fragmentManager, "smsUnreadActivty");
-                       newIntance.setStyle(1, R.style.Theme_AppCompat_Dialog);
-                   }catch (Exception e){
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    newIntance = voiceRecgonizationFragment.newInstance("hi", true, false);
+                    newIntance.show(fragmentManager, "smsUnreadActivty");
+                    newIntance.setStyle(1, R.style.Theme_AppCompat_Dialog_MinWidth);
+                } catch (Exception e) {
 
-                   }
                 }
-            };
-            handler.postDelayed(runnable, 4000);
+            }
+        };
+        handler.postDelayed(runnable, 10);
 
     }
 
@@ -156,42 +179,53 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
         super.onDestroy();
     }
 
-    private void readOrNot(boolean userWantToReadorNot) {
-        if (userWantToReadorNot) {
-            Intent i = new Intent(this, TTSService.class);
-
-            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            i.putExtra("toSpeak", unread.get(0).getMessageBody());
-
-            i.putExtra("Language","en-IN");
-            this.startService(i);
-            Log.d("smsUnreadActivty", "reading sms ..." + unread.get(0).getMessageBody());
-            unread.remove(0);
-            cards.get(0).setBackgroundColorResourceId(Color.BLUE);
-            mCardArrayAdapter.notifyDataSetChanged();
-        }
-      else {
-            Log.d("smsUnreadActivty","Removeing sms ..."+ unread.get(0).getMessageBody());
-            if(unread.size()>0){
-                Intent i = new Intent(this, TTSService.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                i.putExtra("toSpeak", "next message aaya hai"+unread.get(0).getContactName()+"se");
-                i.putExtra("Language","en-IN");
-                this.startService(i);
-                unread.remove(0);
-                cards.remove(0);
-                showVoiceRegoniztionFragment();
-
-            }
-        }
-
-
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver((broadcastReceiver),
+                new IntentFilter("com.service.result"));
     }
 
     @Override
-    public void onFinsh() {
+    protected void onStop() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        super.onStop();
+    }
+
+    private void readOrNot(boolean userWantToReadorNot) {
+        try {
+            if (userWantToReadorNot)
+                speckThisMessage();
+
+            else
+                moveToNextMessage();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
+
+    private void speckThisMessage() throws Exception {
+
+        if (unread.size() > 1)
+            intiTextToSpeech("en-IN", unread.get(0).getMessageBody() + "next message aaya hai" + unread.get(1).getContactName() + "se aaya hai aap sunna chahte hai ya ni");
+        else
+            intiTextToSpeech("en-IN", unread.get(0).getMessageBody());
+        unread.remove(0);
+
+
+    }
+
+    private void moveToNextMessage() throws Exception {
+        if (unread.size() > 0) {
+            intiTextToSpeech("en-IN", "next message aaya hai" + unread.get(0).getContactName() + "se aaya hai aap sunna chahte hai ya ni");
+            unread.remove(0);
+
+        }
+    }
+
+
 }
 

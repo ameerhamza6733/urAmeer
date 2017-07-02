@@ -7,8 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
+import android.support.v4.content.LocalBroadcastManager;
 import android.widget.Toast;
 
+
+import com.ameerhamza6733.okAmeer.utial.TTSService;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -17,14 +20,18 @@ public class TTSHelper extends UtteranceProgressListener implements TextToSpeech
     private TextToSpeech tts;
     private Context context;
     private String toSpeak;
+    private LocalBroadcastManager localBroadcastManager;
 
 
-    public TTSHelper(Context context, String toSpeak, String language) {
+
+
+    public TTSHelper(Context context, String toSpeak, String language,LocalBroadcastManager  localBroadcastManager) {
         this.context = context;
         tts = new TextToSpeech(context, this);
         tts.setOnUtteranceProgressListener(this);
         this.toSpeak = toSpeak;
         this.language=language;
+        this.localBroadcastManager=localBroadcastManager;
     }
 
     public void stop() {
@@ -60,7 +67,7 @@ public class TTSHelper extends UtteranceProgressListener implements TextToSpeech
 
     private void speakOut() {
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
+        map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, toSpeak);
         tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, map);
         //Toast.makeText(context, toSpeak, Toast.LENGTH_LONG).show();
 
@@ -73,6 +80,10 @@ public class TTSHelper extends UtteranceProgressListener implements TextToSpeech
 
     @Override
     public void onDone(String s) {
+        Intent intent = new Intent("com.service.result");
+        if(s != null)
+            intent.putExtra("com.service.message", s);
+      localBroadcastManager.sendBroadcast(intent);
         context.stopService(new Intent(context, TTSService.class));
     }
 

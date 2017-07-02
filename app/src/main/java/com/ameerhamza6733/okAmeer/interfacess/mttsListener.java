@@ -5,5 +5,5 @@ package com.ameerhamza6733.okAmeer.interfacess;
  */
 
 public interface mttsListener {
-    void onFinsh();
+    void onFinsh( String utteranceId);
 }

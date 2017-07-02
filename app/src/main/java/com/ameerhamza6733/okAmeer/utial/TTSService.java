@@ -10,12 +10,14 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.ameerhamza6733.okAmeer.MainActivity;
 import com.ameerhamza6733.okAmeer.R;
 
 public class TTSService extends Service {
     TTSHelper helper;
+
 
     public TTSService() {
     }
@@ -26,6 +28,7 @@ public class TTSService extends Service {
         if (intent.getAction() != null && intent.getAction().equals("STOP")) {
             stopSelf();
         } else {
+
             Notification.Builder builder = new Notification.Builder(this);
             builder.setContentTitle("spaking");
             builder.setContentIntent(PendingIntent.getActivity(this, 12343,
@@ -42,7 +45,7 @@ public class TTSService extends Service {
             } catch (Exception e) {
             }
             if (intent != null) {
-                helper = new TTSHelper(this, intent.getStringExtra("toSpeak"), intent.getStringExtra("Language"));
+                helper = new TTSHelper(this, intent.getStringExtra("toSpeak"), intent.getStringExtra("Language"),LocalBroadcastManager.getInstance(this));
             }
         }
         return super.onStartCommand(intent, flags, startId);

@@ -18,7 +18,6 @@ import java.util.Locale;
 public class myTextToSpeech {
 
     private static TextToSpeech textToSpeech;
-    private static mttsListener mTextToSpechDone;
 
 
 //    public myTextToSpeech(Context context, String language, String text) {
@@ -43,7 +42,7 @@ public class myTextToSpeech {
 
 
     public static void intiTextToSpeech(Context context, final String language, final String text) throws Exception{
-        mTextToSpechDone = (mttsListener) context;
+
         textToSpeech = new TextToSpeech(context.getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -70,7 +69,7 @@ public class myTextToSpeech {
 
             @Override
             public void onDone(String utteranceId) {
-                mTextToSpechDone.onFinsh();
+
 
             }
 

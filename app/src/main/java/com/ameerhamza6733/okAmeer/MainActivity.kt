@@ -10,10 +10,8 @@ import com.ameerhamza6733.okAmeer.interfacess.mttsListener
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech
 
 
-class MainActivity : AppCompatActivity(), mttsListener {
-    override fun onFinsh() {
-       // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+class MainActivity : AppCompatActivity() {
+
 
     private val speechRecognizer: SpeechRecognizer? = null
 

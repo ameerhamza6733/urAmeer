@@ -1,12 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.ameerhamza6733.okAmeer.assistant.commands.Receivers.smsUnreadActivity">
+
     <it.gmariotti.cardslib.library.view.CardListView
+        android:id="@+id/myList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/myList"/>
-</LinearLayout>
+        android:layout_height="match_parent" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/febRetry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="22dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginRight="14dp"
+        android:background="@color/cardview_light_background"
+        android:src="@drawable/caller_id_mic" />
+</RelativeLayout>

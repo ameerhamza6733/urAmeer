@@ -19,6 +19,7 @@ public class readSmsCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
+
         return "پڑھو SMS ,میسج پڑھو";
     }
 
