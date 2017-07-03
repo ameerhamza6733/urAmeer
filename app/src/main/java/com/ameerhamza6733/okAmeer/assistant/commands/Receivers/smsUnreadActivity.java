@@ -35,12 +35,11 @@ import it.gmariotti.cardslib.library.view.CardListView;
 
 public class smsUnreadActivity extends AppCompatActivity implements noNeedCommander {
 
-    private ContentResolver resolver;
-    final Uri SMS_INBOX = Uri.parse("content://sms/inbox");
     private Handler handler;
     private Runnable runnable;
     private Runnable mTextTOSpeechrunnable;
     private Handler mTextToSpeechHandler;
+
     private voiceRecgonizationFragment newIntance;
     private String[] mUrduPositiveWords = {"ہاں", "جی", "پڑھو", "سناؤ"};
     private boolean userWantToReadorNot = false;
@@ -217,7 +216,6 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
 
 
     }
-
     private void moveToNextMessage() throws Exception {
         if (unread.size() > 0) {
             intiTextToSpeech("en-IN", "next message aaya hai" + unread.get(0).getContactName() + "se aaya hai aap sunna chahte hai ya ni");
