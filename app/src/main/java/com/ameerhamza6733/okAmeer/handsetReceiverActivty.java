@@ -33,7 +33,9 @@ public class handsetReceiverActivty extends AppCompatActivity{
 
     @Override
     protected void onResume() {
+        showVoiceDilogeFragment();
         super.onResume();
+
 
     }
 }

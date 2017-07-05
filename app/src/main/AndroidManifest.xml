@@ -15,6 +15,9 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_SMS"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+
 
     <application
         android:allowBackup="true"
@@ -58,8 +61,19 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".assistant.commands.Receivers.smsUnreadActivity"></activity>
+        <activity android:name=".assistant.commands.Receivers.smsUnreadActivity"/>
+        <activity android:name=".assistant.commands.Receivers.youtubePlayActivity"/>
         <service android:name=".utial.TTSService"/>
+        <activity
+            android:name="com.thefinestartist.ytpa.YouTubePlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="sensor"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+
+        <!--Need Your Google API Key-->
+        <meta-data
+            android:name="com.thefinestartist.ytpa.YouTubePlayerActivity.ApiKey"
+            android:value="AIzaSyA-C1pPmKSPZUONcWCFqMOyILan7DUFi7I" />
     </application>
 
 </manifest>

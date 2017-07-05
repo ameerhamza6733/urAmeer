@@ -47,11 +47,12 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calling);
+
         new Handler().postDelayed(new Runnable() {
             public void run() {
                 try {
                     FragmentManager fragmentManager = getSupportFragmentManager();
-                    newIntance = voiceRecgonizationFragment.newInstance("en-hi", false,false);
+                    newIntance = voiceRecgonizationFragment.newInstance("en-IN", false,false);
                     newIntance.show(fragmentManager, "CallingActivity");
                     newIntance.setStyle(1, R.style.AppTheme);
                 } catch (Exception e) {

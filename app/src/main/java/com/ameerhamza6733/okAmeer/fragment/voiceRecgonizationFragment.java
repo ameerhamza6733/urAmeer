@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -92,11 +93,11 @@ public class voiceRecgonizationFragment extends DialogFragment {
         this.recognitionProgressView.play();
         startRecognition();
 
-        this.recognitionProgressView.postDelayed(new Runnable() {
-            public void run() {
-                startRecognition();
-            }
-        }, 50);
+//        this.recognitionProgressView.postDelayed(new Runnable() {
+//            public void run() {
+//                startRecognition();
+//            }
+//        }, 10);
         this.recognitionProgressView.setRecognitionListener(new RecognitionListenerAdapter() {
             public void onResults(Bundle results) {
 
@@ -183,7 +184,7 @@ public class voiceRecgonizationFragment extends DialogFragment {
         Log.d(TAG, "match" + matches.get(0));
         new tranlater(new tranlaterCallback() {
             @Override
-            public void onError(String str) {
+            public  void onError(String str) {
 
                 Toast.makeText(getActivity(), str, Toast.LENGTH_LONG).show();
                 voiceRecgonizationFragment.this.dismiss();
@@ -240,11 +241,12 @@ public class voiceRecgonizationFragment extends DialogFragment {
         ActivityCompat.requestPermissions(activity, strArr, REQUEST_RECORD_AUDIO_PERMISSION_CODE);
     }
 
-    private void startRecognition() {
+    private synchronized  void  startRecognition() {
         Intent intent = new Intent("android.speech.action.RECOGNIZE_SPEECH");
         if (isAdded()){
             intent.putExtra("calling_package", getActivity().getPackageName());
             intent.putExtra("android.speech.extra.LANGUAGE_MODEL", "free_form");
+            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS,2000);
             intent.putExtra("android.speech.extra.LANGUAGE", LANGUAGES);
 
             this.speechRecognizer.startListening(intent);
