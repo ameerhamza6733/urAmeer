@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My dsd</string>
+    <string name="app_name">Ok Ameer</string>
     <string name="no_flashlight_access">Sorry your device does not provide access to the flashlight…</string>
     <string name="turn_off">بند کرو</string>
     <string name="flashlight_activated">Flashlight Activated</string>
@@ -17,6 +17,7 @@
     <string name="WIFI_ON_Kea_Ja_Raha_Ha">WiFi ऑन किया जा रहा है</string>
     <string name="Wifi_Of_Kea_Ja_Raha_Ha">वाईफाई बंद किया जा रहा है</string>
     <string name="Silent_Phone_Kar_Dea_Gaya_Ha">आपके फोन साइलेंट किया जा रहा है</string>
+    <string name="Sorry_App_Kasy_Call_karna_Chaatay_Ha">माफ कीजिए आप किसे कॉल करना चाहते हैं</string>
 
 
     <string name="kis_Time_Pay_set_Karna_ha_en">kis time par set karna hai</string>
@@ -29,4 +30,18 @@
     <string name="Agala_Gaana_Lagaaya_Ja_Raha_Ha_en">next gana Lagaya ja raha hai</string>
     <string name="Previois_Song_lagya_ja_Raha_en">previous gana Lagaya ja raha hai</string>
     <string name="Volume_Zayada_ke_Ja_rahi_ha_en">volume Zyada Kiya ja raha hai</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="command_title">
+        <item>لائٹ چلانے کے لئے </item>
+        <item>لائٹ بند کرنے کے لئے </item>
+        <item>گانا لگانے کے لئے </item>
+    </string-array>
+    <string-array name="command_dir">
+        <item> لائٹ آن کرو,فلیش لائٹ آن کرو </item>
+        <item> فلیش لائٹ بند کر,لائٹ بند کرو </item>
+        <item>گانا لگاؤ </item>
+    </string-array>
 </resources>

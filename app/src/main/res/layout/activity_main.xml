@@ -43,7 +43,7 @@
 
         <ImageButton
             android:background="#fafafa"
-            android:id="@+id/imageButton"
+            android:id="@+id/show_Command_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/speakButton"
@@ -53,4 +53,5 @@
             android:layout_marginRight="25dp"
             app:srcCompat="@drawable/ic_action_name" />
     </RelativeLayout>
+
 </LinearLayout>

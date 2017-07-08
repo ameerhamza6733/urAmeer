@@ -6,9 +6,13 @@ import android.app.FragmentManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -19,6 +23,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.MainActivity;
@@ -53,7 +58,13 @@ public class FlashLightActivtyReceiver extends FragmentActivity implements Surfa
     private static boolean currentlyOn = false;
 
     private static voiceRecgonizationFragment newIntance;
+    Button button;
 
+
+
+    CameraDevice cameraDevice;
+
+    private CameraManager cameraManager;
     /**
      * Called when the activity is created, based off of the intent details either turn on or off the flashlight
      */
@@ -66,15 +77,31 @@ public class FlashLightActivtyReceiver extends FragmentActivity implements Surfa
         Intent i= getIntent();
         currentlyOn=i.getBooleanExtra("onOrOff",false);
 
-        setFinishOnTouchOutside(false);
-        // Make us non-modal, so that others can receive touch events.
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP){
 
-        // ...but notify us that it happened.
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+            cameraManager = (CameraManager)
+                    getSystemService(Context.CAMERA_SERVICE);
+            try {
+                String cameraId = cameraManager.getCameraIdList()[0];
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    cameraManager.setTorchMode(cameraId,currentlyOn);
+                }
+            } catch (CameraAccessException e) {
+                e.printStackTrace();
+            }
 
-        turnOnOrOff(currentlyOn);
-        findViewById(R.id.turnOff).setOnClickListener(new View.OnClickListener() {
+        }else {
+            setFinishOnTouchOutside(false);
+            // Make us non-modal, so that others can receive touch events.
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+
+            // ...but notify us that it happened.
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+
+            turnOnOrOff(currentlyOn);
+
+        }
+               findViewById(R.id.turnOff).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

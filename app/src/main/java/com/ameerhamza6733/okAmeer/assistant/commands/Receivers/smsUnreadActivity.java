@@ -1,5 +1,6 @@
 package com.ameerhamza6733.okAmeer.assistant.commands.Receivers;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -8,12 +9,14 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.fragment.voiceRecgonizationFragment;
@@ -54,6 +57,9 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sms_unread);
 
+        ActivityCompat.requestPermissions(smsUnreadActivity.this,
+                new String[]{Manifest.permission.READ_SMS},
+                111);
         cards = new ArrayList<Card>();
 
 
@@ -61,6 +67,7 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
         String text = "";
         if (unread == null || unread.size() < 1) {
 
+            Toast.makeText(this,"no message to read ",Toast.LENGTH_SHORT).show();
         } else {
             Collections.reverse(unread);
             for (SmsMmsMessage message : unread) {
@@ -154,6 +161,7 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
 
     @Override
     public void onNoCommandrExcute(String Queary) {
+        voiceRecgonizerDismiss();
         for (String s : mUrduPositiveWords) {
             if (Queary.contains(s)) {
                 userWantToReadorNot = true;
@@ -189,6 +197,13 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
     protected void onStop() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         super.onStop();
+    }
+    private void voiceRecgonizerDismiss() {
+        try {
+            newIntance.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void readOrNot(boolean userWantToReadorNot) {

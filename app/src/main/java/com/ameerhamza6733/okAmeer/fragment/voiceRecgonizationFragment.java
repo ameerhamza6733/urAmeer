@@ -220,7 +220,7 @@ public class voiceRecgonizationFragment extends DialogFragment {
                     }
 
 
-                voiceRecgonizationFragment.this.dismiss();
+
 
             }
         }, 1000);

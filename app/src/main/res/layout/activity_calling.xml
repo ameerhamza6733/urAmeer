@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
    >
 
     <android.support.v7.widget.CardView
@@ -12,13 +12,13 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
 
-        tools:context="com.ameerhamza6733.okAmeer.assistant.commands.Receivers.CallingActivity">
+        tools:context="com.ameerhamza6733.okAmeer.assistant.commands.Receivers.CallingActivity"
+        android:id="@+id/cardView">
 
         <RelativeLayout
-            android:layout_margin="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-           >
+            android:layout_margin="8dp">
 
             <TextView
                 android:id="@+id/making_call_in"
@@ -63,4 +63,14 @@
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
-</LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:id="@+id/febRetry"
+        android:layout_height="wrap_content"
+        android:src="@drawable/caller_id_mic"
+      android:foregroundGravity="bottom"
+        android:layout_marginBottom="18dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

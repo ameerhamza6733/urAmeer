@@ -1,5 +1,6 @@
 package com.ameerhamza6733.okAmeer.assistant.commands.Receivers;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,6 +9,8 @@ import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.ContactsContract;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,28 +51,25 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calling);
 
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                try {
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    newIntance = voiceRecgonizationFragment.newInstance("en-IN", false,false);
-                    newIntance.show(fragmentManager, "CallingActivity");
-                    newIntance.setStyle(1, R.style.AppTheme);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        }, 1000);
+       showVoiceRegonizerDiloge("en-IN");
         callpickerSpinner = (Spinner) findViewById(R.id.caling_spinner);
         spinnerList = new ArrayList<>();
         spinnerList.add("contact");
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, spinnerList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         callpickerSpinner.setAdapter(adapter);
-
+        ActivityCompat.requestPermissions(CallingActivity.this,
+                new String[]{Manifest.permission.READ_CONTACTS,Manifest.permission.CALL_PHONE},
+                1);
         mMakingCallingIn = (TextView) findViewById(R.id.making_call_in);
+        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.febRetry);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                showVoiceRegonizerDiloge("en-IN");
+            }
+        });
         CallOk = (ImageView) findViewById(R.id.caling_yas);
         CallOk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +114,8 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
 
     @Override
     public void onNoCommandrExcute(String Queary) {
+        if(newIntance!=null)
+            newIntance.dismiss();
         new myContentNameFinder(Queary).execute();
 
 
@@ -251,8 +253,13 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
 
 
                 else
-                    Toast.makeText(CallingActivity.this, "Name not found", Toast.LENGTH_LONG).show();
-                isFound = false;
+                {
+                    myTextToSpeech.intiTextToSpeech(CallingActivity.this, "hi", getResources().getString(R.string.Sorry_App_Kasy_Call_karna_Chaatay_Ha));
+                    showVoiceRegonizerDiloge("en-IN");
+                    isFound = false;
+
+                }
+
             } catch (Exception s) {
                 // Toast.makeText(CallingActivity.this, "Exception:" + s.getMessage(), Toast.LENGTH_LONG).show();
 
@@ -274,5 +281,22 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
                 callpickerSpinner.performClick();
             }
         }
+    }
+
+    private void showVoiceRegonizerDiloge(final String s) {
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                try {
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    newIntance = voiceRecgonizationFragment.newInstance(s, false,false);
+                    newIntance.show(fragmentManager, "CallingActivity");
+                    newIntance.setStyle(1, R.style.AppTheme);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, 1000);
     }
 }
