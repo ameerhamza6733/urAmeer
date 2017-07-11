@@ -2,6 +2,7 @@ package com.ameerhamza6733.okAmeer.assistant.commands.Receivers;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Application;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -20,6 +21,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,15 +37,16 @@ import com.ameerhamza6733.okAmeer.fragment.voiceRecgonizationFragment;
 import com.ameerhamza6733.okAmeer.interfacess.noNeedCommander;
 import com.ameerhamza6733.okAmeer.interfacess.onErrorSevenvoiceRecgoniztion;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
-import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
-import pub.devrel.easypermissions.AfterPermissionGranted;
+
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class sendSmsActivity extends AppCompatActivity implements noNeedCommander, onErrorSevenvoiceRecgoniztion {
@@ -334,12 +337,14 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
 
     }
     private void sendWhatsAppNow (String number, String smsBody)throws  Exception{
+
+
         Log.d("smsActivty","sending whats app...to"+number+"and message ="+smsBody);
         Intent sendIntent = new Intent("android.intent.action.MAIN");
         //sendIntent.setComponent(new ComponentName("com.whatsapp", "com.whatsapp.Conversation"));
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.setType("text/plain");
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+        sendIntent.putExtra(Intent.EXTRA_TEXT, smsBody);
         sendIntent.putExtra("jid", number + "@s.whatsapp.net"); //phone number without "+" prefix
         sendIntent.setPackage("com.whatsapp");
         startActivity(sendIntent);
@@ -369,6 +374,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
 
 
         private List<String> mNameListFounded = new ArrayList<>();
+        private Phonenumber.PhoneNumber formattedNumber;
 
 
         public myContentNameFinder(String queary) {
@@ -435,19 +441,21 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
                                         isTargetNumberFounded = true;
                                     }
 
-                                    PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+
                                     try {
-                                        // phone must begin with '+'
-                                        Phonenumber.PhoneNumber numberProto = phoneUtil.parse(number, "");
-                                        int countryCode = numberProto.getCountryCode();
-                                        Log.d("smsActivty","country code"+countryCode);
-                                    } catch (NumberParseException e) {
+                                        TelephonyManager tm = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+                                        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+                                        Phonenumber.PhoneNumber NumberProto = phoneUtil.parse(number, tm.getSimCountryIso().toUpperCase());
+                                        Log.d("phone number",""+phoneUtil.format(NumberProto, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL));
+                                        number = phoneUtil.format(NumberProto, PhoneNumberUtil.PhoneNumberFormat.E164);
+                                       number= number.replaceAll("[-+.^:,]","");
+                                    } catch (Exception e) {
                                         System.err.println("NumberParseException was thrown: " + e.toString());
                                     }
                                     //Add Number to ArrayList
-                                    if(number.startsWith("0"))
-                                      number=  number.replaceFirst("0","");
-                                    mHashMapContacts.put(name.toLowerCase(), number.replace("-",""));
+
+
+                                    mHashMapContacts.put(name.toLowerCase(), number);
 
 
                                 }

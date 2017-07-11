@@ -3,6 +3,7 @@ package com.ameerhamza6733.okAmeer.assistant.commands;
 import android.content.Context;
 import android.content.Intent;
 
+import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.assistant.Command;
 
 import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.sendSmsActivity;
@@ -32,6 +33,6 @@ public class sendWhatsAppCommand implements Command {
 
     @Override
     public String getTtsPhrase(Context context) {
-        return null;
+        return context.getString(R.string.Aap_kiss_ko_whats_app_messge_send_karna_chaahate_hain);
     }
 }

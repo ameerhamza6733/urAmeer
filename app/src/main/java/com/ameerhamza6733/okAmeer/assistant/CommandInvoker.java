@@ -32,8 +32,8 @@ public class CommandInvoker {
     public static Command[] getCommands() {
         if(commands==null)
         {
-            commands = new Command[] {new FlashlightOnCommand(),new FlashLightOffCommand(),new setAlarmCommand(),new CallCommand(),new readSmsCommand(),new sendSmsCommand(),new pauseMuusicCommand(),new previousSongCommand(),new nextSongCommand(),new youtubePlayCommand(),new playMusicCommand()
-            ,new increaseVolumeCommand(),new decreaseVolumeCommand(),new sendWhatsAppCommand(), new wifiOnCommand(),new wifiOffCommand(), new silentCommand(), new sendGmailCommand()};
+            commands = new Command[] {new FlashlightOnCommand(),new FlashLightOffCommand(),new setAlarmCommand(),new CallCommand(),new readSmsCommand(),new pauseMuusicCommand(),new previousSongCommand(),new nextSongCommand(),new youtubePlayCommand(),new playMusicCommand()
+            ,new increaseVolumeCommand(),new decreaseVolumeCommand(),new sendWhatsAppCommand(), new sendSmsCommand(),new wifiOnCommand(),new wifiOffCommand(), new silentCommand(), new sendGmailCommand()};
         }
         return commands;
     }
