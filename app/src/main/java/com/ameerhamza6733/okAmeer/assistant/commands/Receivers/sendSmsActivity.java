@@ -116,7 +116,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
             @Override
             public void onClick(View v) {
                 sendSmsActivity.this.countDownTimer.cancel();
-                sendSmsActivity.this.mSedingSmsIn.setText("Call canceled");
+                sendSmsActivity.this.mSedingSmsIn.setText("Message canceled");
             }
         });
         callpickerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -471,6 +471,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
                             cur.getColumnIndex(ContactsContract.Contacts._ID));
                     String name = cur.getString(cur.getColumnIndex(
                             ContactsContract.Contacts.DISPLAY_NAME));
+
                     Log.d("callingActivty", "Name from phone Book " + name);
                     if (mTargetNumber.toLowerCase().contains(name.toLowerCase()) || name.toLowerCase().contains(mTargetNumber.toLowerCase())) {
                         Log.d("callingActivty", "requiredName found" + name);

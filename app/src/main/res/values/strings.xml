@@ -18,6 +18,7 @@
     <string name="Wifi_Of_Kea_Ja_Raha_Ha">वाईफाई बंद किया जा रहा है</string>
     <string name="Silent_Phone_Kar_Dea_Gaya_Ha">आपके फोन साइलेंट किया जा रहा है</string>
     <string name="Sorry_App_Kasy_Call_karna_Chaatay_Ha">माफ कीजिए आप किसे कॉल करना चाहते हैं</string>
+    <string name="Aur_Email_kaya_ha">और ईमेल क्या है</string>
 
 
     <string name="kis_Time_Pay_set_Karna_ha_en">kis time par set karna hai</string>
@@ -30,6 +31,9 @@
     <string name="Agala_Gaana_Lagaaya_Ja_Raha_Ha_en">next gana Lagaya ja raha hai</string>
     <string name="Previois_Song_lagya_ja_Raha_en">previous gana Lagaya ja raha hai</string>
     <string name="Volume_Zayada_ke_Ja_rahi_ha_en">volume Zyada Kiya ja raha hai</string>
+    <string name="App_kiss_ko_Email_send_karna_chaaty_ha">आप किसको ईमेल सेंड करना चाहते हैं </string>
+    <string name="Maff_keejie_mija_is_naam_say_koee_email_nahie_mila">माफ कीजिए मुझे इस नाम से कोई ईमेल नहीं मिला फिर से कोशिश कीजिए</string>
+    <string name="Aap_ki_Email_send_ki_ja_Rahi_ha">आपकी ईमेल सेंड की जा रही है</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

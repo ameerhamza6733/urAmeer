@@ -61,13 +61,7 @@ public class youtubePlayActivity extends AppCompatActivity implements noNeedComm
             }
         };
         requestQueue = Volley.newRequestQueue(this);
-        ImageButton speepButton  = (ImageButton) findViewById(R.id.speakButton);
-        speepButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showVoiceRegoniztionFragment();
-            }
-        });
+
 
     }
 

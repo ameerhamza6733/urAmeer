@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -19,6 +20,8 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -78,7 +81,8 @@
             android:name="com.thefinestartist.ytpa.YouTubePlayerActivity.ApiKey"
             android:value="AIzaSyA-C1pPmKSPZUONcWCFqMOyILan7DUFi7I" />
 
-        <activity android:name=".utial.show_commands_list"></activity>
+        <activity android:name=".utial.show_commands_list" />
+        <activity android:name=".assistant.commands.Receivers.sendEmailActivity"></activity>
     </application>
 
 </manifest>

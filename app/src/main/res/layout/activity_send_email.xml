@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/card_background"
-    android:layout_height="match_parent">
-
+    tools:context="com.ameerhamza6733.okAmeer.assistant.commands.Receivers.sendEmailActivity">
     <android.support.v7.widget.CardView
 
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
                 android:id="@+id/making_call_in"
                 android:layout_width="303dp"
                 android:layout_height="wrap_content"
-                android:text="Send Sms" />
+                android:text="Send Email" />
 
             <Spinner
                 android:id="@+id/caling_spinner"
@@ -74,17 +74,17 @@
                 android:ems="10"
                 android:focusable="false"
                 android:inputType="textPersonName"
-                android:hint="Sms" />
+                android:hint="Email" />
 
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
-   <android.support.design.widget.FloatingActionButton
-       android:layout_width="wrap_content"
-       android:src="@drawable/caller_id_mic"
-       android:id="@+id/febRetry"
-       android:layout_height="wrap_content"
-       android:layout_alignParentBottom="true"
-       android:layout_centerHorizontal="true"
-       android:layout_marginBottom="32dp" />
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:src="@drawable/caller_id_mic"
+        android:id="@+id/febRetry"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="32dp" />
 </RelativeLayout>

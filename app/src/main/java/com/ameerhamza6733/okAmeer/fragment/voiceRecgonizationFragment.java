@@ -204,13 +204,15 @@ public class voiceRecgonizationFragment extends DialogFragment {
     }
 
     private void invockCommanderOrNot(final String str) {
+
         handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
 
                 if (excuteCommander)
-                    CommandInvoker.excute(getActivity(), str);
+                  CommandInvoker.excute(getActivity(), str);
+
 
                 else
                     try {
@@ -226,6 +228,7 @@ public class voiceRecgonizationFragment extends DialogFragment {
         }, 1000);
     }
     private void doNotExcuteCommander(String date) throws Exception {
+        Log.d("voice regonizer","do not excute commander");
         sendDateToNOnHidni = new sendToActivtys();
         sendDateToNOnHidni.sendingDataToActivitys(getActivity(), date, getActivity().getClass().getSimpleName());
     }
