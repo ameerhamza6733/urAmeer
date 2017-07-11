@@ -22,6 +22,7 @@ import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.assistant.CommandInvoker;
 import com.ameerhamza6733.okAmeer.interfacess.tranlaterCallback;
 import com.ameerhamza6733.okAmeer.interfacess.onErrorSevenvoiceRecgoniztion;
+import com.ameerhamza6733.okAmeer.utial.TTSService;
 import com.ameerhamza6733.okAmeer.utial.sendToActivtys;
 import com.ameerhamza6733.okAmeer.utial.tranlater;
 
@@ -211,9 +212,17 @@ public class voiceRecgonizationFragment extends DialogFragment {
             public void run() {
 
                 if (excuteCommander)
-                  CommandInvoker.excute(getActivity(), str);
+                {
+                    boolean isCommandFound = CommandInvoker.excute(getActivity(), str);
+                    if(!isCommandFound){
+                        Intent i = new Intent(getActivity(), TTSService.class);
+                        i.putExtra("toSpeak", getString(R.string.Dobaara_say_koshish_keejie_muja_aapakee_ki_samajh_nahi_aaee));
+                        i.putExtra("Language", "hi");
+                        getActivity().startService(i);
+                        voiceRecgonizationFragment.this.dismiss();
 
-
+                    }
+                }
                 else
                     try {
                         doNotExcuteCommander(str);

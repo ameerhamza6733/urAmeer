@@ -6,17 +6,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.media.Image;
 import android.os.AsyncTask;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.ContactsContract;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.fragment.voiceRecgonizationFragment;
@@ -38,8 +45,11 @@ public class sendEmailActivity extends AppCompatActivity implements noNeedComman
     private EditText mSmsBody;
     private ArrayList<String> mSpinnerList = new ArrayList<>();
     private ArrayAdapter<String> adapter;
-    private boolean RispitionNumberFoundFlag=false;
+    private boolean RispitionNumberFoundFlag = false;
     HashMap<String, String> RecsHM = new HashMap<>();
+    private CountDownTimer countDownTimer;
+    private TextView sendEmailInTextView;
+    private EditText mEmailBodytextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +58,35 @@ public class sendEmailActivity extends AppCompatActivity implements noNeedComman
         Intent intent = getIntent();
         String IntentExtra = intent.getStringExtra("EmailExtra");
         textToSpeak(getResources().getString(R.string.App_kiss_ko_Email_send_karna_chaaty_ha));
+
         mSpinner = (Spinner) findViewById(R.id.caling_spinner);
+        ImageButton sendEmailITOkButton = (ImageButton) findViewById(R.id.caling_yas);
+        ImageButton cancleButton = (ImageButton) findViewById(R.id.caling_cancle);
+        sendEmailInTextView = (TextView) findViewById(R.id.making_call_in);
+        FloatingActionButton mRetry = (FloatingActionButton) findViewById(R.id.febRetry);
+         mEmailBodytextView = (EditText) findViewById(R.id.smsBodayEdittext);
 
         mSpinnerList.add("contact");
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mSpinnerList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinner.setAdapter(adapter);
+
+        cancleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (countDownTimer != null) {
+                    countDownTimer.cancel();
+                    sendEmailInTextView.setText("Email canceled");
+                }
+            }
+        });
+
+        mRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showVoiceRegoniztionFragment("en-IN",false,false);
+            }
+        });
 
 
         broadcastReceiver = new BroadcastReceiver() {
@@ -61,6 +94,7 @@ public class sendEmailActivity extends AppCompatActivity implements noNeedComman
             public void onReceive(Context context, Intent intent) {
                 String s = intent.getStringExtra("com.service.message");
 
+                if(!s.contains(getString(R.string.Aap_ki_Email_send_ki_ja_Rahi_ha)))
                 showVoiceRegoniztionFragment("en-IN", false, false);
 
             }
@@ -105,19 +139,36 @@ public class sendEmailActivity extends AppCompatActivity implements noNeedComman
     @Override
     public void onNoCommandrExcute(String Queary) {
 
+        Toast.makeText(this,Queary,Toast.LENGTH_LONG).show();
         newIntance.dismiss();
-        if(!this.RispitionNumberFoundFlag)
-        new findRecipientsNumber(this, Queary).execute();
-        else
-        {
+        if (!this.RispitionNumberFoundFlag)
+            new findRecipientsNumber(this, Queary).execute();
+        else {
+            mEmailBodytextView.setText(Queary);
             textToSpeak(getResources().getString(R.string.Aap_ki_Email_send_ki_ja_Rahi_ha));
-            EmailIntentBuilder.from(this)
-                    .to(RecsHM.get(mSpinner.getSelectedItem().toString()))
-                    .body(Queary)
-                    .start();
+            sendingEmailNow(Queary);
         }
 
     }
+
+    private void sendingEmailNow(final String Queary) {
+
+        countDownTimer = new CountDownTimer(3000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                sendEmailActivity.this.sendEmailInTextView.setText("Seding Email in : " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                sendEmailActivity.this.sendEmailInTextView.setText("Done");
+                EmailIntentBuilder.from(sendEmailActivity.this)
+                        .to(RecsHM.get(mSpinner.getSelectedItem().toString()))
+                        .body(Queary)
+                        .start();
+            }
+        }.start();
+    }
+
 
     private class findRecipientsNumber extends AsyncTask<Object, Object, ArrayList<String>> {
 
@@ -158,7 +209,7 @@ public class sendEmailActivity extends AppCompatActivity implements noNeedComman
 
                     if (name.toLowerCase().contains(mRecipientsName.toLowerCase()) || mRecipientsName.toLowerCase().contains(name.toLowerCase())) {
                         RecsNumbersList.add(name);
-                        sendEmailActivity.this.RispitionNumberFoundFlag=true;
+                        sendEmailActivity.this.RispitionNumberFoundFlag = true;
                         Log.d("send email ", "name founded");
                     }
                     RecsHM.put(name.toLowerCase(), emlAddr);
@@ -187,9 +238,10 @@ public class sendEmailActivity extends AppCompatActivity implements noNeedComman
                 adapter.notifyDataSetChanged();
                 mSpinner.performClick();
 
-            }else {
+            } else {
 
                 textToSpeak(getResources().getString(R.string.Maff_keejie_mija_is_naam_say_koee_email_nahie_mila));
+
             }
         }
     }

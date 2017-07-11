@@ -77,7 +77,7 @@ public class FlashLightActivtyReceiver extends FragmentActivity implements Surfa
         Intent i= getIntent();
         currentlyOn=i.getBooleanExtra("onOrOff",false);
 
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
 
             cameraManager = (CameraManager)
                     getSystemService(Context.CAMERA_SERVICE);

@@ -100,10 +100,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         smsOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(sendSmsActivity.this, "item" + callpickerSpinner.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-
-                //  makeCallNow(callpickerSpinner.getSelectedItem().toString());
-                try {
+                        try {
                     sendSmsActivity.this.sendItNow(mHashMapContacts.get(sendSmsActivity.this.callpickerSpinner.getSelectedItem().toString()), mSmsBody.getText().toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -115,8 +112,10 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         smsCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendSmsActivity.this.countDownTimer.cancel();
-                sendSmsActivity.this.mSedingSmsIn.setText("Message canceled");
+               if(countDownTimer!=null){
+                   sendSmsActivity.this.countDownTimer.cancel();
+                   sendSmsActivity.this.mSedingSmsIn.setText("Message canceled");
+               }
             }
         });
         callpickerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -185,6 +184,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
 
     @Override
     public void onNoCommandrExcute(String Queary) {
+        Toast.makeText(this,Queary,Toast.LENGTH_LONG).show();
         if (Queary.toLowerCase().equals("nahi karna message")) {
             Toast.makeText(sendSmsActivity.this, "App ka message cancel kar dea gay ha ", Toast.LENGTH_SHORT).show();
             finish();

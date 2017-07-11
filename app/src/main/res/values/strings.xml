@@ -34,6 +34,7 @@
     <string name="App_kiss_ko_Email_send_karna_chaaty_ha">आप किसको ईमेल सेंड करना चाहते हैं </string>
     <string name="Maff_keejie_mija_is_naam_say_koee_email_nahie_mila">माफ कीजिए मुझे इस नाम से कोई ईमेल नहीं मिला फिर से कोशिश कीजिए</string>
     <string name="Aap_ki_Email_send_ki_ja_Rahi_ha">आपकी ईमेल सेंड की जा रही है</string>
+    <string name="Dobaara_say_koshish_keejie_muja_aapakee_ki_samajh_nahi_aaee">दोबारा से कोशिश कीजिए मुझे आपकी बात की समझ नहीं आई</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

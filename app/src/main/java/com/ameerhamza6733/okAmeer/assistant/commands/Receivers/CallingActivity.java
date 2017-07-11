@@ -74,9 +74,7 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
         CallOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(CallingActivity.this, "item" + callpickerSpinner.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
 
-                //  makeCallNow(callpickerSpinner.getSelectedItem().toString());
                 CallingActivity.this.makeCallNow(CallingActivity.this.callpickerSpinner.getSelectedItem().toString());
 
             }
@@ -85,8 +83,10 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
         CallCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CallingActivity.this.countDownTimer.cancel();
-                CallingActivity.this.mMakingCallingIn.setText("Call canceled");
+                if(countDownTimer!=null){
+                    CallingActivity.this.countDownTimer.cancel();
+                    CallingActivity.this.mMakingCallingIn.setText("Call canceled");
+                }
             }
         });
 
@@ -114,6 +114,7 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
 
     @Override
     public void onNoCommandrExcute(String Queary) {
+        Toast.makeText(this,Queary,Toast.LENGTH_LONG).show();
         if(newIntance!=null)
             newIntance.dismiss();
         new myContentNameFinder(Queary).execute();
