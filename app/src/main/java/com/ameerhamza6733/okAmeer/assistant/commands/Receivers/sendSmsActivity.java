@@ -2,7 +2,6 @@ package com.ameerhamza6733.okAmeer.assistant.commands.Receivers;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Application;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -44,7 +43,6 @@ import com.google.i18n.phonenumbers.Phonenumber;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 
 import pub.devrel.easypermissions.EasyPermissions;
@@ -60,7 +58,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
     private ArrayAdapter<String> adapter;
     private HashMap<String, String> mHashMapContacts = new HashMap<>();
     private CountDownTimer countDownTimer;
-    private boolean isTargetNumberFounded = false;
+    private boolean isRecipientNumberFound = false;
 
     protected TextView mSedingSmsIn;
     private EditText mSmsBody;
@@ -136,6 +134,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
 
 
     }
+    //show voice regonizer input dialog to use
 
     private void showVoiceRegonizerDiloge(final String LANGUAGE) {
         new Handler().postDelayed(new Runnable() {
@@ -153,6 +152,9 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
             }
         }, 1000);
     }
+    /**
+     * Called when the Sms read to send
+     */
 
     protected void startSedingSmsCountDown(final String smsBody) {
         voiceRecgonizerDismiss();
@@ -183,7 +185,9 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
 
         }.start();
     }
-
+    /**
+     * this method used to  get Phone number and message body from user
+     */
 
     @Override
     public void onNoCommandrExcute(String Queary) {
@@ -192,7 +196,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
             Toast.makeText(sendSmsActivity.this, "App ka message cancel kar dea gay ha ", Toast.LENGTH_SHORT).show();
             finish();
         }
-        if (!isTargetNumberFounded)
+        if (!isRecipientNumberFound)
             new myContentNameFinder(Queary).execute();
         else if (getSmsBody) {
             startSedingSmsCountDown(Queary);
@@ -268,6 +272,9 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
                    1 , perms);
         }
     }
+    /**
+     * called when count down(3 second) finish this mathod invoke by  startSedingSmsCountDown(...), it send only SMS
+     */
 
     private void sendItNow(String senderNumber, String smsBody) throws Exception {
 
@@ -336,6 +343,9 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
 
 
     }
+    /**
+     * called when count down(3 second) finish this mathod invoke by  startSedingSmsCountDown(...), it send only whats app
+     */
     private void sendWhatsAppNow (String number, String smsBody)throws  Exception{
 
 
@@ -364,6 +374,9 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
 
     }
 
+    /**
+     * called when recognizer throw error 7
+     */
     @Override
     public void onError7() {
         Toast.makeText(sendSmsActivity.this, "onError 7", Toast.LENGTH_SHORT).show();
@@ -385,9 +398,9 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         protected Void doInBackground(Void... params) {
             try {
                 if(EXTRA_SMS_OR_WHATS_APP .equals("sms"))
-                findSendNumberForSms();//find target number for sms or else user want to send whats app
+                findRecipientNumberForSms();//find Recipient number for sms or else user want to send whats app
                 else
-                findSendNumberForWhatsApp();
+                findRecipientNumberForWhatsApp();
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -395,7 +408,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
             return null;
         }
 
-        private void findSendNumberForWhatsApp() {
+        private void findRecipientNumberForWhatsApp() {
             ContentResolver cr = getContentResolver();
 
 //RowContacts for filter Account Types
@@ -438,7 +451,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
                                     Log.d("whatsapp name","name"+name);
                                     if (mTargetNumber.toLowerCase().contains(name.toLowerCase()) || name.toLowerCase().contains(mTargetNumber.toLowerCase())) {
                                         mNameListFounded.add(name);
-                                        isTargetNumberFounded = true;
+                                        isRecipientNumberFound = true;
                                     }
 
 
@@ -467,7 +480,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
             }
         }
 
-        private void findSendNumberForSms() {
+        private void findRecipientNumberForSms() {
             Log.d("callingActivty", "requiredName=" + mTargetNumber);
             ContentResolver cr = getContentResolver();
             Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
@@ -484,7 +497,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
                     if (mTargetNumber.toLowerCase().contains(name.toLowerCase()) || name.toLowerCase().contains(mTargetNumber.toLowerCase())) {
                         Log.d("callingActivty", "requiredName found" + name);
                         mNameListFounded.add(name);
-                        isTargetNumberFounded = true;
+                        isRecipientNumberFound = true;
                     }
                     if (cur.getInt(cur.getColumnIndex(
                             ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
@@ -512,9 +525,9 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
             super.onPostExecute(aVoid);
             try {
                 voiceRecgonizerDismiss();
-                if (isTargetNumberFounded) {
+                if (isRecipientNumberFound) {
                     voiceRecgonizerDismiss();
-                    updateSpinner();
+                    updateSpinner();// update the UI and notify to use about Recipients number found
                     myTextToSpeech.intiTextToSpeech(sendSmsActivity.this, "hi", getResources().getString(R.string.Aur_Message_kay_ha));
 
 

@@ -220,6 +220,7 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
 
 
     }
+    // called if user what read sms by assistant
 
     private void speckThisMessage() throws Exception {
 

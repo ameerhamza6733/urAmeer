@@ -93,7 +93,7 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
 
     }
 
-    protected void startMakingCalling() throws Exception {
+    protected void intiCallingCountDown() throws Exception {
         myTextToSpeech.intiTextToSpeech(CallingActivity.this, "hi", "आपकी कॉल की जा रही है");
         countDownTimer = new CountDownTimer(3000, 1000) {
 
@@ -117,7 +117,7 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
         Toast.makeText(this,Queary,Toast.LENGTH_LONG).show();
         if(newIntance!=null)
             newIntance.dismiss();
-        new myContentNameFinder(Queary).execute();
+        new myRecipientCallingNumberFinder(Queary).execute();
 
 
     }
@@ -186,14 +186,14 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
 
     }
 
-    private class myContentNameFinder extends AsyncTask<Void, Void, Void> {
+    private class myRecipientCallingNumberFinder extends AsyncTask<Void, Void, Void> {
         private String Queary;
-        boolean isFound = false;
+        boolean isRecipientNumberFound = false;
 
         private List<String> mNameListFounded = new ArrayList<>();
 
 
-        public myContentNameFinder(String queary) {
+        public myRecipientCallingNumberFinder(String queary) {
             Queary = queary;
         }
 
@@ -215,7 +215,7 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
                         if (Queary.toLowerCase().contains(name.toLowerCase())) {
                             Log.d("callingActivty", "requiredName found" + name);
                             mNameListFounded.add(name);
-                            isFound = true;
+                            isRecipientNumberFound = true;
                         }
                         if (cur.getInt(cur.getColumnIndex(
                                 ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
@@ -247,8 +247,8 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
             super.onPostExecute(aVoid);
             try {
                 CallingActivity.this.newIntance.dismiss();
-                if (isFound){
-                    updateSpinner();
+                if (isRecipientNumberFound){
+                    updateUI();
 
                 }
 
@@ -257,7 +257,7 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
                 {
                     myTextToSpeech.intiTextToSpeech(CallingActivity.this, "hi", getResources().getString(R.string.Sorry_App_Kasy_Call_karna_Chaatay_Ha));
                     showVoiceRegonizerDiloge("en-IN");
-                    isFound = false;
+                    isRecipientNumberFound = false;
 
                 }
 
@@ -268,13 +268,13 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
 
         }
 
-        private void updateSpinner() throws Exception {
+        private void updateUI() throws Exception {
             if (mNameListFounded.size() == 1) {
 
 
                 spinnerList.set(0, mNameListFounded.get(0));
                 adapter.notifyDataSetChanged();
-                startMakingCalling();
+                intiCallingCountDown();
 
             } else if (mNameListFounded.size() > 1) {
                 spinnerList.addAll(mNameListFounded);

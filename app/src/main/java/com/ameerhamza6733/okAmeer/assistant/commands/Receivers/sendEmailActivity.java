@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -146,12 +145,12 @@ public class sendEmailActivity extends AppCompatActivity implements noNeedComman
         else {
             mEmailBodytextView.setText(Queary);
             textToSpeak(getResources().getString(R.string.Aap_ki_Email_send_ki_ja_Rahi_ha));
-            sendingEmailNow(Queary);
+            sendEmailCountDown(Queary);
         }
 
     }
 
-    private void sendingEmailNow(final String Queary) {
+    private void sendEmailCountDown(final String Queary) {
 
         countDownTimer = new CountDownTimer(3000, 1000) {
 
@@ -224,10 +223,13 @@ public class sendEmailActivity extends AppCompatActivity implements noNeedComman
         @Override
         protected void onPostExecute(ArrayList<String> strings) {
             super.onPostExecute(strings);
-            updateSpinner(strings);
+            if(strings.size()>=1)
+            UpdateUI(strings);
+            else
+                textToSpeak(getResources().getString(R.string.Maff_keejie_mija_is_naam_say_koee_email_nahie_mila));
         }
 
-        private void updateSpinner(ArrayList<String> strings) {
+        private void UpdateUI(ArrayList<String> strings) {
             if (strings.size() == 1) {
                 mSpinnerList.set(0, strings.get(0));
                 adapter.notifyDataSetChanged();
@@ -237,10 +239,6 @@ public class sendEmailActivity extends AppCompatActivity implements noNeedComman
                 mSpinnerList.addAll(strings);
                 adapter.notifyDataSetChanged();
                 mSpinner.performClick();
-
-            } else {
-
-                textToSpeak(getResources().getString(R.string.Maff_keejie_mija_is_naam_say_koee_email_nahie_mila));
 
             }
         }

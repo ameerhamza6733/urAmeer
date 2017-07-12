@@ -15,7 +15,9 @@ public class youtubePlayCommand implements Command {
     @Override
     public void execute(Context context, String predicate) {
         Log.d("youtube","playing song from youtube");
-        context.startActivity(new Intent(context,youtubePlayActivity.class));
+        Intent intent= new Intent(context,youtubePlayActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
     @Override

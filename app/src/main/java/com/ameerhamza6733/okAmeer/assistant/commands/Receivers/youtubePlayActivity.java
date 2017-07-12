@@ -111,7 +111,7 @@ public class youtubePlayActivity extends AppCompatActivity implements noNeedComm
 
                         intent.putExtra(YouTubePlayerActivity.EXTRA_HANDLE_ERROR, true);
 
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
 
 
