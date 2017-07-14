@@ -74,22 +74,19 @@
         >
 
 
-
-
         <com.ameerhamza6733.okAmeer.UI.customfonts.MyEditText
-            android:id="@+id/email"
-            android:textSize="16dp"
+            android:id="@+id/emailLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
             android:layout_marginLeft="46dp"
-            android:textColorHint="@color/colorhint"
-            android:textColor="@color/colortext"
-            android:maxLength="12"
             android:background="#0000"
-            android:padding="16dp"
             android:gravity="left"
-            />
+            android:hint="Email"
+            android:maxLength="12"
+            android:padding="16dp"
+            android:textColor="@color/colortext"
+            android:textColorHint="@color/colorhint"
+            android:textSize="16dp" />
 
         <View
             android:layout_width="match_parent"
@@ -100,19 +97,19 @@
             android:background="#dad8d8"/>
 
         <com.ameerhamza6733.okAmeer.UI.customfonts.MyEditText
-            android:id="@+id/password"
-            android:textSize="16dp"
+            android:id="@+id/passwordLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
             android:layout_marginLeft="46dp"
             android:layout_marginRight="46dp"
-            android:textColorHint="@color/colorhint"
-            android:textColor="@color/colortext"
             android:background="#0000"
-            android:padding="16dp"
-            android:inputType="textPassword"
             android:drawableRight="@drawable/eye"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="16dp"
+            android:textColor="@color/colortext"
+            android:textColorHint="@color/colorhint"
+            android:textSize="16dp"
 
             />
 

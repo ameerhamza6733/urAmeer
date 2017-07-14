@@ -83,7 +83,7 @@
 
             android:textColorHint="@color/colorhint"
             android:textColor="@color/colortext"
-            android:maxLength="12"
+
             android:background="#0000"
             android:padding="16dp"
             android:gravity="left"
@@ -109,7 +109,7 @@
             android:layout_marginLeft="46dp"
             android:textColorHint="@color/colorhint"
             android:textColor="@color/colortext"
-            android:maxLength="12"
+
             android:background="#0000"
             android:padding="16dp"
             android:gravity="left"
