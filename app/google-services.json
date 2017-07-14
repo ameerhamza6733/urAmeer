@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "238277565900",
+    "firebase_url": "https://okameer-2aab3.firebaseio.com",
+    "project_id": "okameer-2aab3",
+    "storage_bucket": "okameer-2aab3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:238277565900:android:7c507d5fd6513e7e",
+        "android_client_info": {
+          "package_name": "com.ameerhamza6733.okAmeer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "238277565900-76os1sog1pc2jb736hof43q44ncvdoq5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ameerhamza6733.okAmeer",
+            "certificate_hash": "1d9ffe62a858e609fbaa56bf8ee4bfd6a93df4f1"
+          }
+        },
+        {
+          "client_id": "238277565900-olm4gj4u89s8ue7ohbtjvnitm55ikekc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYDj8f6ggoBbZtIsLcl5bW6bQdKbzyXeo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "238277565900-olm4gj4u89s8ue7ohbtjvnitm55ikekc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

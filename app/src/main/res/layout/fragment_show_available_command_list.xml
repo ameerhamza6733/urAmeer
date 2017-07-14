@@ -1,12 +1,9 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ameerhamza6733.okAmeer.fragment.show_available_command_list">
+    tools:context=".UI.fragment.show_available_command_list">
 
-    <it.gmariotti.cardslib.library.view.CardListView
-        android:id="@+id/myList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
-</FrameLayout>
+
+</RelativeLayout>

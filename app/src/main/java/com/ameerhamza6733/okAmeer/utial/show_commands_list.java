@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.ameerhamza6733.okAmeer.R;
-import com.ameerhamza6733.okAmeer.fragment.show_available_command_list;
+import com.ameerhamza6733.okAmeer.UI.fragment.show_available_command_list;
 
 public class show_commands_list extends AppCompatActivity {
 

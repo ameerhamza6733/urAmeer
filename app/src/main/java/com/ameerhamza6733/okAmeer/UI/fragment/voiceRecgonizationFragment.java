@@ -1,4 +1,4 @@
-package com.ameerhamza6733.okAmeer.fragment;
+package com.ameerhamza6733.okAmeer.UI.fragment;
 
 import android.content.Context;
 import android.content.Intent;

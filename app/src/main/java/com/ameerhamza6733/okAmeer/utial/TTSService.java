@@ -12,7 +12,7 @@ import android.os.IBinder;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.ameerhamza6733.okAmeer.MainActivity;
+import com.ameerhamza6733.okAmeer.UI.Activitys.MainActivity;
 import com.ameerhamza6733.okAmeer.R;
 
 public class TTSService extends Service {

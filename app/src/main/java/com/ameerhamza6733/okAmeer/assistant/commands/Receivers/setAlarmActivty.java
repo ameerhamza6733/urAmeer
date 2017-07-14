@@ -10,7 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
-import com.ameerhamza6733.okAmeer.fragment.voiceRecgonizationFragment;
+import com.ameerhamza6733.okAmeer.UI.fragment.voiceRecgonizationFragment;
 import com.ameerhamza6733.okAmeer.interfacess.noNeedCommander;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 
@@ -23,6 +23,9 @@ public class setAlarmActivty extends AppCompatActivity implements noNeedCommande
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_alarm_activty);
+
+
+
         try {
             Intent i = getIntent();
             String predicate = i.getStringExtra(EXTRA_TIME);

@@ -1,8 +1,6 @@
 package com.ameerhamza6733.okAmeer.assistant.commands.Receivers;
 
 
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -15,7 +13,6 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -26,13 +23,11 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.ameerhamza6733.okAmeer.MainActivity;
+import com.ameerhamza6733.okAmeer.UI.Activitys.MainActivity;
 import com.ameerhamza6733.okAmeer.R;
-import com.ameerhamza6733.okAmeer.fragment.voiceRecgonizationFragment;
+import com.ameerhamza6733.okAmeer.UI.fragment.voiceRecgonizationFragment;
 
 import java.io.IOException;
-
-import static java.lang.System.exit;
 
 
 /**
