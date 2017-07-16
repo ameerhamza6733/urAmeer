@@ -73,20 +73,22 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
             }
         });
 
-       DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("UserRequstedCommands").getRef();
+       DatabaseReference ref = FirebaseDatabase.getInstance().getReference("UserRequstedCommands");
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
 
                for(DataSnapshot nodeEmail :dataSnapshot.getChildren())
-                  for (DataSnapshot nodeCommandName : nodeEmail.getChildren()){
-                      Log.d("datasnap","d"+nodeCommandName.getValue().toString());
-                      CommandPOJO c = nodeEmail.getValue(CommandPOJO.class);
+                  for (DataSnapshot nodeCommandName : nodeEmail.getChildren())
 
-                      Log.d("datasnap","d"+c.getCommandName());
+                         Log.d("sdfddsf","dsfsdfdsfds"+nodeCommandName.getValue(CommandPOJO.class).getCommandName());
 
-                  }
+
+
+
+
+
 
 
 

@@ -23,6 +23,17 @@ public class CommandPOJO {
     }
 
 
+    public void setCommandName(String commandName) {
+        CommandName = commandName;
+    }
+
+    public void setCommandAction(String commandAction) {
+        CommandAction = commandAction;
+    }
+
+    public void setCommandRequstedby(String commandRequstedby) {
+        CommandRequstedby = commandRequstedby;
+    }
 
     public String getCommandName() {
         return CommandName;
