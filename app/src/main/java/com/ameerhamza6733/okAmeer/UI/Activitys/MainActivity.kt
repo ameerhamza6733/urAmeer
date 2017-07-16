@@ -5,6 +5,7 @@ import android.content.Intent
 import android.speech.SpeechRecognizer
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.widget.ImageButton
 import com.ameerhamza6733.okAmeer.R
 import com.ameerhamza6733.okAmeer.UI.fragment.voiceRecgonizationFragment
@@ -31,10 +32,10 @@ class MainActivity : AppCompatActivity() {
                       newFragment.show(fm, "fragment_voice_input")
         }
         myTextToSpeech.intiTextToSpeech(this, "hi", "")
-        val mShowCommand = findViewById(R.id.show_Command_hint) as ImageButton
+        val mShowCommand = findViewById(R.id.show_Command_hint) as FloatingActionButton
         mShowCommand.setOnClickListener {
 
-            val intent = Intent(this, singUpActivity::class.java)
+            val intent = Intent(this, votingActivity::class.java)
             startActivity(intent)
         }
 

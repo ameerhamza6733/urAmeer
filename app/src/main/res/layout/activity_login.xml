@@ -82,7 +82,7 @@
             android:background="#0000"
             android:gravity="left"
             android:hint="Email"
-            android:maxLength="12"
+
             android:padding="16dp"
             android:textColor="@color/colortext"
             android:textColorHint="@color/colorhint"
@@ -125,7 +125,7 @@
 
 
 
-        <com.ameerhamza6733.okAmeer.UI.customfonts.MyTextView
+        <com.dd.processbutton.iml.ActionProcessButton
 
             android:id="@+id/signin1"
             android:layout_width="match_parent"
@@ -135,8 +135,8 @@
             android:textSize="16dp"
             android:textColor="#fff"
             android:gravity="center"
-            android:layout_marginLeft="120dp"
-            android:layout_marginRight="120dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             android:padding="9dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="25dp"

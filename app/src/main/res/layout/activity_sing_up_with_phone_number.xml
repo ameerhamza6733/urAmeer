@@ -152,18 +152,26 @@
 
 
 
-        <com.ameerhamza6733.okAmeer.UI.customfonts.MyTextView
-
+        <com.dd.processbutton.iml.ActionProcessButton
             android:id="@+id/signup1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#2b73e1"
+
+            pb_colorComplete="@color/green_complete"
+            pb_colorNormal="#2b73e1"
+            pb_colorPressed="#2b73e1"
+            pb_colorProgress="@color/purple_progress"
+            pb_textComplete="Success"
+            pb_textProgress="Loading"
+            pb_textError="Error"
+            pb_colorError="@color/red_error"
             android:text="Sign up"
             android:textSize="16dp"
             android:textColor="#fff"
             android:gravity="center"
-            android:layout_marginLeft="120dp"
-            android:layout_marginRight="120dp"
+            android:background="#2b73e1"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             android:padding="9dp"
             android:layout_marginTop="16dp"
 

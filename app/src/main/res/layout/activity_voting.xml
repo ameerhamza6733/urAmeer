@@ -4,28 +4,26 @@
     xmlns:card="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true">
 
 
-    <FrameLayout
+   >
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:background="#4285f4"
-        android:id="@+id/adContainer"
-        android:layout_alignParentTop="true"
-        android:layout_height="wrap_content"></FrameLayout>
-    <it.gmariotti.cardslib.library.view.CardGridView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnWidth="190dp"
-        android:numColumns="auto_fit"
-        android:verticalSpacing="3dp"
-        android:horizontalSpacing="2dp"
-        android:stretchMode="columnWidth"
-        android:gravity="center"
-        card:list_card_layout_resourceID="@layout/voting_cards"
-        android:id="@+id/myGrid"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/my_Recylerivew_" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addCommadRequstFeb"
+
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="26dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
+        android:src="@drawable/ic_add_circle_outline_black_24dp" />
 
 </RelativeLayout>

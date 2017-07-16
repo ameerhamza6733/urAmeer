@@ -213,16 +213,20 @@ public class voiceRecgonizationFragment extends DialogFragment {
 
                 if (excuteCommander)
                 {
-                    voiceRecgonizationFragment.this.dismiss();
-                    boolean isCommandFound = CommandInvoker.excute(getActivity(), str);
-                    if(!isCommandFound){
-                        Intent i = new Intent(getActivity(), TTSService.class);
-                        i.putExtra("toSpeak", getString(R.string.Dobaara_say_koshish_keejie_muja_aapakee_ki_samajh_nahi_aaee));
-                        i.putExtra("Language", "hi");
-                        getActivity().startService(i);
+                   try {
+                       voiceRecgonizationFragment.this.dismiss();
+                       boolean isCommandFound = CommandInvoker.excute(getActivity(), str);
+                       if(!isCommandFound){
+                           Intent i = new Intent(getActivity(), TTSService.class);
+                           i.putExtra("toSpeak", getString(R.string.Dobaara_say_koshish_keejie_muja_aapakee_ki_samajh_nahi_aaee));
+                           i.putExtra("Language", "hi");
+                           getActivity().startService(i);
 
 
-                    }
+                       }
+                   }catch (Exception e){
+                       e.printStackTrace();
+                   }
                 }
                 else
                     try {

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
+import com.dd.processbutton.iml.ActionProcessButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -24,7 +25,7 @@ public class singUpActivity extends Activity {
     private EditText userName;
     private EditText Email;
     private EditText password;
-    private TextView msignUp;
+    private com.dd.processbutton.iml.ActionProcessButton msignUp;
 
     private FirebaseAuth mAuth;
     private String TAG = "sing up activity tag";
@@ -40,7 +41,7 @@ public class singUpActivity extends Activity {
         userName = (EditText) findViewById(R.id.username);
         Email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
-        msignUp = (TextView) findViewById(R.id.signup1);
+        msignUp = (com.dd.processbutton.iml.ActionProcessButton) findViewById(R.id.signup1);
 
 
         msignUp.setOnClickListener(new View.OnClickListener() {
@@ -53,8 +54,10 @@ public class singUpActivity extends Activity {
             @Override
             public void onClick(View v) {
 
+                Intent i = new Intent(singUpActivity.this, LoginActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
 
-                startActivity(new Intent(singUpActivity.this, LoginActivity.class));
             }
         });
 
@@ -67,6 +70,9 @@ public class singUpActivity extends Activity {
     }
 
     private void creatAccoutInFirebase() {
+        msignUp.setLoadingText("creating account...");
+       msignUp. setMode(ActionProcessButton.Mode.ENDLESS);
+        msignUp.setProgress(1);
         mAuth.createUserWithEmailAndPassword(Email.getText().toString(), password.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -75,12 +81,15 @@ public class singUpActivity extends Activity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            singUpActivity.this.msignUp.setProgress(0);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(singUpActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(singUpActivity.this, "Authentication failed."+task.getException().getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                            singUpActivity.this.msignUp.setProgress(0);
                             updateUI(null);
                         }
 
@@ -90,10 +99,15 @@ public class singUpActivity extends Activity {
     }
 
     private void updateUI(FirebaseUser user) {
-      try {
-          Log.d("signUpActivtty","user = "+user.getDisplayName()+user.getEmail());
-      }catch (Exception e){
-          e.printStackTrace();
-      }
+
+        if(user!=null){
+            Toast.makeText(this,"Your account hass been created",Toast.LENGTH_LONG).show();
+            Intent i = new Intent(singUpActivity.this, LoginActivity.class);
+            i.putExtra(LoginActivity.ExtraEmail,user.getEmail());
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+        }
+
+
     }
 }
