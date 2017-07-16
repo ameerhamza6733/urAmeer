@@ -2,6 +2,7 @@ package com.ameerhamza6733.okAmeer.UI.Activitys;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 
 import android.support.v7.app.AppCompatActivity;
@@ -43,7 +44,6 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
     private List<Command> mDataset = new ArrayList<>();
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,47 +79,31 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
         });
 
 
-           DatabaseReference ref = FirebaseDatabase.getInstance().getReference("UserRequstedCommands");
 
-           ValueEventListener postListener = new ValueEventListener() {
-               @Override
-               public void onDataChange(DataSnapshot dataSnapshot) {
-                   // Get  object and use the values to update the UI
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("UserRequstedCommands");
 
-                   for (DataSnapshot nodeEmail : dataSnapshot.getChildren())
-                       for (DataSnapshot nodeCommandName : nodeEmail.getChildren())
-                           for (DataSnapshot nodeCommandN : nodeCommandName.getChildren())
-                               if(nodeCommandN.getKey().equalsIgnoreCase("CommandDetail")){
-                                   mDataset.add(new Command(nodeCommandN.getValue(CommandPOJO.class)));
-//
-                                   if(mAdapter!=null)
-                                       mAdapter.notifyDataSetChanged();
-                                   else {
-                                       mAdapter = new CustomAdapter(mDataset);
-                                       recyclerView.setAdapter(mAdapter);
-                                   }
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get  datasnapshot object and pass to other thread so sorting looping can be done in background
 
-                               }else {
-
-                                   mDataset.set(mDataset.size()-1,new Command(nodeCommandN.getChildrenCount(),mDataset.get(mDataset.size()-1).getCommandPOJO()));
-                               }
+                new myAsynkTask(dataSnapshot).execute();
 
 
+            }
 
-               }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Toast.makeText(votingActivity.this, "Error : " + databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                Log.w("tag", "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        ref.addListenerForSingleValueEvent(postListener);
 
-               @Override
-               public void onCancelled(DatabaseError databaseError) {
-                   // Getting Post failed, log a message
-                   Toast.makeText(votingActivity.this,"Error : "+databaseError.getMessage(),Toast.LENGTH_LONG).show();
-                   Log.w("tag", "loadPost:onCancelled", databaseError.toException());
-                   // ...
-               }
-           };
-           ref.addListenerForSingleValueEvent(postListener);
 
-       }
-
+    }
 
 
     private void updateUI(FirebaseUser currentUser) {
@@ -182,6 +166,42 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
         assert email != null;
         email = email.replace("@", "atThe");
         return email.replace(".", "Dot");
+    }
+
+    private class myAsynkTask extends AsyncTask<Void, Void, Void> {
+
+        private DataSnapshot dataSnapshot;
+
+        public myAsynkTask(DataSnapshot dataSnapshot) {
+            this.dataSnapshot = dataSnapshot;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            for (DataSnapshot nodeEmail : dataSnapshot.getChildren())
+                for (DataSnapshot nodeCommandName : nodeEmail.getChildren())
+                    for (DataSnapshot nodeCommandN : nodeCommandName.getChildren())
+                        if (nodeCommandN.getKey().equalsIgnoreCase("CommandDetail")) {
+                            mDataset.add(new Command(nodeCommandN.getValue(CommandPOJO.class)));
+
+                        } else {
+
+                            mDataset.set(mDataset.size() - 1, new Command(nodeCommandN.getChildrenCount(), mDataset.get(mDataset.size() - 1).getCommandPOJO()));
+                        }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (votingActivity.this.mAdapter != null)
+                mAdapter.notifyDataSetChanged();
+            else {
+
+                votingActivity.this.mAdapter = new CustomAdapter(mDataset);
+                votingActivity.this.recyclerView.setAdapter(mAdapter);
+            }
+        }
     }
 
 

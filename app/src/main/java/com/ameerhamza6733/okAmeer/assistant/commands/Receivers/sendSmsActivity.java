@@ -171,7 +171,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
             }
 
             public void onFinish() {
-                sendSmsActivity.this.mSedingSmsIn.setText("done!");
+                sendSmsActivity.this.mSedingSmsIn.setText("Done!");
                try {
                    if(EXTRA_SMS_OR_WHATS_APP.equals("sms"))
                        sendSmsActivity.this.sendItNow(mHashMapContacts.get(sendSmsActivity.this.callpickerSpinner.getSelectedItem().toString()), mSmsBody.getText().toString());
@@ -298,6 +298,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
                     case Activity.RESULT_OK:
                         Toast.makeText(getBaseContext(), "SMS sent",
                                 Toast.LENGTH_SHORT).show();
+                        finish();
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                         Toast.makeText(getBaseContext(), "Generic failure",
@@ -329,6 +330,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
                     case Activity.RESULT_OK:
                         Toast.makeText(getBaseContext(), "SMS delivered",
                                 Toast.LENGTH_SHORT).show();
+
                         break;
                     case Activity.RESULT_CANCELED:
                         Toast.makeText(getBaseContext(), "SMS not delivered",
