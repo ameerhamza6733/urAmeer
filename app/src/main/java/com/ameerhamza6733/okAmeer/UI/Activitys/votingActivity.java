@@ -12,24 +12,25 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
+import com.ameerhamza6733.okAmeer.UI.CustomAdapter;
 import com.ameerhamza6733.okAmeer.UI.fragment.requstCommandDialogFragment;
 import com.ameerhamza6733.okAmeer.interfacess.RequstCommandDialogeFragmentToActivty;
+import com.ameerhamza6733.okAmeer.utial.models.Command;
 import com.ameerhamza6733.okAmeer.utial.models.CommandPOJO;
 import com.ameerhamza6733.okAmeer.utial.TTSService;
-import com.ameerhamza6733.okAmeer.utial.models.CommandVotePojo;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class votingActivity extends AppCompatActivity implements RequstCommandDialogeFragmentToActivty {
@@ -38,6 +39,9 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
     private Menu menu;
     private DatabaseReference mDatabase;
     private RecyclerView recyclerView;
+    private CustomAdapter mAdapter;
+    private List<Command> mDataset = new ArrayList<>();
+
 
 
     @Override
@@ -59,6 +63,7 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
             public void onClick(View v) {
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
+
                     DialogFragment dialog = requstCommandDialogFragment.newInstance();
                     dialog.show(votingActivity.this.getFragmentManager(), "RequstCommandDialogFragment");
                 } else {
@@ -73,36 +78,48 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
             }
         });
 
-       DatabaseReference ref = FirebaseDatabase.getInstance().getReference("UserRequstedCommands");
-        ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
 
-               for(DataSnapshot nodeEmail :dataSnapshot.getChildren())
-                  for (DataSnapshot nodeCommandName : nodeEmail.getChildren())
+           DatabaseReference ref = FirebaseDatabase.getInstance().getReference("UserRequstedCommands");
 
-                         Log.d("sdfddsf","dsfsdfdsfds"+nodeCommandName.getValue(CommandPOJO.class).getCommandName());
+           ValueEventListener postListener = new ValueEventListener() {
+               @Override
+               public void onDataChange(DataSnapshot dataSnapshot) {
+                   // Get  object and use the values to update the UI
+
+                   for (DataSnapshot nodeEmail : dataSnapshot.getChildren())
+                       for (DataSnapshot nodeCommandName : nodeEmail.getChildren())
+                           for (DataSnapshot nodeCommandN : nodeCommandName.getChildren())
+                               if(nodeCommandN.getKey().equalsIgnoreCase("CommandDetail")){
+                                   mDataset.add(new Command(nodeCommandN.getValue(CommandPOJO.class)));
+//
+                                   if(mAdapter!=null)
+                                       mAdapter.notifyDataSetChanged();
+                                   else {
+                                       mAdapter = new CustomAdapter(mDataset);
+                                       recyclerView.setAdapter(mAdapter);
+                                   }
+
+                               }else {
+
+                                   mDataset.set(mDataset.size()-1,new Command(nodeCommandN.getChildrenCount(),mDataset.get(mDataset.size()-1).getCommandPOJO()));
+                               }
 
 
 
+               }
 
+               @Override
+               public void onCancelled(DatabaseError databaseError) {
+                   // Getting Post failed, log a message
+                   Toast.makeText(votingActivity.this,"Error : "+databaseError.getMessage(),Toast.LENGTH_LONG).show();
+                   Log.w("tag", "loadPost:onCancelled", databaseError.toException());
+                   // ...
+               }
+           };
+           ref.addListenerForSingleValueEvent(postListener);
 
+       }
 
-
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("tag", "loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        };
-        ref.addValueEventListener(postListener);
-    }
 
 
     private void updateUI(FirebaseUser currentUser) {
@@ -151,7 +168,8 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
     public void onRequstNewCommand(String commnadName, String commandActivactionPharase) {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
-            mDatabase.child("UserRequstedCommands").child(praseEmail(FirebaseAuth.getInstance().getCurrentUser())).child(commnadName).setValue(new CommandPOJO(commnadName, commandActivactionPharase, FirebaseAuth.getInstance().getCurrentUser().getEmail()));
+            mDatabase.child("UserRequstedCommands").child(praseEmail(FirebaseAuth.getInstance().getCurrentUser())).child(commnadName).child("VotedBy").child(praseEmail(FirebaseAuth.getInstance().getCurrentUser())).setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+            mDatabase.child("UserRequstedCommands").child(praseEmail(FirebaseAuth.getInstance().getCurrentUser())).child(commnadName).child("CommandDetail").setValue(new CommandPOJO(commnadName, commandActivactionPharase, FirebaseAuth.getInstance().getCurrentUser().getEmail()));
 
 
         } else
@@ -166,23 +184,6 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
         return email.replace(".", "Dot");
     }
 
-    public class ChatHolder extends RecyclerView.ViewHolder {
-        private final TextView mNameField;
-        private final TextView mMessageField;
 
-        public ChatHolder(View itemView) {
-            super(itemView);
-            mNameField = (TextView) itemView.findViewById(R.id.voting_command_phrase_name);
-            mMessageField = (TextView) itemView.findViewById(R.id.voting_command_textView);
-        }
-
-        public void setName(String name) {
-            mNameField.setText(name);
-        }
-
-        public void setMessage(String message) {
-            mMessageField.setText(message);
-        }
-    }
 
 }
