@@ -20,7 +20,7 @@
     <style name="CustomTheme.Dialog" parent="Theme.AppCompat.Light.Dialog"/>
 
     <style name="MenuButtonsStyle">
-        <item name="fab_size">mini</item>
+        <item name="fab_size">normal</item>
         <item name="fab_showAnimation">@anim/jump_from_down</item>
         <item name="fab_hideAnimation">@anim/jump_to_down</item>
         <item name="fab_shadowColor">#444</item>

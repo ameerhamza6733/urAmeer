@@ -15,7 +15,7 @@
         <ImageView
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/avatar_girl_happy"
+            android:src="@drawable/man2"
             android:id="@+id/imageView"
             android:layout_marginTop="19dp"
             android:layout_alignParentTop="true"
@@ -36,21 +36,7 @@
             android:background="#fafafa"
             app:srcCompat="@drawable/caller_id_mic" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/show_Command_hint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-
-
-            android:src="@drawable/ic_help_outline"
-            android:layout_alignTop="@+id/speakButton"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="27dp"
-            android:layout_marginStart="27dp" />
-
-        <com.github.clans.fab.FloatingActionMenu
+    <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/menu_yellow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -67,7 +53,7 @@
             fab:menu_shadowColor="#444">
 
             <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/fab12"
+                android:id="@+id/fab_help"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -75,7 +61,7 @@
                 fab:fab_label="How to use" />
 
             <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/fab22"
+                android:id="@+id/fab_request_new_command"
                 style="@style/MenuButtonsStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

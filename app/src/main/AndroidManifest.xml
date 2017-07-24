@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ameerhamza6733.okAmeer">
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -28,7 +30,6 @@
         android:allowBackup="true"
         android:icon="@drawable/caller_id_mic"
         android:label="@string/app_name"
-
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -83,7 +84,7 @@
             android:name="com.thefinestartist.ytpa.YouTubePlayerActivity.ApiKey"
             android:value="AIzaSyA-C1pPmKSPZUONcWCFqMOyILan7DUFi7I" />
 
-        <activity android:name=".utial.show_commands_list" />
+        <activity android:name=".UI.Activitys.show_sample_commands_list" />
         <activity android:name=".assistant.commands.Receivers.sendEmailActivity" />
         <activity
             android:name=".UI.Activitys.singUpActivity"
@@ -91,8 +92,10 @@
         <activity
             android:name=".UI.Activitys.LoginActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
-        <activity android:name=".UI.Activitys.votingActivity"
-            android:theme="@style/AppTheme.Titlebar"></activity>
+        <activity
+            android:name=".UI.Activitys.votingActivity"
+            android:theme="@style/AppTheme.Titlebar" />
+        <activity android:name=".assistant.commands.Receivers.BluetoothActivity"></activity>
     </application>
 
 </manifest>

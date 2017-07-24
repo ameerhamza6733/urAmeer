@@ -10,7 +10,10 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/my_Recylerivew_" />
+        android:id="@+id/my_Recylerivew_"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addCommadRequstFeb"
@@ -25,5 +28,15 @@
         android:layout_marginEnd="36dp"
         android:layout_marginRight="36dp"
         android:src="@drawable/ic_add_circle_outline_black_24dp" />
+
+    <ProgressBar
+        android:id="@+id/voting_progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:layout_below="@+id/my_Recylerivew_"
+        android:layout_centerHorizontal="true"
+         />
 
 </RelativeLayout>

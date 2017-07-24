@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
@@ -42,21 +43,25 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
     private RecyclerView recyclerView;
     private CustomAdapter mAdapter;
     private List<Command> mDataset = new ArrayList<>();
+    private ProgressBar mProgresBar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voting);
+
         FloatingActionButton feb = (FloatingActionButton) findViewById(R.id.addCommadRequstFeb);
         mAuth = FirebaseAuth.getInstance();
 
         recyclerView = (RecyclerView) findViewById(R.id.my_Recylerivew_);
+        mProgresBar= (ProgressBar) findViewById(R.id.voting_progressBar);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
         Log.d("firebase ", "ref = " + mDatabase.child("UserRequstedCommands").getKey());
         feb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,9 +199,11 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            mProgresBar.setVisibility(View.GONE);
             if (votingActivity.this.mAdapter != null)
                 mAdapter.notifyDataSetChanged();
             else {
+
 
                 votingActivity.this.mAdapter = new CustomAdapter(mDataset);
                 votingActivity.this.recyclerView.setAdapter(mAdapter);

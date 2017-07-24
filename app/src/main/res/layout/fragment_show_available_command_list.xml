@@ -2,8 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.fragment.show_available_command_list">
+    tools:context=".UI.fragment.helpFragment">
 
-
+    <it.gmariotti.cardslib.library.view.CardListView
+        android:id="@+id/my_help_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

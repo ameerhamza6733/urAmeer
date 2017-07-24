@@ -16,7 +16,7 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.view.CardListView;
 
 
-public class show_available_command_list extends Fragment {
+public class helpFragment extends Fragment {
 
     private String[] mCommandtitle;
     private String[] mCommandDir;
@@ -50,7 +50,7 @@ public class show_available_command_list extends Fragment {
         }
         CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
 
-        CardListView listView = (CardListView) view.findViewById(R.id.myList);
+        CardListView listView = (CardListView) view.findViewById(R.id.my_help_list);
         if (listView != null) {
             listView.setAdapter(mCardArrayAdapter);
         }

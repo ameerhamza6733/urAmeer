@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ameerhamza6733.okAmeer.utial.show_commands_list">
+    tools:context="com.ameerhamza6733.okAmeer.UI.Activitys.show_sample_commands_list">
 <FrameLayout
     android:layout_width="match_parent"
     android:id="@+id/fragment_container"

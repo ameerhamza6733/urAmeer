@@ -19,6 +19,8 @@
     <string name="Silent_Phone_Kar_Dea_Gaya_Ha">आपके फोन साइलेंट किया जा रहा है</string>
     <string name="Sorry_App_Kasy_Call_karna_Chaatay_Ha">माफ कीजिए आप किसे कॉल करना चाहते हैं</string>
     <string name="Aur_Email_kaya_ha">और ईमेल क्या है</string>
+    <string name="blootooth_on_kiya_ja_raha_hai">ब्लूटूथ ऑन किया जा रहा है</string>
+    <string name="blootooth_band_kiya_ja_raha_hai">ब्लूटूथ बंद किया जा रहा है</string>
 
 
     <string name="kis_Time_Pay_set_Karna_ha_en">kis time par set karna hai</string>
@@ -46,12 +48,32 @@
     <string-array name="command_title">
         <item>لائٹ چلانے کے لئے </item>
         <item>لائٹ بند کرنے کے لئے </item>
-        <item>گانا لگانے کے لئے </item>
+        <item>گانا لگانے کے لئے</item>
+        <item>اگلا گانا لگانے کے لئے</item>
+        <item>گانا بند کرنے کے لئے</item>
+        <item>یوٹیوب سے گانا لگانے کے لئے</item>
+        <item>کال/فون کرنے کے لئے</item>
+        <item>میسج لکھنے کے لیے</item>
+        <item>وائی فائی ان کرنے کے لئے</item>
+        <item>بلوٹوت ان کرنے کے لئے</item>
+        <item>ای میل بھیجنے کرنے کے لئے</item>
+        <item>ایس ایم ایس سننے کے لئے</item>
     </string-array>
     <string-array name="command_dir">
-        <item> لائٹ آن کرو,فلیش لائٹ آن کرو </item>
-        <item> فلیش لائٹ بند کر,لائٹ بند کرو </item>
-        <item>گانا لگاؤ </item>
+        <item>کہو لائٹ آن کرو,فلیش لائٹ آن کرو </item>
+        <item>کہو فلیش لائٹ بند کر,لائٹ بند کرو </item>
+        <item>کہو گانا لگاؤ </item>
+        <item>کہو اگلا گانا لگاؤ</item>
+        <item>کہو گانا بند کرو</item>
+        <item>کہو یوٹیوب سے گانا لگاؤ </item>
+        <item>کہو کال کرو</item>
+        <item>کہو میسج لکھیں اور پھر نام بولو</item>
+        <item> کہو وائی فائی آن کرو</item>
+        <item>کہو بلوٹوت آن کرو</item>
+        <item>ای میل لکھیں</item>
+        <item>کہو میسج پڑھو </item>
+
+
     </string-array>
     <string name="title_activity_login">Sign in</string>
 

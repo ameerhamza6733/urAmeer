@@ -13,7 +13,7 @@
         android:id="@+id/edit_text_requst_command_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Requst new Command"
+        android:hint="New Command Name"
         android:imeOptions="actionDone|flagNoExtractUi"
         android:inputType="textCapWords"
         android:textColor="#616161"

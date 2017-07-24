@@ -138,6 +138,7 @@ public class youtubePlayActivity extends AppCompatActivity implements noNeedComm
     @Override
     protected void onStop() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        if(handler!=null)
         handler.removeCallbacks(runnable);
         super.onStop();
     }

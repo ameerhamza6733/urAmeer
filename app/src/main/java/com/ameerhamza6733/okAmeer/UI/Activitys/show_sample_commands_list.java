@@ -1,4 +1,4 @@
-package com.ameerhamza6733.okAmeer.utial;
+package com.ameerhamza6733.okAmeer.UI.Activitys;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -6,9 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.ameerhamza6733.okAmeer.R;
-import com.ameerhamza6733.okAmeer.UI.fragment.show_available_command_list;
+import com.ameerhamza6733.okAmeer.UI.fragment.helpFragment;
 
-public class show_commands_list extends AppCompatActivity {
+public class show_sample_commands_list extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +17,7 @@ public class show_commands_list extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        fragmentTransaction.add(R.id.fragment_container, new show_available_command_list(), null);
+        fragmentTransaction.add(R.id.fragment_container, new helpFragment(), null);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

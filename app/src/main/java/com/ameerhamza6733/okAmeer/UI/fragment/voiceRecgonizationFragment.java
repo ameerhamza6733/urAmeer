@@ -193,8 +193,7 @@ public class voiceRecgonizationFragment extends DialogFragment {
 
             @Override
             public void onSuccess(final String str) {
-                if (isAdded())
-                    Toast.makeText(getActivity(), str, Toast.LENGTH_LONG).show();
+              
                 if (str != null)
                     invockCommanderOrNot(str);
 
