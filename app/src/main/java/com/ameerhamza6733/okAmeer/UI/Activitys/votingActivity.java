@@ -51,8 +51,20 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voting);
 
-        FloatingActionButton feb = (FloatingActionButton) findViewById(R.id.addCommadRequstFeb);
         mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser()== null) {
+            Intent intent = new Intent(votingActivity.this, TTSService.class);
+            intent.putExtra("toSpeak", getString(R.string.Draeeme_harabaanee_apana_akaunt_kholie_usake_baad_hee_aap_ek_nae_kamaand_kee_darakhvaast_kar_sakate_hain));
+            intent.putExtra("Language", "hi");
+            votingActivity.this.startService(intent);
+
+            Intent i = new Intent(votingActivity.this, LoginOrLogout.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            votingActivity.this.startActivity(i);
+            return;
+        }
+        FloatingActionButton feb = (FloatingActionButton) findViewById(R.id.addCommadRequstFeb);
+
 
         recyclerView = (RecyclerView) findViewById(R.id.my_Recylerivew_);
         mProgresBar= (ProgressBar) findViewById(R.id.voting_progressBar);
@@ -66,20 +78,8 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
         feb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseUser user = mAuth.getCurrentUser();
-                if (user != null) {
-
-                    DialogFragment dialog = requstCommandDialogFragment.newInstance();
-                    dialog.show(votingActivity.this.getFragmentManager(), "RequstCommandDialogFragment");
-                } else {
-                    Intent intent = new Intent(votingActivity.this, TTSService.class);
-                    intent.putExtra("toSpeak", getString(R.string.Draeeme_harabaanee_apana_akaunt_kholie_usake_baad_hee_aap_ek_nae_kamaand_kee_darakhvaast_kar_sakate_hain));
-                    intent.putExtra("Language", "hi");
-                    votingActivity.this.startService(intent);
-
-                    Intent i = new Intent(votingActivity.this, singUpActivity.class);
-                    votingActivity.this.startActivity(i);
-                }
+                DialogFragment dialog = requstCommandDialogFragment.newInstance();
+                dialog.show(votingActivity.this.getFragmentManager(), "RequstCommandDialogFragment");
             }
         });
 
@@ -90,11 +90,8 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get  datasnapshot object and pass to other thread so sorting looping can be done in background
-
-                new myAsynkTask(dataSnapshot).execute();
-
-
+                // Get  dataSnapshot object and pass to other thread so sorting looping can be done in background
+                new UpdateUI(dataSnapshot).execute();
             }
 
             @Override
@@ -106,8 +103,6 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
             }
         };
         ref.addListenerForSingleValueEvent(postListener);
-
-
     }
 
 
@@ -173,11 +168,11 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
         return email.replace(".", "Dot");
     }
 
-    private class myAsynkTask extends AsyncTask<Void, Void, Void> {
+    private class UpdateUI extends AsyncTask<Void, Void, Void> {
 
         private DataSnapshot dataSnapshot;
 
-        public myAsynkTask(DataSnapshot dataSnapshot) {
+        public UpdateUI(DataSnapshot dataSnapshot) {
             this.dataSnapshot = dataSnapshot;
         }
 

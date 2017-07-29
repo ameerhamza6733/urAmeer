@@ -15,7 +15,7 @@ public class BluetoothOffCommand implements Command {
     @Override
     public void execute(Context context, String predicate) {
         Intent intent = new Intent(context, BluetoothActivity.class);
-        intent.putExtra(BluetoothActivity.BluetoothActivityEXTRA,true);
+        intent.putExtra(BluetoothActivity.BluetoothActivityEXTRA,false);
         context.startActivity(intent);
     }
 

@@ -86,6 +86,10 @@ public class LoginActivity extends Activity {
         userlogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(userEmail.getText().toString().isEmpty() || userPassword.getText().toString().isEmpty()){
+                    Toast.makeText(LoginActivity.this,"please enter Email and password both",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 LoginIntoFirebase();
             }
         });
@@ -99,9 +103,10 @@ public class LoginActivity extends Activity {
     }
 
     private void LoginIntoFirebase() {
-        this.userlogin.setLoadingText("finding your account...");
+        this.userlogin.setLoadingText("FINDING YOUR ACCOUNT...");
         userlogin. setMode(ActionProcessButton.Mode.ENDLESS);
         userlogin.setProgress(1);
+
         mAuth.signInWithEmailAndPassword(userEmail.getText().toString(), userPassword.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override

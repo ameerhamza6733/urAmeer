@@ -44,9 +44,15 @@ public class singUpActivity extends Activity {
         msignUp = (com.dd.processbutton.iml.ActionProcessButton) findViewById(R.id.signup1);
 
 
+
         msignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isUserfillAllFileds())
+                {
+                    Toast.makeText(singUpActivity.this,"please fill all required fields",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 creatAccoutInFirebase();
             }
         });
@@ -67,6 +73,10 @@ public class singUpActivity extends Activity {
 
 
         signinhere.setTypeface(fonts1);
+    }
+
+    private boolean isUserfillAllFileds() {
+        return userName.getText().toString().isEmpty() || Email.getText().toString().isEmpty() || password.getText().toString().isEmpty();
     }
 
     private void creatAccoutInFirebase() {
@@ -93,7 +103,7 @@ public class singUpActivity extends Activity {
                             updateUI(null);
                         }
 
-                        // ...
+
                     }
                 });
     }

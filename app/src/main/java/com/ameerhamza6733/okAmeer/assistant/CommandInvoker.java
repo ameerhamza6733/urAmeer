@@ -56,19 +56,12 @@ public class CommandInvoker {
              {
                  isCommandFound=true;
                  command.execute(context,phrase);
-
-
                 try {
                     myTextToSpeech.intiTextToSpeech(context,"hi",command.getTtsPhrase(context));
-
-
-
-
                 }catch (Exception e)
                 {
                     e.printStackTrace();
                 }
-
 
 
              }

@@ -54,20 +54,15 @@ public class BluetoothActivity extends AppCompatActivity {
             boolean blueToothOnOff = getIntent().getBooleanExtra(BluetoothActivityEXTRA,false);
             if(blueToothOnOff && !isEnabled){
                 bluetoothAdapter.enable();
+                finish();
 
             }else if(!blueToothOnOff && isEnabled) {
                 bluetoothAdapter.disable();
+                finish();
             }
         }
     }
-    private boolean checkIfAlreadyhavePermission() {
-        int result = ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH);
-        if (result == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
     private void requestForSpecificPermission() {
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.BLUETOOTH,Manifest.permission.BLUETOOTH_ADMIN}, BLUETOOTH_PERMISSION_CODE);
 
