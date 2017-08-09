@@ -39,6 +39,7 @@
     <string name="Dobaara_say_koshish_keejie_muja_aapakee_ki_samajh_nahi_aaee">दोबारा से कोशिश कीजिए मुझे आपकी बात की समझ नहीं आई</string>
     <string name="Aap_kiss_ko_whats_app_messge_send_karna_chaahate_hain">आप किसको WhatsApp मैसेज सेंड करना चाहते हैं</string>
     <string name="Draeeme_harabaanee_apana_akaunt_kholie_usake_baad_hee_aap_ek_nae_kamaand_kee_darakhvaast_kar_sakate_hain">ड्राई मेहरबानी अपना अकाउंट खोलिए उसके बाद ही आप एक नए कमांड की दरख्वास्त कर सकते हैं</string>
+    <string name="aap_phesabuk_par_kya_post_karana_chaahate_hain">आप फेसबुक पर क्या पोस्ट करना चाहते हैं</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

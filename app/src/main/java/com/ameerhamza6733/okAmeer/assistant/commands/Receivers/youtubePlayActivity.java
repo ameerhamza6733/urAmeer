@@ -69,7 +69,7 @@ public class youtubePlayActivity extends AppCompatActivity implements noNeedComm
             public void run() {
                 try {
                     FragmentManager fragmentManager = getSupportFragmentManager();
-                    voiceRecgonizationFragment newIntance = voiceRecgonizationFragment.newInstance("en-IN", true, false);
+                    voiceRecgonizationFragment newIntance = voiceRecgonizationFragment.newInstance("en-IN", false, false);
                     newIntance.show(fragmentManager, "smsUnreadActivty");
                     newIntance.setStyle(1, R.style.Theme_AppCompat_Dialog_MinWidth);
                 } catch (Exception e) {

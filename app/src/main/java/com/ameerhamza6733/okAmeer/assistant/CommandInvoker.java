@@ -14,6 +14,7 @@ import com.ameerhamza6733.okAmeer.assistant.commands.increaseVolumeCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.nextSongCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.pauseMuusicCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.playMusicCommand;
+import com.ameerhamza6733.okAmeer.assistant.commands.postOnFaceBook;
 import com.ameerhamza6733.okAmeer.assistant.commands.previousSongCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.readSmsCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.sendGmailCommand;
@@ -38,7 +39,7 @@ public class CommandInvoker {
         if(commands==null)
         {
             commands = new Command[] {new FlashlightOnCommand(),new FlashLightOffCommand(),new setAlarmCommand(),new CallCommand(),new readSmsCommand(),new pauseMuusicCommand(),new previousSongCommand(),new nextSongCommand(),new youtubePlayCommand(),new playMusicCommand()
-            ,new increaseVolumeCommand(),new decreaseVolumeCommand(),new sendWhatsAppCommand(), new sendSmsCommand(),new wifiOnCommand(),new wifiOffCommand(), new silentCommand(), new sendGmailCommand(), new BluetoothOnCommand(), new BluetoothOffCommand()};
+            ,new increaseVolumeCommand(),new decreaseVolumeCommand(),new sendWhatsAppCommand(), new sendSmsCommand(),new wifiOnCommand(),new wifiOffCommand(), new silentCommand(), new sendGmailCommand(), new BluetoothOnCommand(), new BluetoothOffCommand(), new postOnFaceBook()};
         }
         return commands;
     }

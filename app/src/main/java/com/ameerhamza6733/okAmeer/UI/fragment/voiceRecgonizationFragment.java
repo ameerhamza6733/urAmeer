@@ -128,7 +128,7 @@ public class voiceRecgonizationFragment extends DialogFragment {
 
                             try {
                                 if (isAdded())
-                                    Toast.makeText(getActivity(), "SpeechRecognizer Error code " + error, Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), "try again: Error code " + error, Toast.LENGTH_LONG).show();
                                 voiceRecgonizationFragment.this.dismiss();
                             } catch (Exception i) {
                                 i.printStackTrace();
