@@ -17,7 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
-import com.ameerhamza6733.okAmeer.UI.CustomAdapter;
+import com.ameerhamza6733.okAmeer.UI.requestCommandAdapter;
 import com.ameerhamza6733.okAmeer.UI.fragment.requstCommandDialogFragment;
 import com.ameerhamza6733.okAmeer.interfacess.RequstCommandDialogeFragmentToActivty;
 import com.ameerhamza6733.okAmeer.utial.models.Command;
@@ -41,7 +41,7 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
     private Menu menu;
     private DatabaseReference mDatabase;
     private RecyclerView recyclerView;
-    private CustomAdapter mAdapter;
+    private requestCommandAdapter mAdapter;
     private List<Command> mDataset = new ArrayList<>();
     private ProgressBar mProgresBar;
 
@@ -53,14 +53,7 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
 
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser()== null) {
-            Intent intent = new Intent(votingActivity.this, TTSService.class);
-            intent.putExtra("toSpeak", getString(R.string.Draeeme_harabaanee_apana_akaunt_kholie_usake_baad_hee_aap_ek_nae_kamaand_kee_darakhvaast_kar_sakate_hain));
-            intent.putExtra("Language", "hi");
-            votingActivity.this.startService(intent);
-
-            Intent i = new Intent(votingActivity.this, LoginOrLogout.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            votingActivity.this.startActivity(i);
+            fourceToUserLogin();
             return;
         }
         FloatingActionButton feb = (FloatingActionButton) findViewById(R.id.addCommadRequstFeb);
@@ -78,6 +71,10 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
         feb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mAuth.getCurrentUser()==null){
+                    fourceToUserLogin();
+                    return;
+                }
                 DialogFragment dialog = requstCommandDialogFragment.newInstance();
                 dialog.show(votingActivity.this.getFragmentManager(), "RequstCommandDialogFragment");
             }
@@ -103,6 +100,17 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
             }
         };
         ref.addListenerForSingleValueEvent(postListener);
+    }
+
+    private void fourceToUserLogin() {
+        Intent intent = new Intent(votingActivity.this, TTSService.class);
+        intent.putExtra("toSpeak", getString(R.string.Draeeme_harabaanee_apana_akaunt_kholie_usake_baad_hee_aap_ek_nae_kamaand_kee_darakhvaast_kar_sakate_hain));
+        intent.putExtra("Language", "hi");
+        votingActivity.this.startService(intent);
+
+        Intent i = new Intent(votingActivity.this, LoginOrLogout.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        votingActivity.this.startActivity(i);
     }
 
 
@@ -200,7 +208,7 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
             else {
 
 
-                votingActivity.this.mAdapter = new CustomAdapter(mDataset);
+                votingActivity.this.mAdapter = new requestCommandAdapter(mDataset);
                 votingActivity.this.recyclerView.setAdapter(mAdapter);
             }
         }
