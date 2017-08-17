@@ -35,9 +35,10 @@ import org.json.JSONObject;
 
 public class youtubePlayActivity extends AppCompatActivity implements noNeedCommander {
     private BroadcastReceiver broadcastReceiver;
-    private Handler handler;
-    private Runnable runnable;
+   
     private RequestQueue requestQueue;
+    private Runnable runnable;
+    private Handler handler = new Handler();
 
 
     @Override
@@ -63,7 +64,7 @@ public class youtubePlayActivity extends AppCompatActivity implements noNeedComm
 
     private void showVoiceRegoniztionFragment() {
 
-        handler = new Handler();
+        
         runnable = new Runnable() {
             @Override
             public void run() {

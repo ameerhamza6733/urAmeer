@@ -27,7 +27,7 @@ public class silentCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "خاموش,نماز وقت";
+        return "خاموش,نماز وقت,si";
     }
 
     @Override

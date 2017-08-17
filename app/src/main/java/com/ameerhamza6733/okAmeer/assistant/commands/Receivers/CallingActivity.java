@@ -3,12 +3,15 @@ package com.ameerhamza6733.okAmeer.assistant.commands.Receivers;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
@@ -51,16 +54,20 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calling);
 
-       showVoiceRegonizerDiloge("en-IN");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                askRunTimePermissions();
+                return;
+            }
+        } else
+            showVoiceRegonizerDiloge("en-IN");
         callpickerSpinner = (Spinner) findViewById(R.id.caling_spinner);
         spinnerList = new ArrayList<>();
         spinnerList.add("contact");
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, spinnerList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         callpickerSpinner.setAdapter(adapter);
-        ActivityCompat.requestPermissions(CallingActivity.this,
-                new String[]{Manifest.permission.READ_CONTACTS,Manifest.permission.CALL_PHONE},
-                1);
         mMakingCallingIn = (TextView) findViewById(R.id.making_call_in);
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.febRetry);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +90,7 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
         CallCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(countDownTimer!=null){
+                if (countDownTimer != null) {
                     CallingActivity.this.countDownTimer.cancel();
                     CallingActivity.this.mMakingCallingIn.setText("Call canceled");
                 }
@@ -93,19 +100,40 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
 
     }
 
+    private void askRunTimePermissions() {
+        ActivityCompat.requestPermissions(CallingActivity.this,
+                new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE},
+                1);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    showVoiceRegonizerDiloge("en-IN");
+                } else {
+                    Toast.makeText(this, "App need read READ_CONTACTS and make phone call Permissions ", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+
+            }
+        }
+    }
+
     protected void intiCallingCountDown() throws Exception {
         myTextToSpeech.intiTextToSpeech(CallingActivity.this, "hi", "आपकी कॉल की जा रही है");
         countDownTimer = new CountDownTimer(3000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-               CallingActivity.this. mMakingCallingIn.setText("Making call in : " + millisUntilFinished / 1000);
+                CallingActivity.this.mMakingCallingIn.setText("Making call in : " + millisUntilFinished / 1000);
             }
 
             public void onFinish() {
-                CallingActivity.this. mMakingCallingIn.setText("done!");
+                CallingActivity.this.mMakingCallingIn.setText("done!");
                 makeCallNow(CallingActivity.this.callpickerSpinner.getSelectedItem().toString());
             }
-
 
 
         }.start();
@@ -114,8 +142,8 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
 
     @Override
     public void onNoCommandrExcute(String Queary) {
-        Toast.makeText(this,Queary,Toast.LENGTH_LONG).show();
-        if(newIntance!=null)
+        Toast.makeText(this, Queary, Toast.LENGTH_LONG).show();
+        if (newIntance != null)
             newIntance.dismiss();
         new myRecipientCallingNumberFinder(Queary).execute();
 
@@ -161,13 +189,10 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
     }
 
     private void makeCallNow(String s) {
-        try {
-            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mHashMapContacts.get(s)));
-            Log.d("callingActivity", "trying to make call at " + mHashMapContacts.get(s));
-            CallingActivity.this.startActivity(intent);
-        } catch (SecurityException SE) {
-            Toast.makeText(this, "SecurityException" + SE.getMessage(), Toast.LENGTH_LONG).show();
-        }
+
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mHashMapContacts.get(s)));
+        Log.d("callingActivity", "trying to make call at " + mHashMapContacts.get(s));
+        CallingActivity.this.startActivity(intent);
 
 
     }
@@ -247,14 +272,10 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
             super.onPostExecute(aVoid);
             try {
                 CallingActivity.this.newIntance.dismiss();
-                if (isRecipientNumberFound){
+                if (isRecipientNumberFound) {
                     updateUI();
 
-                }
-
-
-                else
-                {
+                } else {
                     myTextToSpeech.intiTextToSpeech(CallingActivity.this, "hi", getResources().getString(R.string.Sorry_App_Kasy_Call_karna_Chaatay_Ha));
                     showVoiceRegonizerDiloge("en-IN");
                     isRecipientNumberFound = false;
@@ -289,7 +310,7 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
             public void run() {
                 try {
                     FragmentManager fragmentManager = getSupportFragmentManager();
-                    newIntance = voiceRecgonizationFragment.newInstance(s, false,false);
+                    newIntance = voiceRecgonizationFragment.newInstance(s, false, false);
                     newIntance.show(fragmentManager, "CallingActivity");
                     newIntance.setStyle(1, R.style.AppTheme);
                 } catch (Exception e) {

@@ -34,26 +34,11 @@ public class sendGmailCommand implements Command {
         context.startActivity(intent);
 
     }
-//
-//    private void getUserPrimaryEamil(Context context) {
-//        String gmail = null;
-//
-//        Pattern gmailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
-//        Account[] accounts = AccountManager.get(context).getAccounts();
-//        for (Account account : accounts) {
-//
-//            if (gmailPattern.matcher(account.name).matches()) {
-//                gmail = account.name;
-//
-//                Log.d("gamil",gmail);
-//            }
-//        }
-//    }
 
 
     @Override
     public String getDefaultPhrase() {
-        return "ای میل,Gmail";
+        return "ای میل لکھیں,Gmail اپ,Gmail لکھیں";
     }
 
     @Override

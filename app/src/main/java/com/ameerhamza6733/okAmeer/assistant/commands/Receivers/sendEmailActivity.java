@@ -1,16 +1,21 @@
 package com.ameerhamza6733.okAmeer.assistant.commands.Receivers;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -93,13 +98,44 @@ public class sendEmailActivity extends AppCompatActivity implements noNeedComman
             public void onReceive(Context context, Intent intent) {
                 String s = intent.getStringExtra("com.service.message");
 
-                if(!s.contains(getString(R.string.Aap_ki_Email_send_ki_ja_Rahi_ha)))
-                showVoiceRegoniztionFragment("en-IN", false, false);
+                if(!s.contains(getString(R.string.Aap_ki_Email_send_ki_ja_Rahi_ha))){
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                        if (ActivityCompat.checkSelfPermission(sendEmailActivity.this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED ) {
+                            askRunTimePermissions();
+                            return;
+                        }
+                    } else
+                        showVoiceRegoniztionFragment("en-IN", false, false);
+                }
+
+
 
             }
         };
 
 
+    }
+    private void askRunTimePermissions() {
+        ActivityCompat.requestPermissions(sendEmailActivity.this,
+                new String[]{Manifest.permission.READ_CONTACTS},
+                1);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED ) {
+                    showVoiceRegoniztionFragment("en-IN", false, false);
+                } else {
+                    Toast.makeText(this, "App need read READ_CONTACTS Permissions ", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+
+            }
+        }
     }
 
     private void showVoiceRegoniztionFragment(final String LEN, final boolean isTranlaterNeeded, final boolean isCommanderNeeded) {

@@ -8,12 +8,15 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
@@ -74,7 +77,17 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sms);
                      EXTRA_SMS_OR_WHATS_APP= getIntent().getStringExtra("EXTRA_SMS_OR_WHATS_APP");
-        showVoiceRegonizerDiloge("en-IN");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+                askRunTimePermissions();
+                return;
+            }
+        } else
+            showVoiceRegonizerDiloge("en-IN");
+
+
         callpickerSpinner = (Spinner) findViewById(R.id.caling_spinner);
         senderNameList = new ArrayList<>();
         senderNameList.add("contact");
@@ -88,9 +101,6 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         mSmsBody.setMaxLines(Integer.MAX_VALUE);
         smsOk = (ImageView) findViewById(R.id.caling_yas);
 
-        ActivityCompat.requestPermissions(sendSmsActivity.this,
-                new String[]{Manifest.permission.READ_CONTACTS,Manifest.permission.SEND_SMS},
-                1);
 
         mFebRetry.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +161,27 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
 
             }
         }, 1000);
+    }
+    private void askRunTimePermissions() {
+        ActivityCompat.requestPermissions(sendSmsActivity.this,
+                new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.SEND_SMS},
+                1);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    showVoiceRegonizerDiloge("en-IN");
+                } else {
+                    Toast.makeText(this, "App need read READ_CONTACTS and send Sms  Permissions ", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+
+            }
+        }
     }
     /**
      * Called when the Sms read to send
@@ -251,13 +282,6 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         Intent pickContactIntent = new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
         pickContactIntent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE); // Show user only contacts w/ phone numbers
         startActivityForResult(pickContactIntent, PICK_CONTACT_REQUEST);
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        // Forward results to EasyPermissions
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     private void methodRequiresTwoPermission() {

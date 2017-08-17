@@ -5,7 +5,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
@@ -54,49 +57,18 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sms_unread);
 
-        ActivityCompat.requestPermissions(smsUnreadActivity.this,
-                new String[]{Manifest.permission.READ_SMS},
-                111);
+
         cards = new ArrayList<Card>();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-
-        unread = SMSUtils.getUnreadMessages(this);
-        String text = "";
-        if (unread == null || unread.size() < 1) {
-
-            Toast.makeText(this,"no message to read ",Toast.LENGTH_SHORT).show();
-        } else {
-            Collections.reverse(unread);
-            for (SmsMmsMessage message : unread) {
-                Card card = new Card(this);
-                CardHeader header = new CardHeader(this);
-                header.setTitle(message.getContactName());
-                card.addCardHeader(header);
-                SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-                String dateString = formatter.format(new Date(Long.parseLong(String.valueOf(message.getTimestamp()))));
-                card.setTitle(message.getMessageBody() + " time : " + dateString);
-                cards.add(card);
-
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED ) {
+                askRunTimePermissions();
+                return;
             }
+        }else
+            getUnreadSMSandUpdateUI();
 
 
-            mCardArrayAdapter = new CardArrayAdapter(this, cards);
-
-            listView = (CardListView) findViewById(R.id.myList);
-            if (listView != null) {
-                listView.setAdapter(mCardArrayAdapter);
-            }
-
-
-
-            try {
-                intiTextToSpeech("hi-IN", "आपको कई मैसेज आए हैं  क्या आप चाहते हैं इसे सुनना");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-        }
 
 
         broadcastReceiver = new BroadcastReceiver() {
@@ -114,6 +86,42 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
                 showVoiceRegoniztionFragment();
             }
         });
+    }
+
+    private void getUnreadSMSandUpdateUI() {
+        unread = SMSUtils.getUnreadMessages(this);
+        String text = "";
+        if (unread == null || unread.size() < 1) {
+
+            Toast.makeText(this,"no message to read ",Toast.LENGTH_SHORT).show();
+        }
+        Collections.reverse(unread);
+        for (SmsMmsMessage message : unread) {
+            Card card = new Card(this);
+            CardHeader header = new CardHeader(this);
+            header.setTitle(message.getContactName());
+            card.addCardHeader(header);
+            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+            String dateString = formatter.format(new Date(Long.parseLong(String.valueOf(message.getTimestamp()))));
+            card.setTitle(message.getMessageBody() + " time : " + dateString);
+            cards.add(card);
+
+        }
+
+
+        mCardArrayAdapter = new CardArrayAdapter(this, cards);
+
+        listView = (CardListView) findViewById(R.id.myList);
+        if (listView != null) {
+            listView.setAdapter(mCardArrayAdapter);
+        }
+
+
+        try {
+            intiTextToSpeech("hi-IN", "आपको कई मैसेज आए हैं  क्या आप चाहते हैं इसे सुनना");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -195,6 +203,28 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         super.onStop();
     }
+    private void askRunTimePermissions() {
+        ActivityCompat.requestPermissions(smsUnreadActivity.this,
+                new String[]{Manifest.permission.READ_SMS},
+                1);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED ) {
+                  getUnreadSMSandUpdateUI();
+                } else {
+                    Toast.makeText(this, "App need  READ_SMS  Permissions ", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+
+            }
+        }
+    }
+
     private void voiceRecgonizerDismiss() {
         try {
             newIntance.dismiss();

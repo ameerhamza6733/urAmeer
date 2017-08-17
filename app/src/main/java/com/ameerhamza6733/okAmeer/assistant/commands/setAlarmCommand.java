@@ -31,7 +31,7 @@ public class setAlarmCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "الارم,";
+        return "الارم سیٹ کرو,الارم لگانا";
     }
 
     @Override

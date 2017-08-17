@@ -31,7 +31,7 @@ public class postOnFaceBook implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "فیس بک,Facebook,fb پر پوسٹ کرو";
+        return "null,Facebook پر پوسٹ کرو";
     }
 
     @Override
