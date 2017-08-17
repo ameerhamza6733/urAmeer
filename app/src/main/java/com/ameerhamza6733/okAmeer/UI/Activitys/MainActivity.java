@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         mSpeakButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 newIntance = voiceRecgonizationFragment.newInstance("hi", true, true);
                 newIntance.setStyle(1, R.style.AppTheme);
