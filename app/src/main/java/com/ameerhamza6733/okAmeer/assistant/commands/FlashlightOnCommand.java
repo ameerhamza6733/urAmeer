@@ -36,7 +36,7 @@ public class FlashlightOnCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "فلیش روشنی آن,لائٹ آن,روشنی جلاؤ,لائٹ جلاؤ,بتی جلاؤ";
+        return "فلیش روشنی آن,لائٹ آن,روشنی جلاؤ,لائٹ جلاؤ,بتی جلاؤ,flashlight on karo,light chalao,light on karo";
     }
 
     @Override

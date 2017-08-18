@@ -38,7 +38,7 @@ public class sendGmailCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "ای میل لکھیں,Gmail اپ,Gmail لکھیں";
+        return "ای میل لکھیں,Gmail اپ,Gmail لکھیں,email send karo,email likho,Gmail likho";
     }
 
     @Override

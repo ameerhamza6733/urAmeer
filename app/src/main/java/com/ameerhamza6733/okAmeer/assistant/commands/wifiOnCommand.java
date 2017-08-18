@@ -22,7 +22,7 @@ public class wifiOnCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "وائی \u200B\u200Bفائی آن کر,وائی فائی آن کرو,WiFi آن,WiFi چلاو";
+        return "وائی \u200B\u200Bفائی آن کر,وائی فائی آن کرو,WiFi آن,WiFi چلاو,Wi-Fi on karo,Wi-Fi chalao";
     }
 
     @Override

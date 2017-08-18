@@ -23,7 +23,7 @@ public class nextSongCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "اگلا گانا,";
+        return "اگلا گانا,Aag Lagana lagao";
     }
 
     @Override

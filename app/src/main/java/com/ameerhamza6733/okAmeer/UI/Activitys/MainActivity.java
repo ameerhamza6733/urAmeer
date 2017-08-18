@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showVoiceFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        newIntance = voiceRecgonizationFragment.newInstance("hi", true, true);
+        newIntance = voiceRecgonizationFragment.newInstance("en-IN", false, true);
         newIntance.setStyle(1, R.style.AppTheme);
         newIntance.show(fragmentManager, "fragment_voice_input");
     }

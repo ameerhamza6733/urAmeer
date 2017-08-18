@@ -33,7 +33,7 @@ public class pauseMuusicCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "گانا بند کرو,میوزک بند کرو";
+        return "گانا بند کرو,میوزک بند کرو,gaana band karo,music band karo";
     }
 
     @Override

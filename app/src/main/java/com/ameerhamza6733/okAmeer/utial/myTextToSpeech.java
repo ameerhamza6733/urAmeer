@@ -2,6 +2,7 @@ package com.ameerhamza6733.okAmeer.utial;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
@@ -21,29 +22,6 @@ import java.util.Locale;
 public class myTextToSpeech {
 
     private static TextToSpeech textToSpeech;
-
-
-//    public myTextToSpeech(Context context, String language, String text) {
-//        this.context = context;
-//        this.textToSpeech = new TextToSpeech(this.context,this);
-//        this.language = language;
-//        this.text = text;
-//    }
-//
-//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-//    @Override
-//    public void onInit(int status) {
-//        if(status == TextToSpeech.SUCCESS);
-//        {
-//            Log.d("myTextToSpeech","seuccess"+this.text);
-//            this.textToSpeech.setLanguage(Locale.forLanguageTag(this.language));
-//            String utteranceId=this.hashCode() + "";
-//            this.textToSpeech.speak(this.text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
-//            this.textToSpeech.speak(this.text, TextToSpeech.QUEUE_FLUSH, null,utteranceId);
-//
-//        }
-
-
     public static void intiTextToSpeech(final Context context, final String language, final String text) throws Exception{
 
         textToSpeech = new TextToSpeech(context.getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -59,24 +37,39 @@ public class myTextToSpeech {
                             || result == TextToSpeech.LANG_NOT_SUPPORTED) {
 
                         Toast.makeText(context, "language_not_supported please make sure you select Google text to speech in next screen ", Toast.LENGTH_LONG).show();
-                       Intent intent = new Intent();
-                        intent.setAction("com.android.settings.TTS_SETTINGS");
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent);
+
 
 
                     } else {
                         speakOut(text);
                     }
                 } else {
-                    Toast.makeText(context, "tts_failed "+status, Toast.LENGTH_LONG).show();
+
+                    if(status == -1) //
+                    {
+                        Toast.makeText(context, "please make sure Google text to speech ENABLE and UPDATE:  Error code "+status, Toast.LENGTH_LONG).show();
+
+                        // this is will open play store if use have not install or disable google text to speach
+                        try {
+                            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.tts")));
+                        } catch (android.content.ActivityNotFoundException anfe) {
+                            context.  startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.tts" )));
+                        }
+                    }else {
+                        Toast.makeText(context, "please make sure you select Google text to speech in next screen: Error code "+status, Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent();
+                        intent.setAction("com.android.settings.TTS_SETTINGS");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+
                 }
 
 
             }
 
 
-        });
+        }, "com.google.android.tts");
 
         textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override

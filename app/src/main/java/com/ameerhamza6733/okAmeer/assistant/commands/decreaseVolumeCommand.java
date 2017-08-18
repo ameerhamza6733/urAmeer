@@ -21,7 +21,7 @@ public class decreaseVolumeCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "والیوم کم کرو,آواز کم کرو,آواز تھوڑی کرو";
+        return "والیوم کم کرو,آواز کم کرو,آواز تھوڑی کرو,Volume kam karo,Awaz kam karo";
     }
 
     @Override

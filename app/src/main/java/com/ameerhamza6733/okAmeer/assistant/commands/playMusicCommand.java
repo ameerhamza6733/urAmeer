@@ -31,7 +31,7 @@ public class playMusicCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "گانا لگاؤ,میوزک لگاو";
+        return "گانا لگاؤ,میوزک لگاو,gana lagao";
     }
 
     @Override

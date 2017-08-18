@@ -21,7 +21,7 @@ public class BluetoothOffCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "بلوٹوت بند کرو,بلوٹوت آف کرو";
+        return "بلوٹوت بند کرو,بلوٹوت آف کرو,bluetooth off karo,Bluetooth band karo";
     }
 
     @Override

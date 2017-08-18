@@ -22,7 +22,7 @@ public class BluetoothOnCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "بلوٹوت آن کرو,بلوٹوت چلاو";
+        return "بلوٹوت آن کرو,بلوٹوت چلاو,Bluetooth on karo,Bluetooth chalao";
     }
 
     @Override

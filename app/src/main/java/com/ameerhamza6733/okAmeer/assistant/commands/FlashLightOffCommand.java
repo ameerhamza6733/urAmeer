@@ -23,7 +23,7 @@ public class FlashLightOffCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "فلیش روشنی بند,لائٹ بند,لائٹ آف";
+        return "فلیش روشنی بند,لائٹ بند,لائٹ آف,flashlight off karo,flashlight band karo,light band karo,light off karo";
     }
 
     @Override

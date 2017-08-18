@@ -2,6 +2,7 @@ package com.ameerhamza6733.okAmeer.assistant;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.ameerhamza6733.okAmeer.assistant.commands.BluetoothOffCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.BluetoothOnCommand;
@@ -45,6 +46,7 @@ public class CommandInvoker {
     }
     public static boolean excute(final Context context, String phrase)
     {
+        Log.d("commander invoker","ecuted"+phrase);
         boolean isCommandFound=false;
         for (final Command command : getCommands())
         {

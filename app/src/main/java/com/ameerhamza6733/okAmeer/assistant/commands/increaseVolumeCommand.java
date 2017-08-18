@@ -23,7 +23,7 @@ public class increaseVolumeCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "حجم زیادہ کرو,آواز زیادہ کرو,آواز بلند کرو";
+        return "حجم زیادہ کرو,آواز زیادہ کرو,آواز بلند کرو,volume jayada karo,Awaz Jyada karo";
     }
 
     @Override

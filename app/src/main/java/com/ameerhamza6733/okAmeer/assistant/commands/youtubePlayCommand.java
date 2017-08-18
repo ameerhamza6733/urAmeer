@@ -19,7 +19,7 @@ public class youtubePlayCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "null,YouTube سے گانا لگاؤ";
+        return "YouTube se gana lagao,YouTube سے گانا لگاؤ";
     }
 
     @Override

@@ -22,7 +22,7 @@ public class wifiOffCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "وائی \u200B\u200Bفائی آف,وائی \u200B\u200Bفائی بند,وائی فائی بند,وائی فائی آف,wifi آف";
+        return "وائی \u200B\u200Bفائی آف,وائی \u200B\u200Bفائی بند,وائی فائی بند,وائی فائی آف,wifi آف,Wi-Fi band karo,WiFi off karo";
     }
 
     @Override

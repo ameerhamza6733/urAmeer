@@ -168,7 +168,7 @@ public class voiceRecgonizationFragment extends DialogFragment {
             if (matches != null) {
                 Log.d(TAG, "no need tralate.." + getActivity().getClass().getSimpleName() + "Text = " + matches.get(0));
                 try {
-                    doNotExcuteCommander(matches.get(0));
+                    invockCommanderOrNot(matches.get(0));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

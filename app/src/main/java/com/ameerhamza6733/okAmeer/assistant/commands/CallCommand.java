@@ -21,7 +21,7 @@ public class CallCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "کال کرو,فون کرو";
+        return "کال کرو,فون کرو,call karo";
     }
 
     @Override

@@ -28,7 +28,7 @@ public class sendWhatsAppCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "WhatsApp";
+        return "WhatsApp message bhejo,WhatsApp message likho";
     }
 
     @Override
