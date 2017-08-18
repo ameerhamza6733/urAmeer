@@ -38,6 +38,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.cketti.mailto.EmailIntentBuilder;
+import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
+import lolodev.permissionswrapper.wrapper.PermissionWrapper;
 
 public class sendEmailActivity extends AppCompatActivity implements noNeedCommander {
 
@@ -116,27 +118,34 @@ public class sendEmailActivity extends AppCompatActivity implements noNeedComman
 
 
     }
-    private void askRunTimePermissions() {
-        ActivityCompat.requestPermissions(sendEmailActivity.this,
-                new String[]{Manifest.permission.READ_CONTACTS},
-                1);
-    }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED ) {
-                    showVoiceRegoniztionFragment("en-IN", false, false);
-                } else {
-                    Toast.makeText(this, "App need read READ_CONTACTS Permissions ", Toast.LENGTH_LONG).show();
-                    finish();
-                }
+        private void askRunTimePermissions() {
+            new PermissionWrapper.Builder(this)
+                    .addPermissions(new String[]{ Manifest.permission.READ_CONTACTS })
+                    //enable rationale message with a custom message
 
-            }
+                    //show settings dialog,in this case with default message base on requested permission/s
+                    .addPermissionsGoSettings(true)
+                    //enable callback to know what option was choosed
+                    .addRequestPermissionsCallBack(new OnRequestPermissionsCallBack() {
+                        @Override
+                        public void onGrant() {
+                            Log.i(sendSmsActivity.class.getSimpleName(), "Permission was granted.");
+                            showVoiceRegoniztionFragment("en-IN", false, false);
+
+
+                        }
+
+                        @Override
+                        public void onDenied(String permission) {
+                            Log.i(sendSmsActivity.class.getSimpleName(), "Permission was not granted.");
+                        }
+                    }).build().request();
         }
-    }
+
+
+
+
 
     private void showVoiceRegoniztionFragment(final String LEN, final boolean isTranlaterNeeded, final boolean isCommanderNeeded) {
 

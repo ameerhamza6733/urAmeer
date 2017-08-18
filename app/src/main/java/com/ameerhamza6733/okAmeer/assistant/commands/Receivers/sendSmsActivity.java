@@ -43,11 +43,14 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
+import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
+import lolodev.permissionswrapper.wrapper.PermissionWrapper;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class sendSmsActivity extends AppCompatActivity implements noNeedCommander, onErrorSevenvoiceRecgoniztion {
@@ -78,9 +81,9 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         setContentView(R.layout.activity_sms);
                      EXTRA_SMS_OR_WHATS_APP= getIntent().getStringExtra("EXTRA_SMS_OR_WHATS_APP");
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT > 22) {
 
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
                 askRunTimePermissions();
                 return;
             }
@@ -163,26 +166,31 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         }, 1000);
     }
     private void askRunTimePermissions() {
-        ActivityCompat.requestPermissions(sendSmsActivity.this,
-                new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.SEND_SMS},
-                1);
+        new PermissionWrapper.Builder(this)
+                .addPermissions(new String[]{ Manifest.permission.READ_CONTACTS , Manifest.permission.SEND_SMS })
+                //enable rationale message with a custom message
+
+                //show settings dialog,in this case with default message base on requested permission/s
+                .addPermissionsGoSettings(true)
+                //enable callback to know what option was choosed
+                .addRequestPermissionsCallBack(new OnRequestPermissionsCallBack() {
+                    @Override
+                    public void onGrant() {
+                        Log.i(sendSmsActivity.class.getSimpleName(), "Permission was granted.");
+                        showVoiceRegonizerDiloge("en-IN");
+
+
+                    }
+
+                    @Override
+                    public void onDenied(String permission) {
+                        Log.i(sendSmsActivity.class.getSimpleName(), "Permission was not granted.");
+                    }
+                }).build().request();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                    showVoiceRegonizerDiloge("en-IN");
-                } else {
-                    Toast.makeText(this, "App need read READ_CONTACTS and send Sms  Permissions ", Toast.LENGTH_LONG).show();
-                    finish();
-                }
 
-            }
-        }
-    }
+
     /**
      * Called when the Sms read to send
      */
@@ -284,18 +292,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         startActivityForResult(pickContactIntent, PICK_CONTACT_REQUEST);
     }
 
-    private void methodRequiresTwoPermission() {
-        String[] perms = {Manifest.permission.READ_CONTACTS, Manifest.permission.SEND_SMS};
-        if (EasyPermissions.hasPermissions(this, perms)) {
-            // Already have permission, do the thing
-            // ...
-        } else {
-            // Do not have permissions, request them now
-            EasyPermissions.requestPermissions(this, "Read contants and send sms permissios need ",
 
-                   1 , perms);
-        }
-    }
     /**
      * called when count down(3 second) finish this mathod invoke by  startSedingSmsCountDown(...), it send only SMS
      */

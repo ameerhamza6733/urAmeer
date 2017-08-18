@@ -69,7 +69,7 @@ public class myTextToSpeech {
                         speakOut(text);
                     }
                 } else {
-                    Toast.makeText(context, "tts_failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "tts_failed "+status, Toast.LENGTH_LONG).show();
                 }
 
 

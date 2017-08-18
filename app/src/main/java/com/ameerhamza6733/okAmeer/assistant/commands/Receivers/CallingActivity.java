@@ -34,6 +34,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
+import lolodev.permissionswrapper.wrapper.PermissionWrapper;
+
 public class CallingActivity extends AppCompatActivity implements noNeedCommander {
 
     private static final int PICK_CONTACT_REQUEST = 1;
@@ -54,9 +57,9 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calling);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT > 22) {
 
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                 askRunTimePermissions();
                 return;
             }
@@ -101,26 +104,30 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
     }
 
     private void askRunTimePermissions() {
-        ActivityCompat.requestPermissions(CallingActivity.this,
-                new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE},
-                1);
+        new PermissionWrapper.Builder(this)
+                .addPermissions(new String[]{ Manifest.permission.READ_CONTACTS , Manifest.permission.CALL_PHONE })
+                //enable rationale message with a custom message
+
+                //show settings dialog,in this case with default message base on requested permission/s
+                .addPermissionsGoSettings(true)
+                //enable callback to know what option was choosed
+                .addRequestPermissionsCallBack(new OnRequestPermissionsCallBack() {
+                    @Override
+                    public void onGrant() {
+                        Log.i(sendSmsActivity.class.getSimpleName(), "Permission was granted.");
+                        showVoiceRegonizerDiloge("en-IN");
+
+
+                    }
+
+                    @Override
+                    public void onDenied(String permission) {
+                        Log.i(sendSmsActivity.class.getSimpleName(), "Permission was not granted.");
+                    }
+                }).build().request();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                    showVoiceRegonizerDiloge("en-IN");
-                } else {
-                    Toast.makeText(this, "App need read READ_CONTACTS and make phone call Permissions ", Toast.LENGTH_LONG).show();
-                    finish();
-                }
 
-            }
-        }
-    }
 
     protected void intiCallingCountDown() throws Exception {
         myTextToSpeech.intiTextToSpeech(CallingActivity.this, "hi", "आपकी कॉल की जा रही है");

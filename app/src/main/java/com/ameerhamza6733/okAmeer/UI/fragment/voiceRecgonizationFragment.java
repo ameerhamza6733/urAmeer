@@ -85,7 +85,7 @@ public class voiceRecgonizationFragment extends DialogFragment {
         excuteCommander = getArguments().getBoolean(BUNDLE_KEY_EXTRA_EXCUTE_COMANDER);
 
         int[] heights = new int[]{60, 76, 58, 80, 55};
-        requestPermission();
+
         this.speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getActivity());
         this.recognitionProgressView = (RecognitionProgressView) view.findViewById(R.id.recognition_view);
         this.recognitionProgressView.setSpeechRecognizer(this.speechRecognizer);
@@ -246,16 +246,7 @@ public class voiceRecgonizationFragment extends DialogFragment {
         sendDateToNOnHidni.sendingDataToActivitys(getActivity(), date, getActivity().getClass().getSimpleName());
     }
 
-    private void requestPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), "android.permission.RECORD_AUDIO")) {
-            Toast.makeText(getActivity(), "Requires RECORD_AUDIO permission", Toast.LENGTH_LONG).show();
-            return;
-        }
-        FragmentActivity activity = getActivity();
-        String[] strArr = new String[REQUEST_RECORD_AUDIO_PERMISSION_CODE];
-        strArr[0] = "android.permission.RECORD_AUDIO";
-        ActivityCompat.requestPermissions(activity, strArr, REQUEST_RECORD_AUDIO_PERMISSION_CODE);
-    }
+
 
     private synchronized  void  startRecognition() {
         Intent intent = new Intent("android.speech.action.RECOGNIZE_SPEECH");

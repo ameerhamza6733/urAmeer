@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -35,6 +36,8 @@ import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.view.CardListView;
+import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
+import lolodev.permissionswrapper.wrapper.PermissionWrapper;
 
 public class smsUnreadActivity extends AppCompatActivity implements noNeedCommander {
 
@@ -59,7 +62,7 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
 
 
         cards = new ArrayList<Card>();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT > 22) {
 
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED ) {
                 askRunTimePermissions();
@@ -203,27 +206,31 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         super.onStop();
     }
+
     private void askRunTimePermissions() {
-        ActivityCompat.requestPermissions(smsUnreadActivity.this,
-                new String[]{Manifest.permission.READ_SMS},
-                1);
+        new PermissionWrapper.Builder(this)
+                .addPermissions(new String[]{ Manifest.permission.READ_SMS })
+                //enable rationale message with a custom message
+
+                //show settings dialog,in this case with default message base on requested permission/s
+                .addPermissionsGoSettings(true)
+                //enable callback to know what option was choosed
+                .addRequestPermissionsCallBack(new OnRequestPermissionsCallBack() {
+                    @Override
+                    public void onGrant() {
+                        Log.i(sendSmsActivity.class.getSimpleName(), "Permission was granted.");
+                        getUnreadSMSandUpdateUI();
+
+
+                    }
+
+                    @Override
+                    public void onDenied(String permission) {
+                        Log.i(sendSmsActivity.class.getSimpleName(), "Permission was not granted.");
+                    }
+                }).build().request();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED ) {
-                  getUnreadSMSandUpdateUI();
-                } else {
-                    Toast.makeText(this, "App need  READ_SMS  Permissions ", Toast.LENGTH_LONG).show();
-                    finish();
-                }
-
-            }
-        }
-    }
 
     private void voiceRecgonizerDismiss() {
         try {

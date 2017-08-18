@@ -9,9 +9,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
+
+import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
+import lolodev.permissionswrapper.wrapper.PermissionWrapper;
 
 public class BluetoothActivity extends AppCompatActivity {
 
@@ -21,9 +25,15 @@ public class BluetoothActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth);
-        int MyVersion = Build.VERSION.SDK_INT;
-        if (MyVersion > Build.VERSION_CODES.LOLLIPOP_MR1)
-            requestForSpecificPermission();
+
+        if (Build.VERSION.SDK_INT > 22){
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
+                askRunTimePermissions();
+                return;
+            }
+
+        }
+
         else
             turnONorOfF();
 
@@ -31,20 +41,30 @@ public class BluetoothActivity extends AppCompatActivity {
 
     }
 
+    private void askRunTimePermissions() {
+        new PermissionWrapper.Builder(this)
+                .addPermissions(new String[]{ Manifest.permission.BLUETOOTH , Manifest.permission.BLUETOOTH_ADMIN })
+                //enable rationale message with a custom message
+
+                //show settings dialog,in this case with default message base on requested permission/s
+                .addPermissionsGoSettings(true)
+                //enable callback to know what option was choosed
+                .addRequestPermissionsCallBack(new OnRequestPermissionsCallBack() {
+                    @Override
+                    public void onGrant() {
+                        Log.i(sendSmsActivity.class.getSimpleName(), "Permission was granted.");
+                      turnONorOfF();
 
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode ==BLUETOOTH_PERMISSION_CODE){
-            if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
-                turnONorOfF();
-            }else if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_DENIED){
-                Toast.makeText(BluetoothActivity.this,"To access bluetooth we need permission",Toast.LENGTH_SHORT).show();
-            }else {
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            }
-        }
+                    }
+
+                    @Override
+                    public void onDenied(String permission) {
+                        Log.i(sendSmsActivity.class.getSimpleName(), "Permission was not granted.");
+                    }
+                }).build().request();
     }
+
 
     private void turnONorOfF() {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -63,8 +83,5 @@ public class BluetoothActivity extends AppCompatActivity {
         }
     }
 
-    private void requestForSpecificPermission() {
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.BLUETOOTH,Manifest.permission.BLUETOOTH_ADMIN}, BLUETOOTH_PERMISSION_CODE);
 
-    }
 }
