@@ -16,10 +16,10 @@ import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -38,10 +38,10 @@ import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.UI.fragment.voiceRecgonizationFragment;
 import com.ameerhamza6733.okAmeer.interfacess.noNeedCommander;
 import com.ameerhamza6733.okAmeer.interfacess.onErrorSevenvoiceRecgoniztion;
+import com.ameerhamza6733.okAmeer.utial.TTSService;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
-
 
 
 import java.util.ArrayList;
@@ -51,7 +51,6 @@ import java.util.List;
 
 import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
 import lolodev.permissionswrapper.wrapper.PermissionWrapper;
-import pub.devrel.easypermissions.EasyPermissions;
 
 public class sendSmsActivity extends AppCompatActivity implements noNeedCommander, onErrorSevenvoiceRecgoniztion {
 
@@ -59,7 +58,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
     private static String EXTRA_SMS_OR_WHATS_APP;
 
 
-    private boolean getSmsBody = false;
+    private boolean FlagGetSmsBody = false;
     private ArrayList<String> senderNameList;
     private ArrayAdapter<String> adapter;
     private HashMap<String, String> mHashMapContacts = new HashMap<>();
@@ -73,13 +72,19 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
     private ImageView smsCancle;
     private FloatingActionButton mFebRetry;
     private voiceRecgonizationFragment newIntance;
+    private BroadcastReceiver broadcastReceiver;
+    private String MessageBody;
+    public static final String EXTRA_RECIPIENT_NAME ="EXTRA_RECIPIENT_NAME";
+    public static final String[] positiveWords = {"ji haan", "ha", "yas", "bhej do", "send kar do", "kar do"};
+    public static final String[] negativeWords = {"nahi send karna", "nahi", "no", "cancel kar do"};
+    private static final String [] changeITwords = {"phir se likho","dubara se likho", "dubara  likho","change kar do","badal do"};
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sms);
-                     EXTRA_SMS_OR_WHATS_APP= getIntent().getStringExtra("EXTRA_SMS_OR_WHATS_APP");
+        EXTRA_SMS_OR_WHATS_APP = getIntent().getStringExtra("EXTRA_SMS_OR_WHATS_APP");
 
         if (Build.VERSION.SDK_INT > 22) {
 
@@ -88,7 +93,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
                 return;
             }
         } else
-            showVoiceRegonizerDiloge("en-IN");
+            new myContentNameFinder(getIntent().getStringExtra(EXTRA_RECIPIENT_NAME)).execute();
 
 
         callpickerSpinner = (Spinner) findViewById(R.id.caling_spinner);
@@ -101,7 +106,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         mSedingSmsIn = (TextView) findViewById(R.id.making_call_in);
         mSmsBody = (EditText) findViewById(R.id.smsBodayEdittext);
         mFebRetry = (FloatingActionButton) findViewById(R.id.febRetry);
-        mSmsBody.setMaxLines(Integer.MAX_VALUE);
+
         smsOk = (ImageView) findViewById(R.id.caling_yas);
 
 
@@ -114,7 +119,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         smsOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                        try {
+                try {
                     sendSmsActivity.this.sendItNow(mHashMapContacts.get(sendSmsActivity.this.callpickerSpinner.getSelectedItem().toString()), mSmsBody.getText().toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -126,17 +131,19 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         smsCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if(countDownTimer!=null){
-                   sendSmsActivity.this.countDownTimer.cancel();
-                   sendSmsActivity.this.mSedingSmsIn.setText("Message canceled");
-               }
+                if (countDownTimer != null) {
+                    sendSmsActivity.this.countDownTimer.cancel();
+                    sendSmsActivity.this.mSedingSmsIn.setText("Message canceled");
+                }
             }
         });
         callpickerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (!parent.getItemAtPosition(position).toString().equals("contact"))
-                    askSms();
+
+                    showVoiceRegonizerDiloge("en-IN");
+
             }
 
             @Override
@@ -144,6 +151,15 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
 
             }
         });
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String s = intent.getStringExtra("com.service.message");
+
+
+                showVoiceRegonizerDiloge("en-IN");
+            }
+        };
 
 
     }
@@ -154,7 +170,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
             public void run() {
                 try {
                     FragmentManager fragmentManager = getSupportFragmentManager();
-                    newIntance = voiceRecgonizationFragment.newInstance(LANGUAGE, false,false);
+                    newIntance = voiceRecgonizationFragment.newInstance(LANGUAGE, false, false);
                     newIntance.show(fragmentManager, "sendSmsActivity");
                     newIntance.setStyle(1, R.style.AppTheme);
                 } catch (Exception e) {
@@ -165,9 +181,10 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
             }
         }, 1000);
     }
+
     private void askRunTimePermissions() {
         new PermissionWrapper.Builder(this)
-                .addPermissions(new String[]{ Manifest.permission.READ_CONTACTS , Manifest.permission.SEND_SMS })
+                .addPermissions(new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.SEND_SMS})
                 //enable rationale message with a custom message
 
                 //show settings dialog,in this case with default message base on requested permission/s
@@ -177,7 +194,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
                     @Override
                     public void onGrant() {
                         Log.i(sendSmsActivity.class.getSimpleName(), "Permission was granted.");
-                        showVoiceRegonizerDiloge("en-IN");
+                      new myContentNameFinder(getIntent().getStringExtra(EXTRA_RECIPIENT_NAME)).execute();
 
 
                     }
@@ -188,7 +205,6 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
                     }
                 }).build().request();
     }
-
 
 
     /**
@@ -202,7 +218,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mSmsBody.setText(smsBody);
+
         countDownTimer = new CountDownTimer(3000, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -211,43 +227,85 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
 
             public void onFinish() {
                 sendSmsActivity.this.mSedingSmsIn.setText("Done!");
-               try {
-                   if(EXTRA_SMS_OR_WHATS_APP.equals("sms"))
-                       sendSmsActivity.this.sendItNow(mHashMapContacts.get(sendSmsActivity.this.callpickerSpinner.getSelectedItem().toString()), mSmsBody.getText().toString());
-                   else
-                       sendWhatsAppNow(mHashMapContacts.get(sendSmsActivity.this.callpickerSpinner.getSelectedItem().toString()),smsBody);
-               }catch (Exception e){
+                try {
+                    if (EXTRA_SMS_OR_WHATS_APP.equals("sms"))
+                        sendSmsActivity.this.sendItNow(mHashMapContacts.get(sendSmsActivity.this.callpickerSpinner.getSelectedItem().toString()), mSmsBody.getText().toString());
+                    else
+                        sendWhatsAppNow(mHashMapContacts.get(sendSmsActivity.this.callpickerSpinner.getSelectedItem().toString()), smsBody);
+                } catch (Exception e) {
 
-               }
+                }
             }
 
 
         }.start();
     }
+
     /**
      * this method used to  get Phone number and message body from user
      */
 
     @Override
     public void onNoCommandrExcute(String Queary) {
-        Toast.makeText(this,Queary,Toast.LENGTH_LONG).show();
-        if (Queary.toLowerCase().equals("nahi karna message")) {
-            Toast.makeText(sendSmsActivity.this, "App ka message cancel kar dea gay ha ", Toast.LENGTH_SHORT).show();
-            finish();
-        }
+        Toast.makeText(this, Queary, Toast.LENGTH_LONG).show();
+//        if (Queary.toLowerCase().equals("nahi karna message")) {
+//            Toast.makeText(sendSmsActivity.this, "App ka message cancel kar dea gay ha ", Toast.LENGTH_SHORT).show();
+//            finish();
+//        }
+
         if (!isRecipientNumberFound)
             new myContentNameFinder(Queary).execute();
-        else if (getSmsBody) {
-            startSedingSmsCountDown(Queary);
+        else if (FlagGetSmsBody) { // after geting sms body ask user to where he/she want to send this sms or not?
             voiceRecgonizerDismiss();
+            FlagGetSmsBody = false;
+            intiTextToSpeech("hi",getResources().getString(R.string.send_kar_do_ya_badal_do));
+            mSmsBody.setText(Queary);
+
+
+        } else {
+            voiceRecgonizerDismiss();
+            for (String postiveWord : positiveWords)
+                if (Queary.equalsIgnoreCase(postiveWord))
+                    startSedingSmsCountDown(mSmsBody.getText().toString());
+            for (String negativeWord : negativeWords)
+                if (Queary.equalsIgnoreCase(negativeWord))
+                    Toast.makeText(sendSmsActivity.this, "App ka message cancel kar dea gay ha ", Toast.LENGTH_SHORT).show();
+            for(String changeTtWord : changeITwords)
+                if(Queary.equalsIgnoreCase(changeTtWord))
+                {
+                    FlagGetSmsBody=true;
+                    intiTextToSpeech("hi", getResources().getString(R.string.Message_kay_ha));
+                    mSmsBody.setText("");
+
+                }
 
         }
 
 
     }
 
+    private void intiTextToSpeech(final String LEN, final String text) {
+        Handler mTextToSpeechHandler = new Handler();
+        Runnable mTextTOSpeechrunnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Intent i = new Intent(sendSmsActivity.this, TTSService.class);
+                    i.putExtra("toSpeak", text);
+                    i.putExtra("Language", LEN);
+                    sendSmsActivity.this.startService(i);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        mTextToSpeechHandler.postDelayed(mTextTOSpeechrunnable, 1000);
+
+    }
+
     private void voiceRecgonizerDismiss() {
         try {
+            if(newIntance!=null)
             newIntance.dismiss();
         } catch (Exception e) {
             e.printStackTrace();
@@ -286,6 +344,19 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver((broadcastReceiver),
+                new IntentFilter("com.service.result"));
+    }
+
+    @Override
+    protected void onStop() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        super.onStop();
+    }
+
     private void pickContact() {
         Intent pickContactIntent = new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
         pickContactIntent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE); // Show user only contacts w/ phone numbers
@@ -299,7 +370,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
 
     private void sendItNow(String senderNumber, String smsBody) throws Exception {
 
-        Log.d("send sms",senderNumber+smsBody);
+        Log.d("send sms", senderNumber + smsBody);
 
         String SENT = "SMS_SENT";
         String DELIVERED = "SMS_DELIVERED";
@@ -311,11 +382,10 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
                 new Intent(DELIVERED), 0);
 
         //---when the SMS has been sent---
-        registerReceiver(new BroadcastReceiver(){
+        registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context arg0, Intent arg1) {
-                switch (getResultCode())
-                {
+                switch (getResultCode()) {
                     case Activity.RESULT_OK:
                         Toast.makeText(getBaseContext(), "SMS sent",
                                 Toast.LENGTH_SHORT).show();
@@ -343,11 +413,10 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         }, new IntentFilter(SENT));
 
         //---when the SMS has been delivered---
-        registerReceiver(new BroadcastReceiver(){
+        registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context arg0, Intent arg1) {
-                switch (getResultCode())
-                {
+                switch (getResultCode()) {
                     case Activity.RESULT_OK:
                         Toast.makeText(getBaseContext(), "SMS delivered",
                                 Toast.LENGTH_SHORT).show();
@@ -366,13 +435,14 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
 
 
     }
+
     /**
      * called when count down(3 second) finish this mathod invoke by  startSedingSmsCountDown(...), it send only whats app
      */
-    private void sendWhatsAppNow (String number, String smsBody)throws  Exception{
+    private void sendWhatsAppNow(String number, String smsBody) throws Exception {
 
 
-        Log.d("smsActivty","sending whats app...to"+number+"and message ="+smsBody);
+        Log.d("smsActivty", "sending whats app...to" + number + "and message =" + smsBody);
         Intent sendIntent = new Intent("android.intent.action.MAIN");
         //sendIntent.setComponent(new ComponentName("com.whatsapp", "com.whatsapp.Conversation"));
         sendIntent.setAction(Intent.ACTION_SEND);
@@ -403,6 +473,8 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
     @Override
     public void onError7() {
         Toast.makeText(sendSmsActivity.this, "onError 7", Toast.LENGTH_SHORT).show();
+        if(newIntance!=null)
+            newIntance.dismiss();
     }
 
     private class myContentNameFinder extends AsyncTask<Void, Void, Void> {
@@ -420,10 +492,10 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                if(EXTRA_SMS_OR_WHATS_APP .equals("sms"))
-                findRecipientNumberForSms();//find Recipient number for sms or else user want to send whats app
+                if (EXTRA_SMS_OR_WHATS_APP.equals("sms"))
+                    findRecipientNumberForSms();//find Recipient number for sms or else user want to send whats app
                 else
-                findRecipientNumberForWhatsApp();
+                    findRecipientNumberForWhatsApp();
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -471,7 +543,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
 
                                     whatsAppContactCursor.close();
 
-                                    Log.d("whatsapp name","name"+name);
+                                    Log.d("whatsapp name", "name" + name);
                                     if (mTargetNumber.toLowerCase().contains(name.toLowerCase()) || name.toLowerCase().contains(mTargetNumber.toLowerCase())) {
                                         mNameListFounded.add(name);
                                         isRecipientNumberFound = true;
@@ -479,12 +551,12 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
 
 
                                     try {
-                                        TelephonyManager tm = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+                                        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
                                         PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
                                         Phonenumber.PhoneNumber NumberProto = phoneUtil.parse(number, tm.getSimCountryIso().toUpperCase());
-                                        Log.d("phone number",""+phoneUtil.format(NumberProto, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL));
+                                        Log.d("phone number", "" + phoneUtil.format(NumberProto, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL));
                                         number = phoneUtil.format(NumberProto, PhoneNumberUtil.PhoneNumberFormat.E164);
-                                       number= number.replaceAll("[-+.^:,]","");
+                                        number = number.replaceAll("[-+.^:,]", "");
                                     } catch (Exception e) {
                                         System.err.println("NumberParseException was thrown: " + e.toString());
                                     }
@@ -551,13 +623,15 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
                 if (isRecipientNumberFound) {
                     voiceRecgonizerDismiss();
                     updateSpinner();// update the UI and notify to use about Recipients number found
-                    myTextToSpeech.intiTextToSpeech(sendSmsActivity.this, "hi", getResources().getString(R.string.Aur_Message_kay_ha));
+                    intiTextToSpeech("hi", getResources().getString(R.string.Message_kay_ha));
 
 
                 } else {
+                    if(newIntance==null)
+                        intiTextToSpeech("hi", getResources().getString(R.string.Kis_Ko_message_likha_na));
+                    else
+                        intiTextToSpeech("hi", getResources().getString(R.string.Sorry_App_Kiss_Ko_Sms_Send_Karna_Chaatay_ha));
 
-                    myTextToSpeech.intiTextToSpeech(sendSmsActivity.this, "hi", getResources().getString(R.string.Sorry_App_Kiss_Ko_Sms_Send_Karna_Chaatay_ha));
-                    showVoiceRegonizerDiloge("en-IN");
 
                 }
 
@@ -570,13 +644,12 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         }
 
         private void updateSpinner() {
-            getSmsBody = true;
+            FlagGetSmsBody = true;
             if (mNameListFounded.size() == 1) {
 
 
                 senderNameList.set(0, mNameListFounded.get(0));
                 adapter.notifyDataSetChanged();
-                askSms();
 
 
             } else if (mNameListFounded.size() > 1) {
@@ -587,9 +660,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         }
     }
 
-    private void askSms() {
-        showVoiceRegonizerDiloge("en-IN");
-    }
+
 }
 
 

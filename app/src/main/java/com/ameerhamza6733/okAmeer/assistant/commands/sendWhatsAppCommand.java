@@ -18,7 +18,7 @@ public class sendWhatsAppCommand implements Command {
 
         Intent intent =  new Intent(context, sendSmsActivity.class);
         intent.putExtra("EXTRA_SMS_OR_WHATS_APP","WhatsApp");
-
+        intent.putExtra(sendSmsActivity.EXTRA_RECIPIENT_NAME,predicate);
         context.startActivity(intent);
 
 
@@ -28,11 +28,11 @@ public class sendWhatsAppCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "WhatsApp message bhejo,WhatsApp message likho";
+        return "WhatsApp message bhejo,WhatsApp message likho,WhatsApp message send karo";
     }
 
     @Override
     public String getTtsPhrase(Context context) {
-        return context.getString(R.string.Aap_kiss_ko_whats_app_messge_send_karna_chaahate_hain);
+        return null;//context.getString(R.string.Aap_kiss_ko_whats_app_messge_send_karna_chaahate_hain);
     }
 }

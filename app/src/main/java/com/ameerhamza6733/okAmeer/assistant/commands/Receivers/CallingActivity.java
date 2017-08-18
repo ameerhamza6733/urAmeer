@@ -50,6 +50,8 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
     private HashMap<String, String> mHashMapContacts = new HashMap<>();
     private CountDownTimer countDownTimer;
     private TextView mMakingCallingIn;
+    public static final String EXTRA_NAME = "EXTRA_NAME";
+
 
 
     @Override
@@ -283,6 +285,7 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
                     updateUI();
 
                 } else {
+
                     myTextToSpeech.intiTextToSpeech(CallingActivity.this, "hi", getResources().getString(R.string.Sorry_App_Kasy_Call_karna_Chaatay_Ha));
                     showVoiceRegonizerDiloge("en-IN");
                     isRecipientNumberFound = false;

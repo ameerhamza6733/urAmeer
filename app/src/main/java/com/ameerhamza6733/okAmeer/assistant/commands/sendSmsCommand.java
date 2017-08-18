@@ -19,17 +19,18 @@ public class sendSmsCommand implements Command{
         Intent intent =  new Intent(context, sendSmsActivity.class);
 
         intent.putExtra("EXTRA_SMS_OR_WHATS_APP","sms");
+        intent.putExtra(sendSmsActivity.EXTRA_RECIPIENT_NAME,predicate);
         context.startActivity(intent);
 
     }
 
     @Override
     public String getDefaultPhrase() {
-        return "میسج بھیجو,میسج لکھیں,SMS send karo,message send karo,message likho,SMS bhejo,message bhejo";
+        return "میسج بھیجو,میسج لکھیں,message karo,SMS send karo,message send karo,message likho,SMS bhejo,message bhejo";
     }
 
     @Override
     public String getTtsPhrase(Context context) {
-        return context.getString(R.string.Kis_Ko_message_likha_na);
+        return null;
     }
 }

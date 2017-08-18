@@ -5,7 +5,7 @@
     <string name="flashlight_activated">Flashlight Activated</string>
     <string name="kis_Time_Pay_set_Karna_ha">आप का अलार्म सेट किया जा रहा है</string>
     <string name="Kis_Ko_message_likha_na">किस को मैसेज लिखना है</string>
-    <string name="Aur_Message_kay_ha">और मैसेज किया है</string>
+    <string name="Message_kay_ha"> मैसेज किया है</string>
     <string name="Aap_ka_Message_Send_Kiya_ja_raha_ha">आपका मैसेज सेंड किया जा रहा है</string>
     <string name="Sorry_App_Kiss_Ko_Sms_Send_Karna_Chaatay_ha">माफ कीजिए आप किस को मैसेज सेंड करना चाहते</string>
     <string name="Aap_Ka__Gaana_Lagaaya_Ja_Raha_Ha">आप का गाना लगाया जा रहा है</string>
@@ -40,6 +40,7 @@
     <string name="Aap_kiss_ko_whats_app_messge_send_karna_chaahate_hain">आप किसको WhatsApp मैसेज सेंड करना चाहते हैं</string>
     <string name="Draeeme_harabaanee_apana_akaunt_kholie_usake_baad_hee_aap_ek_nae_kamaand_kee_darakhvaast_kar_sakate_hain">ड्राई मेहरबानी अपना अकाउंट खोलिए उसके बाद ही आप एक नए कमांड की दरख्वास्त कर सकते हैं</string>
     <string name="aap_phesabuk_par_kya_post_karana_chaahate_hain">आप फेसबुक पर क्या पोस्ट करना चाहते हैं</string>
+    <string name="send_kar_do_ya_badal_do">सेंड कर दो या बदल दो</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

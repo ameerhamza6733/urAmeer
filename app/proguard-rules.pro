@@ -6,6 +6,15 @@
 #
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
+-dontwarn com.fasterxml.**
+-dontwarn okio.**
+-dontwarn retrofit2.**
+-keep class org.apache.http.** { *; }
+-dontwarn org.apache.http.**
+-dontwarn android.net.**
+
+
+
 
 # Add any project specific keep options here:
 

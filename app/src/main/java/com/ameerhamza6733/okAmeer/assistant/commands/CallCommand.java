@@ -15,13 +15,14 @@ public class CallCommand implements Command {
     public void execute(Context context, String predicate) {
 
         Intent intent =  new Intent(context, CallingActivity.class);
+        intent.putExtra(CallingActivity.EXTRA_NAME,predicate);
 
         context.startActivity(intent);
     }
 
     @Override
     public String getDefaultPhrase() {
-        return "کال کرو,فون کرو,call karo";
+        return "کال کرو,فون کرو,call karo,phone karo";
     }
 
     @Override
