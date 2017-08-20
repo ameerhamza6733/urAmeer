@@ -21,6 +21,7 @@ import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.sendSmsActivity;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.database.FirebaseDatabase;
+import com.webianks.easy_feedback.EasyFeedback;
 
 import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
 import lolodev.permissionswrapper.wrapper.PermissionWrapper;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         });
         FloatingActionButton FebRequestNewCommand = (FloatingActionButton) findViewById(R.id.fab_request_new_command);
         FloatingActionButton FebHelp= (FloatingActionButton) findViewById(R.id.fab_help);
+        FloatingActionButton FebFeedBack = (FloatingActionButton) findViewById(R.id.fab_feedback);
         FebRequestNewCommand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +76,18 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        FebFeedBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new EasyFeedback.Builder(MainActivity.this)
+                        .withEmail("ameerhamza6733@gmail.com")
+                        .withSystemInfo()
+
+                        .build()
+                        .start();
+            }
+        });
+
 
 
     }

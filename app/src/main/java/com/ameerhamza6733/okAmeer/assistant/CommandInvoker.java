@@ -55,7 +55,7 @@ public class CommandInvoker {
             {
                 if(isCommandFound)
                     break;
-             if(phrase.trim().startsWith(activatingParts.trim().toLowerCase()) || phrase.trim().toLowerCase().endsWith(activatingParts.trim().toLowerCase()))
+             if(phrase.trim().toLowerCase().startsWith(activatingParts.trim().toLowerCase()) || phrase.trim().toLowerCase().endsWith(activatingParts.trim().toLowerCase()))
              {
                  isCommandFound=true;
                  command.execute(context,phrase);

@@ -28,6 +28,7 @@ public class PostOnFacebook extends AppCompatActivity implements noNeedCommander
 
     private BroadcastReceiver broadcastReceiver;
     private Handler handler;
+    private boolean isUserIstallFacebookLite =false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,17 +88,24 @@ public class PostOnFacebook extends AppCompatActivity implements noNeedCommander
             PackageManager pm = getPackageManager();
             List<ResolveInfo> activityList = pm.queryIntentActivities(shareIntent, 0);
             for (final ResolveInfo app : activityList) {
-                if ((app.activityInfo.name).contains("facebook")) {
+                if ((app.activityInfo.name).contains("facebook.lite")) {
                     final ActivityInfo activity = app.activityInfo;
                     final ComponentName name = new ComponentName(activity.applicationInfo.packageName, activity.name);
                     shareIntent.addCategory(Intent.CATEGORY_LAUNCHER);
                     shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
                     shareIntent.setComponent(name);
                     startActivity(shareIntent);
+                    isUserIstallFacebookLite =true;
                     break;
                 }
             }
+            if(!isUserIstallFacebookLite)
+            {
+                Toast.makeText(this,"please install facebook lite first",Toast.LENGTH_LONG).show();
+                finish();
+            }
         } catch (Exception e) {
+
             Toast.makeText(this, "error:" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 

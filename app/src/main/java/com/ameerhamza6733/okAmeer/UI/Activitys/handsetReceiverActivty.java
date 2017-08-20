@@ -25,8 +25,7 @@ public class handsetReceiverActivty extends AppCompatActivity{
 
     private void showVoiceDilogeFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        voiceRecgonizationFragment newIntance = voiceRecgonizationFragment.newInstance("hi", true,true);
-
+        voiceRecgonizationFragment newIntance = voiceRecgonizationFragment.newInstance("en-IN", false, true);
         newIntance.show(fragmentManager, "handsetReceiverActivty");
         newIntance.setStyle(1, R.style.AppTheme);
     }

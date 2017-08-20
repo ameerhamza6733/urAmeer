@@ -1,5 +1,7 @@
 package com.ameerhamza6733.okAmeer.UI.fragment;
 
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,6 +47,9 @@ public class voiceRecgonizationFragment extends DialogFragment {
     private static final String BUNDLE_KEY_EXTRA_TRANSLATE_NEED = "BUNDLE_KEY_TRANSLATE_NEED";
     private static final String BUNDLE_KEY_EXTRA_LANGUAGES = "BUNDLE_KEY_EXTRA_LANGUAGES";
     private static final String BUNDLE_KEY_EXTRA_EXCUTE_COMANDER = "BUNDLE_KEY_EXTRA_EXCUTE_COMANDER";
+    public static final String PACKAGE_NAME_GOOGLE_NOW = "com.google.android.googlequicksearchbox";
+    public static final String ACTIVITY_INSTALL_OFFLINE_FILES = "com.google.android.voicesearch.greco3.languagepack.InstallActivity";
+
 
 
     private RecognitionProgressView recognitionProgressView;
@@ -102,8 +107,10 @@ public class voiceRecgonizationFragment extends DialogFragment {
         this.recognitionProgressView.setRecognitionListener(new RecognitionListenerAdapter() {
             public void onResults(Bundle results) {
 
+
                 voiceRecgonizationFragment.this.results = results;
                 try {
+
                     voiceRecgonizationFragment.this.showResults(results);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -119,6 +126,14 @@ public class voiceRecgonizationFragment extends DialogFragment {
             public void onError(final int error) {
                 super.onError(error);
                 Log.d(TAG, "onError code" + error);
+                if(error==4){
+
+
+                   // promoteUserToDownlaodOfflineSpeachData();
+                    Toast.makeText(getActivity(),"انٹرنیٹ دستیاب نہیں ہے",Toast.LENGTH_LONG).show();
+                    voiceRecgonizationFragment.this.dismiss();
+                    return;
+                }
                 if (!(error == 8)) {
 
                     handlerError = new Handler();
@@ -148,10 +163,26 @@ public class voiceRecgonizationFragment extends DialogFragment {
 
     }
 
+    private void promoteUserToDownlaodOfflineSpeachData() {
+        final Intent intent = new Intent();
+        intent.setComponent(new ComponentName(PACKAGE_NAME_GOOGLE_NOW, ACTIVITY_INSTALL_OFFLINE_FILES));
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        try {
+            getActivity().startActivity(intent);
+
+        } catch (final ActivityNotFoundException e) {
+
+        } catch (final Exception e) {
+
+        }
+    }
+
 
     private void showResults(Bundle results) throws Exception {
         final ArrayList<String> matches = results.getStringArrayList("results_recognition");
-
+        Log.w("speehLogs","words="+matches.get(0));
 
         if (isTranslateNeeded) {
             if (matches != null)

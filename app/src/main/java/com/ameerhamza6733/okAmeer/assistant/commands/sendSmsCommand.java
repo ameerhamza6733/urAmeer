@@ -26,7 +26,7 @@ public class sendSmsCommand implements Command{
 
     @Override
     public String getDefaultPhrase() {
-        return "میسج بھیجو,میسج لکھیں,message karo,SMS send karo,message send karo,message likho,SMS bhejo,message bhejo";
+        return "میسج بھیجو,میسج لکھیں,message karo,SMS send karo,message send karo,message likho,SMS bhejo,message bhejo,message lakho";
     }
 
     @Override

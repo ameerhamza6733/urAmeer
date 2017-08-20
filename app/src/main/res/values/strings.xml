@@ -52,6 +52,7 @@
         <item>لائٹ بند کرنے کے لئے </item>
         <item>گانا لگانے کے لئے</item>
         <item>اگلا گانا لگانے کے لئے</item>
+        <item>پچھلا گانالگانے کے لئے</item>
         <item>گانا بند کرنے کے لئے</item>
         <item>یوٹیوب سے گانا لگانے کے لئے</item>
         <item>کال/فون کرنے کے لئے</item>
@@ -60,12 +61,21 @@
         <item>بلوٹوت ان کرنے کے لئے</item>
         <item>ای میل بھیجنے کرنے کے لئے</item>
         <item>ایس ایم ایس سننے کے لئے</item>
+        <item>Facebook par post karne ke liye</item>
+        <item>Alarm set karne ke liye</item>
+        <item>mobile silent karne ke liye</item>
+        <item>WhatsApp message likhne ke liye</item>
+        <item>volume Zyada karo</item>
+        <item>Volume kam karne ke liye</item>
+        <item>Wi-Fi band karne ke liye</item>
+        <item>Wi-Fi on karne ke liye</item>
     </string-array>
     <string-array name="command_dir">
         <item>کہو لائٹ آن کرو,فلیش لائٹ آن کرو </item>
         <item>کہو فلیش لائٹ بند کر,لائٹ بند کرو </item>
         <item>کہو گانا لگاؤ </item>
         <item>کہو اگلا گانا لگاؤ</item>
+        <item>پچھلا گانا لگاؤ</item>
         <item>کہو گانا بند کرو</item>
         <item>کہو یوٹیوب سے گانا لگاؤ </item>
         <item>کہو کال کرو</item>
@@ -74,6 +84,14 @@
         <item>کہو بلوٹوت آن کرو</item>
         <item>ای میل لکھیں</item>
         <item>کہو میسج پڑھو </item>
+        <item>Facebook par post karo</item>
+        <item>alarm set karo</item>
+        <item>silent lagao,silent karo</item>
+        <item>WhatsApp message bhejo,WhatsApp message likho,WhatsApp message send karo</item>
+        <item>volume Zyada karo, Awaz Jyada karo,volume Uncha karo, Awaz Unchi karo</item>
+        <item>Volume kam karo,Awaz kam karo</item>
+        <item>Wi-Fi band karo,WiFi off karo</item>
+        <item>Wi-Fi on karo,Wi-Fi chalao</item>
 
 
     </string-array>

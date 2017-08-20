@@ -23,7 +23,7 @@ public class previousSongCommand implements Command {
 
     @Override
     public String getDefaultPhrase() {
-        return "پچھلا گانا لگاؤ,null";
+        return "پچھلا گانا لگاؤ,pichla gana lagao";
     }
 
     @Override
