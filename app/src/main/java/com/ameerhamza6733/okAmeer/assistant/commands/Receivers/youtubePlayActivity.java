@@ -8,13 +8,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.UI.fragment.voiceRecgonizationFragment;
 import com.ameerhamza6733.okAmeer.interfacess.noNeedCommander;
+import com.ameerhamza6733.okAmeer.interfacess.onErrorSevenvoiceRecgoniztion;
 import com.ameerhamza6733.okAmeer.utial.TTSService;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -33,7 +36,7 @@ import org.json.JSONObject;
  * Created by AmeerHamza on 7/5/2017.
  */
 
-public class youtubePlayActivity extends AppCompatActivity implements noNeedCommander {
+public class youtubePlayActivity extends AppCompatActivity implements noNeedCommander , onErrorSevenvoiceRecgoniztion {
     private BroadcastReceiver broadcastReceiver;
    
     private RequestQueue requestQueue;
@@ -69,13 +72,22 @@ public class youtubePlayActivity extends AppCompatActivity implements noNeedComm
             @Override
             public void run() {
                 try {
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    voiceRecgonizationFragment newIntance = voiceRecgonizationFragment.newInstance("en-IN", false, false);
-                    newIntance.show(fragmentManager, "smsUnreadActivty");
-                    newIntance.setStyle(1, R.style.Theme_AppCompat_Dialog_MinWidth);
-                } catch (Exception e) {
+                    if(!isFinishing()){
+                        FragmentTransaction transactionFragment = getSupportFragmentManager().beginTransaction();
+                        voiceRecgonizationFragment newIntance = voiceRecgonizationFragment.newInstance("en-IN", false, false);
+                        newIntance.setStyle(1, R.style.AppTheme);
+                        transactionFragment.add(android.R.id.content, newIntance).addToBackStack(null).commitAllowingStateLoss();
 
+
+                        //  newIntance.show(fragmentManager, "fragment_voice_input");
+
+                    }
+
+
+                }catch (Exception e){
+                    Toast.makeText(youtubePlayActivity.this, "error"+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
+
             }
         };
         handler.postDelayed(runnable, 10);
@@ -156,6 +168,11 @@ public class youtubePlayActivity extends AppCompatActivity implements noNeedComm
 
         }
 
+
+    }
+
+    @Override
+    public void onError7() {
 
     }
 }

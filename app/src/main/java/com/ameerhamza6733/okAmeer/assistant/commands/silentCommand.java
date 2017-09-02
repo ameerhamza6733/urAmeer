@@ -1,13 +1,11 @@
 package com.ameerhamza6733.okAmeer.assistant.commands;
 
-import android.Manifest;
 import android.content.Context;
 import android.media.AudioManager;
-import android.support.v4.app.ActivityCompat;
 
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.assistant.Command;
-import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.sendSmsActivity;
+import com.ameerhamza6733.okAmeer.assistant.CommandModel;
 
 /**
  * Created by AmeerHamza on 7/3/2017.
@@ -15,10 +13,10 @@ import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.sendSmsActivity;
 
 public class silentCommand implements Command {
     @Override
-    public void execute(Context context, String predicate) {
+    public void execute(CommandModel commandModel) {
 
         try{
-            final AudioManager mode = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+            final AudioManager mode = (AudioManager) commandModel.getContext().getSystemService(Context.AUDIO_SERVICE);
             mode.setRingerMode(AudioManager.RINGER_MODE_SILENT);
         }catch (Exception e){
             e.printStackTrace();

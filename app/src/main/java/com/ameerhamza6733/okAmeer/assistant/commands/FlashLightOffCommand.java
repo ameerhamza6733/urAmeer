@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.assistant.Command;
+import com.ameerhamza6733.okAmeer.assistant.CommandModel;
 import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.FlashLightActivtyReceiver;
 
 /**
@@ -14,11 +14,11 @@ import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.FlashLightActivty
 
 public class FlashLightOffCommand implements Command {
     @Override
-    public void execute(Context context, String predicate) {
+    public void execute(CommandModel commandModel) {
         Log.d("Flashlight","turing of flash light");
-        Intent i = new Intent(context, FlashLightActivtyReceiver.class);
+        Intent i = new Intent(commandModel.getContext(), FlashLightActivtyReceiver.class);
         i.putExtra("onOrOff", false);
-        context.startActivity(i);
+        commandModel.getContext().startActivity(i);
     }
 
     @Override

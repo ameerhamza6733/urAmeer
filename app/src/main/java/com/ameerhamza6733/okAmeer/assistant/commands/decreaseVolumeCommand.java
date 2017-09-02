@@ -5,6 +5,7 @@ import android.media.AudioManager;
 
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.assistant.Command;
+import com.ameerhamza6733.okAmeer.assistant.CommandModel;
 
 /**
  * Created by AmeerHamza on 6/28/2017.
@@ -12,8 +13,8 @@ import com.ameerhamza6733.okAmeer.assistant.Command;
 
 public class decreaseVolumeCommand implements Command {
     @Override
-    public void execute(Context context, String predicate) {
-        AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+    public void execute(CommandModel commandModel) {
+        AudioManager audio = (AudioManager) commandModel.getContext().getSystemService(Context.AUDIO_SERVICE);
         audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
                 AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
 

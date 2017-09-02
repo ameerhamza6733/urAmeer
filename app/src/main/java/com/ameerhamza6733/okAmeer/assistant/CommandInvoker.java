@@ -29,6 +29,8 @@ import com.ameerhamza6733.okAmeer.assistant.commands.youtubePlayCommand;
 import com.ameerhamza6733.okAmeer.utial.TTSService;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 
+import java.util.ArrayList;
+
 /**
  * Created by AmeerHamza on 6/17/2017.
  */
@@ -44,31 +46,35 @@ public class CommandInvoker {
         }
         return commands;
     }
-    public static boolean excute(final Context context, String phrase)
+    public static boolean excute(final Context context, ArrayList<String> phrases)
     {
-        Log.d("commander invoker","ecuted"+phrase);
+
         boolean isCommandFound=false;
         for (final Command command : getCommands())
         {
             String[] activationPhrases = command.getDefaultPhrase().split(",");
-            for(String activatingParts : activationPhrases)
-            {
-                if(isCommandFound)
-                    break;
-             if(phrase.trim().toLowerCase().startsWith(activatingParts.trim().toLowerCase()) || phrase.trim().toLowerCase().endsWith(activatingParts.trim().toLowerCase()))
-             {
-                 isCommandFound=true;
-                 command.execute(context,phrase);
-                try {
-                    myTextToSpeech.intiTextToSpeech(context,"hi",command.getTtsPhrase(context));
-                }catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
+           for(String phrase : phrases){
+               for(String activatingParts : activationPhrases)
+               {
+                   if(isCommandFound)
+                       break;
+                   if(phrase.toLowerCase().startsWith(activatingParts.toLowerCase()) || phrase.toLowerCase().endsWith(activatingParts.toLowerCase()))
+                   {
+                       isCommandFound=true;
+
+                       command.execute(new CommandModel(phrase.replace(activatingParts.trim().toLowerCase(),""),phrase,context));
+
+                       try {
+                           myTextToSpeech.intiTextToSpeech(context,"hi",command.getTtsPhrase(context));
+                       }catch (Exception e)
+                       {
+                           e.printStackTrace();
+                       }
 
 
-             }
-            }
+                   }
+               }
+           }
         }
         return isCommandFound;
     }

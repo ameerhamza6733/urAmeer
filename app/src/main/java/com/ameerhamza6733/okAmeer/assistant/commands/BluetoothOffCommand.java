@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.assistant.Command;
+import com.ameerhamza6733.okAmeer.assistant.CommandModel;
 import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.BluetoothActivity;
 
 /**
@@ -13,10 +14,10 @@ import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.BluetoothActivity
 
 public class BluetoothOffCommand implements Command {
     @Override
-    public void execute(Context context, String predicate) {
-        Intent intent = new Intent(context, BluetoothActivity.class);
+    public void execute(CommandModel commandModel) {
+        Intent intent = new Intent(commandModel.getContext(), BluetoothActivity.class);
         intent.putExtra(BluetoothActivity.BluetoothActivityEXTRA,false);
-        context.startActivity(intent);
+        commandModel.getContext().startActivity(intent);
     }
 
     @Override

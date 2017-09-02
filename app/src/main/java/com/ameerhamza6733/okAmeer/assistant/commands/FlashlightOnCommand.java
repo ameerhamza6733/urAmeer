@@ -7,6 +7,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.ameerhamza6733.okAmeer.assistant.Command;
+import com.ameerhamza6733.okAmeer.assistant.CommandModel;
 import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.FlashLightActivtyReceiver;
 
 /**
@@ -16,15 +17,15 @@ import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.FlashLightActivty
 
 public class FlashlightOnCommand implements Command {
     @Override
-    public void execute(final Context context, final String predicate) {
+    public void execute(final CommandModel commandModel) {
         Log.d("Flashlight","turing on flash light");
         Handler handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message message) {
-                Intent i = new Intent(context, FlashLightActivtyReceiver.class);
+                Intent i = new Intent(commandModel.getContext(), FlashLightActivtyReceiver.class);
                 i.putExtra("onOrOff", true);
 
-                context.startActivity(i);
+                commandModel.getContext().startActivity(i);
                 return true;
             }
         });

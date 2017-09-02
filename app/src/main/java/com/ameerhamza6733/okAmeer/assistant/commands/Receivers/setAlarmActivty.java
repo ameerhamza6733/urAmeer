@@ -100,7 +100,8 @@ public class setAlarmActivty extends AppCompatActivity implements noNeedCommande
             if (time != null)
             {
                 setAlramNow(time);
-                newIntance.dismiss();
+               if(newIntance!=null)
+                   getSupportFragmentManager().beginTransaction().remove(newIntance).commitAllowingStateLoss();
 
             }
         }catch (Exception e)

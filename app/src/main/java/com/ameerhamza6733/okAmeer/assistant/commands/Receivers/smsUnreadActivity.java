@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.UI.fragment.voiceRecgonizationFragment;
 import com.ameerhamza6733.okAmeer.interfacess.noNeedCommander;
+import com.ameerhamza6733.okAmeer.interfacess.onErrorSevenvoiceRecgoniztion;
 import com.ameerhamza6733.okAmeer.utial.SMSUtils;
 import com.ameerhamza6733.okAmeer.utial.SmsMmsMessage;
 import com.ameerhamza6733.okAmeer.utial.TTSService;
@@ -39,7 +41,7 @@ import it.gmariotti.cardslib.library.view.CardListView;
 import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
 import lolodev.permissionswrapper.wrapper.PermissionWrapper;
 
-public class smsUnreadActivity extends AppCompatActivity implements noNeedCommander {
+public class smsUnreadActivity extends AppCompatActivity implements noNeedCommander,onErrorSevenvoiceRecgoniztion {
 
     private Handler handler;
     private Runnable runnable;
@@ -47,7 +49,8 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
     private Handler mTextToSpeechHandler;
 
     private voiceRecgonizationFragment newIntance;
-    private String[] mUrduPositiveWords = {"ہاں", "جی", "پڑھو", "سناؤ"};
+    private String[] mUrduPositiveWords = {"جی ہاں","ہاں", "جی", "پڑھو","سناو" ,"سناؤ"};
+    private String[] mRomanUrdoPositiveWords = {"ji haan","ha","yas",};
     private boolean userWantToReadorNot = false;
     private ArrayList<SmsMmsMessage> unread;
     private ArrayList<Card> cards;
@@ -64,14 +67,13 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
         cards = new ArrayList<Card>();
         if (Build.VERSION.SDK_INT > 22) {
 
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED ) {
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
                 askRunTimePermissions();
                 return;
-            }
-        }else
+            } else
+                getUnreadSMSandUpdateUI();
+        } else
             getUnreadSMSandUpdateUI();
-
-
 
 
         broadcastReceiver = new BroadcastReceiver() {
@@ -96,7 +98,7 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
         String text = "";
         if (unread == null || unread.size() < 1) {
 
-            Toast.makeText(this,"no message to read ",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "no message to read ", Toast.LENGTH_SHORT).show();
         }
         Collections.reverse(unread);
         for (SmsMmsMessage message : unread) {
@@ -154,12 +156,21 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
             @Override
             public void run() {
                 try {
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    newIntance = voiceRecgonizationFragment.newInstance("hi", true, false);
-                    newIntance.show(fragmentManager, "smsUnreadActivty");
-                    newIntance.setStyle(1, R.style.Theme_AppCompat_Dialog_MinWidth);
-                } catch (Exception e) {
+                    if (!isFinishing()) {
 
+                        FragmentTransaction transactionFragment = getSupportFragmentManager().beginTransaction();
+                        newIntance = voiceRecgonizationFragment.newInstance("ur-PK", false, false);
+                        newIntance.setStyle(1, R.style.AppTheme);
+                        transactionFragment.add(android.R.id.content, newIntance).addToBackStack(null).commitAllowingStateLoss();
+
+
+                        //  newIntance.show(fragmentManager, "fragment_voice_input");
+
+                    }
+
+
+                } catch (Exception e) {
+                    Toast.makeText(smsUnreadActivity.this, "error" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -171,7 +182,7 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
     public void onNoCommandrExcute(String Queary) {
         voiceRecgonizerDismiss();
         for (String s : mUrduPositiveWords) {
-            if (Queary.contains(s)) {
+            if (Queary.equalsIgnoreCase(s)) {
                 userWantToReadorNot = true;
                 break;
             } else {
@@ -209,7 +220,7 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
 
     private void askRunTimePermissions() {
         new PermissionWrapper.Builder(this)
-                .addPermissions(new String[]{ Manifest.permission.READ_SMS })
+                .addPermissions(new String[]{Manifest.permission.READ_SMS})
                 //enable rationale message with a custom message
 
                 //show settings dialog,in this case with default message base on requested permission/s
@@ -234,7 +245,8 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
 
     private void voiceRecgonizerDismiss() {
         try {
-            newIntance.dismiss();
+            if (newIntance != null)
+                getSupportFragmentManager().beginTransaction().remove(newIntance).commitAllowingStateLoss();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -266,6 +278,7 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
 
 
     }
+
     private void moveToNextMessage() throws Exception {
         if (unread.size() > 0) {
             intiTextToSpeech("en-IN", "next message aaya hai" + unread.get(0).getContactName() + "se aaya hai aap sunna chahte hai ya ni");
@@ -275,5 +288,9 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
     }
 
 
+    @Override
+    public void onError7() {
+        voiceRecgonizerDismiss();
+    }
 }
 

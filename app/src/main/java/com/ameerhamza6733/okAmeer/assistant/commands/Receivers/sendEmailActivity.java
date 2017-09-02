@@ -17,6 +17,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -106,7 +107,8 @@ public class sendEmailActivity extends AppCompatActivity implements noNeedComman
                         if (ActivityCompat.checkSelfPermission(sendEmailActivity.this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED ) {
                             askRunTimePermissions();
                             return;
-                        }
+                        }else
+                            showVoiceRegoniztionFragment("en-IN", false, false);
                     } else
                         showVoiceRegoniztionFragment("en-IN", false, false);
                 }
@@ -154,13 +156,22 @@ public class sendEmailActivity extends AppCompatActivity implements noNeedComman
             @Override
             public void run() {
                 try {
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    newIntance = voiceRecgonizationFragment.newInstance(LEN, isTranlaterNeeded, isCommanderNeeded);
-                    newIntance.show(fragmentManager, "smsUnreadActivty");
-                    newIntance.setStyle(1, R.style.Theme_AppCompat_Dialog_MinWidth);
-                } catch (Exception e) {
+                    if(!isFinishing()){
+                        FragmentTransaction transactionFragment = getSupportFragmentManager().beginTransaction();
+                        newIntance = voiceRecgonizationFragment.newInstance(LEN, isTranlaterNeeded, isCommanderNeeded);
+                        newIntance.setStyle(1, R.style.AppTheme);
+                        transactionFragment.add(android.R.id.content, newIntance).addToBackStack(null).commitAllowingStateLoss();
 
+
+                        //  newIntance.show(fragmentManager, "fragment_voice_input");
+
+                    }
+
+
+                }catch (Exception e){
+                    Toast.makeText(sendEmailActivity.this, "error"+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
+
             }
         };
         handler.postDelayed(runnable, 10);
@@ -184,7 +195,8 @@ public class sendEmailActivity extends AppCompatActivity implements noNeedComman
     public void onNoCommandrExcute(String Queary) {
 
         Toast.makeText(this,Queary,Toast.LENGTH_LONG).show();
-        newIntance.dismiss();
+        if(newIntance!=null)
+            getSupportFragmentManager().beginTransaction().remove(newIntance).commitAllowingStateLoss();
         if (!this.RispitionNumberFoundFlag)
             new findRecipientsNumber(this, Queary).execute();
         else {

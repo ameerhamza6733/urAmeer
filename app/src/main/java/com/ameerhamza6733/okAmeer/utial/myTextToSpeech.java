@@ -1,7 +1,12 @@
 package com.ameerhamza6733.okAmeer.utial;
 
+import android.annotation.TargetApi;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
@@ -13,6 +18,7 @@ import android.widget.Toast;
 import com.ameerhamza6733.okAmeer.interfacess.mttsListener;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -22,7 +28,7 @@ import java.util.Locale;
 public class myTextToSpeech {
 
     private static TextToSpeech textToSpeech;
-    public static void intiTextToSpeech(final Context context, final String language, final String text) throws Exception{
+    public static TextToSpeech intiTextToSpeech(final Context context, final String language, final String text) throws Exception{
 
         textToSpeech = new TextToSpeech(context.getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -71,23 +77,8 @@ public class myTextToSpeech {
 
         }, "com.google.android.tts");
 
-        textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
-            @Override
-            public void onStart(String utteranceId) {
 
-            }
-
-            @Override
-            public void onDone(String utteranceId) {
-
-
-            }
-
-            @Override
-            public void onError(String utteranceId) {
-
-            }
-        });
+        return textToSpeech;
     }
     private static void  speakOut(String toSpeak) {
         HashMap<String, String> map = new HashMap<String, String>();
@@ -102,3 +93,4 @@ public class myTextToSpeech {
 
     }
 }
+

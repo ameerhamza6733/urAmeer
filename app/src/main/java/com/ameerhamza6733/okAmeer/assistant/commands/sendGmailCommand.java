@@ -1,24 +1,11 @@
 package com.ameerhamza6733.okAmeer.assistant.commands;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.ContactsContract;
-import android.util.Log;
-import android.util.Patterns;
 
 import com.ameerhamza6733.okAmeer.assistant.Command;
+import com.ameerhamza6733.okAmeer.assistant.CommandModel;
 import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.sendEmailActivity;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.regex.Pattern;
-
-import de.cketti.mailto.EmailIntentBuilder;
 
 /**
  * Created by AmeerHamza on 7/9/2017.
@@ -26,12 +13,12 @@ import de.cketti.mailto.EmailIntentBuilder;
 
 public class sendGmailCommand implements Command {
     @Override
-    public void execute(Context context, String predicate) {
+    public void execute(CommandModel commandModel) {
 
-        Intent  intent = new Intent(context,sendEmailActivity.class);
-        intent.putExtra("EmailExtra",predicate);
+        Intent  intent = new Intent(commandModel.getContext(),sendEmailActivity.class);
+        intent.putExtra("EmailExtra",commandModel.getPredicate());
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        commandModel.getContext().startActivity(intent);
 
     }
 

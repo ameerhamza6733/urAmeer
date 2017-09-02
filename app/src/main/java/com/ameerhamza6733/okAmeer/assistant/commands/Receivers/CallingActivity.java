@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -64,12 +65,13 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                 askRunTimePermissions();
                 return;
-            }
+            }else
+                showVoiceRegonizerDiloge("en-IN");
         } else
             showVoiceRegonizerDiloge("en-IN");
         callpickerSpinner = (Spinner) findViewById(R.id.caling_spinner);
         spinnerList = new ArrayList<>();
-        spinnerList.add("contact");
+        spinnerList.add("Contact");
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, spinnerList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         callpickerSpinner.setAdapter(adapter);
@@ -280,7 +282,8 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             try {
-                CallingActivity.this.newIntance.dismiss();
+                if(newIntance!=null)
+                    getSupportFragmentManager().beginTransaction().remove(newIntance).commitAllowingStateLoss();
                 if (isRecipientNumberFound) {
                     updateUI();
 
@@ -319,13 +322,22 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
         new Handler().postDelayed(new Runnable() {
             public void run() {
                 try {
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    newIntance = voiceRecgonizationFragment.newInstance(s, false, false);
-                    newIntance.show(fragmentManager, "CallingActivity");
-                    newIntance.setStyle(1, R.style.AppTheme);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    if(!isFinishing()){
+                        FragmentTransaction transactionFragment = getSupportFragmentManager().beginTransaction();
+                        newIntance = voiceRecgonizationFragment.newInstance(s, false, false);
+                        newIntance.setStyle(1, R.style.AppTheme);
+                        transactionFragment.add(android.R.id.content, newIntance).addToBackStack(null).commitAllowingStateLoss();
+
+
+                        //  newIntance.show(fragmentManager, "fragment_voice_input");
+
+                    }
+
+
+                }catch (Exception e){
+                    Toast.makeText(CallingActivity.this, "error"+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
+
 
 
             }

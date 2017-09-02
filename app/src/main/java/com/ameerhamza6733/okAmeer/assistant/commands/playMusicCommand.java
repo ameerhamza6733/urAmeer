@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.assistant.Command;
+import com.ameerhamza6733.okAmeer.assistant.CommandModel;
 
 /**
  * Created by AmeerHamza on 6/28/2017.
@@ -14,12 +15,12 @@ import com.ameerhamza6733.okAmeer.assistant.Command;
 
 public class playMusicCommand implements Command {
     @Override
-    public void execute(final Context context, String predicate) {
+    public void execute(CommandModel commandModel) {
 
         try {
             Log.d("Music","playMusicCommand");
-            openGoogleMusicApp(context);
-            nowPlayMusic(context);
+            openGoogleMusicApp(commandModel.getContext());
+            nowPlayMusic(commandModel.getContext());
         } catch (Exception e) {
             e.printStackTrace();
 

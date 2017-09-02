@@ -1,18 +1,13 @@
 package com.ameerhamza6733.okAmeer.UI.fragment;
 
-import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-
-import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,12 +17,11 @@ import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.assistant.CommandInvoker;
-import com.ameerhamza6733.okAmeer.interfacess.tranlaterCallback;
 import com.ameerhamza6733.okAmeer.interfacess.onErrorSevenvoiceRecgoniztion;
+import com.ameerhamza6733.okAmeer.interfacess.tranlaterCallback;
 import com.ameerhamza6733.okAmeer.utial.TTSService;
 import com.ameerhamza6733.okAmeer.utial.sendToActivtys;
 import com.ameerhamza6733.okAmeer.utial.tranlater;
-
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
 import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter;
 
@@ -35,6 +29,7 @@ import java.util.ArrayList;
 
 public class voiceRecgonizationFragment extends DialogFragment {
 
+    private static voiceRecgonizationFragment newIntance;
     private String LANGUAGES = "hi";
     private boolean isTranslateNeeded = true;
 
@@ -51,7 +46,6 @@ public class voiceRecgonizationFragment extends DialogFragment {
     public static final String ACTIVITY_INSTALL_OFFLINE_FILES = "com.google.android.voicesearch.greco3.languagepack.InstallActivity";
 
 
-
     private RecognitionProgressView recognitionProgressView;
     protected SpeechRecognizer speechRecognizer;
     private sendToActivtys sendDateToNOnHidni;
@@ -65,13 +59,13 @@ public class voiceRecgonizationFragment extends DialogFragment {
 
 
     public static voiceRecgonizationFragment newInstance(String LANGUAGES, boolean isTranslateNeeded, boolean excuteCommander) {
-        voiceRecgonizationFragment frag = new voiceRecgonizationFragment();
+        newIntance = new voiceRecgonizationFragment();
         Bundle args = new Bundle();
         args.putString(BUNDLE_KEY_EXTRA_LANGUAGES, LANGUAGES);
         args.putBoolean(BUNDLE_KEY_EXTRA_TRANSLATE_NEED, isTranslateNeeded);
         args.putBoolean(BUNDLE_KEY_EXTRA_EXCUTE_COMANDER, excuteCommander);
-        frag.setArguments(args);
-        return frag;
+        newIntance.setArguments(args);
+        return newIntance;
     }
 
     @Nullable
@@ -90,14 +84,19 @@ public class voiceRecgonizationFragment extends DialogFragment {
         excuteCommander = getArguments().getBoolean(BUNDLE_KEY_EXTRA_EXCUTE_COMANDER);
 
         int[] heights = new int[]{60, 76, 58, 80, 55};
+        try {
+          Log.d(TAG,""+SpeechRecognizer.isRecognitionAvailable(getActivity()));
+            this.speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getActivity(), ComponentName.unflattenFromString("com.google.android.googlequicksearchbox/com.google.android.voicesearch.serviceapi.GoogleRecognitionService"));
+            this.recognitionProgressView = (RecognitionProgressView) view.findViewById(R.id.recognition_view);
+            this.recognitionProgressView.setSpeechRecognizer(this.speechRecognizer);
+            this.recognitionProgressView.setColors(colors);
+            this.recognitionProgressView.setBarMaxHeightsInDp(heights);
+            this.recognitionProgressView.play();
 
-        this.speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getActivity());
-        this.recognitionProgressView = (RecognitionProgressView) view.findViewById(R.id.recognition_view);
-        this.recognitionProgressView.setSpeechRecognizer(this.speechRecognizer);
-        this.recognitionProgressView.setColors(colors);
-        this.recognitionProgressView.setBarMaxHeightsInDp(heights);
-        this.recognitionProgressView.play();
-        startRecognition();
+            startRecognition();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 //        this.recognitionProgressView.postDelayed(new Runnable() {
 //            public void run() {
@@ -120,18 +119,20 @@ public class voiceRecgonizationFragment extends DialogFragment {
             @Override
             public void onEndOfSpeech() {
                 Log.d(TAG, "onEndOfSpeech");
+
             }
 
             @Override
             public void onError(final int error) {
                 super.onError(error);
                 Log.d(TAG, "onError code" + error);
-                if(error==4){
+
+                if (error == 4) {
 
 
-                   // promoteUserToDownlaodOfflineSpeachData();
-                    Toast.makeText(getActivity(),"انٹرنیٹ دستیاب نہیں ہے",Toast.LENGTH_LONG).show();
-                    voiceRecgonizationFragment.this.dismiss();
+                    // promoteUserToDownlaodOfflineSpeachData();
+                    Toast.makeText(getActivity(), "انٹرنیٹ دستیاب نہیں ہے", Toast.LENGTH_LONG).show();
+                    dismissFragment(); // getSupportFragmentManager().beginTransaction().remove(newIntance).commitAllowingStateLoss();
                     return;
                 }
                 if (!(error == 8)) {
@@ -144,7 +145,8 @@ public class voiceRecgonizationFragment extends DialogFragment {
                             try {
                                 if (isAdded())
                                     Toast.makeText(getActivity(), "try again: Error code " + error, Toast.LENGTH_LONG).show();
-                                voiceRecgonizationFragment.this.dismiss();
+                                dismissFragment(); // getSupportFragmentManager().beginTransaction().remove(newIntance).commitAllowingStateLoss();
+
                             } catch (Exception i) {
                                 i.printStackTrace();
                             }
@@ -163,33 +165,20 @@ public class voiceRecgonizationFragment extends DialogFragment {
 
     }
 
-    private void promoteUserToDownlaodOfflineSpeachData() {
-        final Intent intent = new Intent();
-        intent.setComponent(new ComponentName(PACKAGE_NAME_GOOGLE_NOW, ACTIVITY_INSTALL_OFFLINE_FILES));
-
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        try {
-            getActivity().startActivity(intent);
-
-        } catch (final ActivityNotFoundException e) {
-
-        } catch (final Exception e) {
-
-        }
-    }
-
 
     private void showResults(Bundle results) throws Exception {
         final ArrayList<String> matches = results.getStringArrayList("results_recognition");
-        Log.w("speehLogs","words="+matches.get(0));
 
+
+        assert matches != null;
+        Toast.makeText(getActivity(), "You said: " + matches.get(0), Toast.LENGTH_LONG).show();
         if (isTranslateNeeded) {
             if (matches != null)
                 yas(matches);
             else {
                 Toast.makeText(getActivity(), "please try again..", Toast.LENGTH_LONG).show();
-                voiceRecgonizationFragment.this.dismiss();
+                dismissFragment(); // getSupportFragmentManager().beginTransaction().remove(newIntance).commitAllowingStateLoss();
+
 
             }
 
@@ -197,9 +186,20 @@ public class voiceRecgonizationFragment extends DialogFragment {
         } else {
 
             if (matches != null) {
+                ArrayList<String> heard = results
+                        .getStringArrayList(android.speech.SpeechRecognizer.RESULTS_RECOGNITION);
+                float[] scores = results
+                        .getFloatArray(android.speech.SpeechRecognizer.CONFIDENCE_SCORES);
+
+                for (int i = 0; i < heard.size(); i++) {
+                    Log.d(TAG, "onResultsheard:" + heard.get(i)
+                            + " confidence:" + scores[i]);
+
+                }
                 Log.d(TAG, "no need tralate.." + getActivity().getClass().getSimpleName() + "Text = " + matches.get(0));
                 try {
-                    invockCommanderOrNot(matches.get(0));
+                    invockCommanderOrNot(results
+                            .getStringArrayList(android.speech.SpeechRecognizer.RESULTS_RECOGNITION));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -211,22 +211,23 @@ public class voiceRecgonizationFragment extends DialogFragment {
     }
 
 
-
     private void yas(final ArrayList<String> matches) {
         Log.d(TAG, "match" + matches.get(0));
+
         new tranlater(new tranlaterCallback() {
             @Override
-            public  void onError(String str) {
+            public void onError(String str) {
 
                 Toast.makeText(getActivity(), str, Toast.LENGTH_LONG).show();
-                voiceRecgonizationFragment.this.dismiss();
+                dismissFragment(); // getSupportFragmentManager().beginTransaction().remove(newIntance).commitAllowingStateLoss();
+
             }
 
             @Override
             public void onSuccess(final String str) {
-              
-                if (str != null)
-                    invockCommanderOrNot(str);
+
+                //    if (str != null)
+                //  invockCommanderOrNot(new ArrayList<String>().add(str));
 
 
             }
@@ -234,59 +235,69 @@ public class voiceRecgonizationFragment extends DialogFragment {
 
     }
 
-    private void invockCommanderOrNot(final String str) {
+    private void invockCommanderOrNot(final ArrayList<String> str) {
 
         handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
 
-                if (excuteCommander)
-                {
-                   try {
-                       voiceRecgonizationFragment.this.dismiss();
-                       boolean isCommandFound = CommandInvoker.excute(getActivity(), str);
-                       if(!isCommandFound){
-                           Intent i = new Intent(getActivity(), TTSService.class);
-                           i.putExtra("toSpeak", getString(R.string.Dobaara_say_koshish_keejie_muja_aapakee_ki_samajh_nahi_aaee));
-                           i.putExtra("Language", "hi");
-                           getActivity().startService(i);
-
-
-                       }
-                   }catch (Exception e){
-                       e.printStackTrace();
-                   }
-                }
-                else
+                if (excuteCommander) {
                     try {
-                        doNotExcuteCommander(str);
+                        dismissFragment(); // getSupportFragmentManager().beginTransaction().remove(newIntance).commitAllowingStateLoss();
+
+                        boolean isCommandFound = CommandInvoker.excute(getActivity(), str);
+                        if (!isCommandFound) {
+                            Intent i = new Intent(getActivity(), TTSService.class);
+                            i.putExtra("toSpeak", getString(R.string.Dobaara_say_koshish_keejie_muja_aapakee_ki_samajh_nahi_aaee));
+                            i.putExtra("Language", "hi");
+                            getActivity().startService(i);
+
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else
+                    try {
+                        doNotExcuteCommander(str.get(0));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
 
-
-
             }
         }, 1000);
     }
+
+    private void dismissFragment() {
+
+        if (newIntance != null)
+            try {
+                getActivity().getSupportFragmentManager().beginTransaction().remove(newIntance).commitAllowingStateLoss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+    }
+
+
     private void doNotExcuteCommander(String date) throws Exception {
-        Log.d("voice regonizer","do not excute commander");
+        Log.d("voice regonizer", "do not excute commander");
         sendDateToNOnHidni = new sendToActivtys();
         sendDateToNOnHidni.sendingDataToActivitys(getActivity(), date, getActivity().getClass().getSimpleName());
     }
 
 
-
-    private synchronized  void  startRecognition() {
+    private void startRecognition() throws Exception {
         Intent intent = new Intent("android.speech.action.RECOGNIZE_SPEECH");
-        if (isAdded()){
+        if (isAdded()) {
+
             intent.putExtra("calling_package", getActivity().getPackageName());
             intent.putExtra("android.speech.extra.LANGUAGE_MODEL", "free_form");
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS,2000);
             intent.putExtra("android.speech.extra.LANGUAGE", LANGUAGES);
-
+            intent.putExtra("android.speech.extras.SPEECH_INPUT_MINIMUM_LENGTH_MILLIS", 3000);
+            intent.putExtra("android.speech.extras.SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS", 3000);
+            intent.putExtra("android.speech.extras.SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS", 3000);
             this.speechRecognizer.startListening(intent);
         }
 
@@ -296,6 +307,7 @@ public class voiceRecgonizationFragment extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
+
             onError7CallBack = (onErrorSevenvoiceRecgoniztion) context;
         } catch (Exception e) {
 
@@ -307,24 +319,30 @@ public class voiceRecgonizationFragment extends DialogFragment {
 
     }
 
-    public void onDestroy() {
-        if (this.speechRecognizer != null) {
-            recognitionProgressView.stop();
 
-            this.speechRecognizer.destroy();
-            Log.d(TAG, "onDestroy");
-        }
-        if (this.recognitionProgressView != null) {
-            this.recognitionProgressView.stop();
-            this.recognitionProgressView = null;
-
-        }
-        if (handlerError != null)
-            handlerError.removeCallbacks(handlerErrorRunnable);
+    @Override
+    public void onPause() {
 
 
-        super.onDestroy();
+            if (this.speechRecognizer != null) {
+                {
+                    this.speechRecognizer.stopListening();
+                    this.speechRecognizer.cancel();
+                    this.speechRecognizer.destroy();
+                    this.speechRecognizer=null;
+
+                }
+
+            }
+            if (this.recognitionProgressView != null) {
+                this.recognitionProgressView.stop();
+                this.recognitionProgressView = null;
+
+            }
+            if (handlerError != null)
+                handlerError.removeCallbacks(handlerErrorRunnable);
+
+
+        super.onPause();
     }
-
-
 }

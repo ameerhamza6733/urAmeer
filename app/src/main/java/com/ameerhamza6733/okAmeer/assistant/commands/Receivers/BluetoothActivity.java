@@ -30,7 +30,8 @@ public class BluetoothActivity extends AppCompatActivity {
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
                 askRunTimePermissions();
                 return;
-            }
+            }else
+                turnONorOfF();
 
         }
 

@@ -3,9 +3,9 @@ package com.ameerhamza6733.okAmeer.assistant.commands;
 import android.content.Context;
 import android.content.Intent;
 
-import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.assistant.Command;
 
+import com.ameerhamza6733.okAmeer.assistant.CommandModel;
 import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.sendSmsActivity;
 
 /**
@@ -14,12 +14,12 @@ import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.sendSmsActivity;
 
 public class sendWhatsAppCommand implements Command {
     @Override
-    public void execute(Context context, String predicate) {
+    public void execute(CommandModel commandModel) {
 
-        Intent intent =  new Intent(context, sendSmsActivity.class);
+        Intent intent =  new Intent(commandModel.getContext(), sendSmsActivity.class);
         intent.putExtra("EXTRA_SMS_OR_WHATS_APP","WhatsApp");
-        intent.putExtra(sendSmsActivity.EXTRA_RECIPIENT_NAME,predicate);
-        context.startActivity(intent);
+        intent.putExtra(sendSmsActivity.EXTRA_RECIPIENT_NAME,commandModel.getPredicate());
+        commandModel.getContext().startActivity(intent);
 
 
     }

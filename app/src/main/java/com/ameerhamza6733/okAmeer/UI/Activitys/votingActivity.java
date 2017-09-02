@@ -202,15 +202,17 @@ public class votingActivity extends AppCompatActivity implements RequstCommandDi
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            mProgresBar.setVisibility(View.GONE);
-            if (votingActivity.this.mAdapter != null)
-                mAdapter.notifyDataSetChanged();
-            else {
+           if(!isFinishing()){
+               mProgresBar.setVisibility(View.GONE);
+               if (mAdapter != null)
+                   mAdapter.notifyDataSetChanged();
+               else {
 
 
-                votingActivity.this.mAdapter = new requestCommandAdapter(mDataset);
-                votingActivity.this.recyclerView.setAdapter(mAdapter);
-            }
+                   mAdapter = new requestCommandAdapter(mDataset);
+                   recyclerView.setAdapter(mAdapter);
+               }
+           }
         }
     }
 

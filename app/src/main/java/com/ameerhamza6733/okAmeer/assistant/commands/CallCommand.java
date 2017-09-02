@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.ameerhamza6733.okAmeer.assistant.Command;
+import com.ameerhamza6733.okAmeer.assistant.CommandModel;
 import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.CallingActivity;
 
 /**
@@ -12,12 +13,12 @@ import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.CallingActivity;
 
 public class CallCommand implements Command {
     @Override
-    public void execute(Context context, String predicate) {
+    public void execute(CommandModel commandModel) {
 
-        Intent intent =  new Intent(context, CallingActivity.class);
-        intent.putExtra(CallingActivity.EXTRA_NAME,predicate);
+        Intent intent =  new Intent(commandModel.getContext(), CallingActivity.class);
+        intent.putExtra(CallingActivity.EXTRA_NAME,commandModel.getPredicate());
 
-        context.startActivity(intent);
+        commandModel.getContext().startActivity(intent);
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.assistant.Command;
+import com.ameerhamza6733.okAmeer.assistant.CommandModel;
 
 /**
  * Created by AmeerHamza on 6/28/2017.
@@ -13,10 +14,10 @@ import com.ameerhamza6733.okAmeer.assistant.Command;
 
 public class nextSongCommand implements Command {
     @Override
-    public void execute(Context context, String predicate) {
+    public void execute(CommandModel commandModel) {
         Intent i = new Intent("com.android.music.musicservicecommand");
         i.putExtra("command", "next");
-        context.sendBroadcast(i);
+        commandModel.getContext().sendBroadcast(i);
         Log.d("Music","nextSongCommand");
 
     }

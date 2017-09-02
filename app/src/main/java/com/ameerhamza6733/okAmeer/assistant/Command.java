@@ -7,7 +7,7 @@ import android.content.Context;
  */
 
 public interface Command {
-     void execute(Context context, String predicate);
+     void execute(CommandModel commandModel);
     String getDefaultPhrase ();
     String getTtsPhrase(Context context);
 }

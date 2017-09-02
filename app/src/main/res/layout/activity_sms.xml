@@ -16,7 +16,7 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="195dp"
             android:layout_margin="8dp">
 
             <TextView
@@ -74,6 +74,16 @@
 
 
                 android:hint="Sms" />
+
+            <Switch
+                android:id="@+id/switch_turn_on_native_urdu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:padding="8dp"
+                android:text="Native Urdu"
+                android:visibility="invisible" />
 
 
         </RelativeLayout>

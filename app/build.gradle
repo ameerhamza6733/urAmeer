@@ -8,8 +8,8 @@ android {
         applicationId "com.ameerhamza6733.okAmeer"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 8
-        versionName "1.8"
+        versionCode 11
+        versionName "1.10.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -54,6 +54,7 @@ dependencies {
     compile 'com.webianks.library:easy-feedback:1.0.2'
     compile 'com.github.lolucosmin:PermissionsWrapper:version_1.0'
     testCompile 'junit:junit:4.12'
+
 }
 apply plugin: 'com.google.gms.google-services'
 repositories {

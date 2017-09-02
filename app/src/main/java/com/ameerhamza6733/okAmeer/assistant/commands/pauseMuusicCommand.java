@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.assistant.Command;
+import com.ameerhamza6733.okAmeer.assistant.CommandModel;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -15,8 +16,8 @@ import java.util.TimerTask;
 
 public class pauseMuusicCommand implements Command {
     @Override
-    public void execute(Context context, String predicate) {
-        pauseMusicNow(context);
+    public void execute(CommandModel commandModel) {
+        pauseMusicNow(commandModel.getContext());
     }
 
     private void pauseMusicNow(final Context context) {

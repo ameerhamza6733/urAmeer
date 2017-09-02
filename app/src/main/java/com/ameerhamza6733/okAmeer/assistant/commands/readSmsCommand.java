@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.ameerhamza6733.okAmeer.assistant.Command;
+import com.ameerhamza6733.okAmeer.assistant.CommandModel;
 import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.smsUnreadActivity;
 
 /**
@@ -12,8 +13,8 @@ import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.smsUnreadActivity
 
 public class readSmsCommand implements Command {
     @Override
-    public void execute(Context context, String predicate) {
-        context.startActivity(new Intent(context,smsUnreadActivity.class));
+    public void execute(CommandModel commandModel) {
+        commandModel.getContext().startActivity(new Intent(commandModel.getContext(),smsUnreadActivity.class));
 
     }
 

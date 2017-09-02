@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.assistant.Command;
+import com.ameerhamza6733.okAmeer.assistant.CommandModel;
 import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.sendSmsActivity;
 
 /**
@@ -14,19 +14,19 @@ import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.sendSmsActivity;
 
 public class sendSmsCommand implements Command{
     @Override
-    public void execute(Context context, String predicate) {
-        Log.d("sendSmsCommand","excute");
-        Intent intent =  new Intent(context, sendSmsActivity.class);
-
+    public void execute(CommandModel commandModel) {
+        Log.d("sendSmsCommand","excute" + "commandModel.getPredicate()"+commandModel.getPredicate()+"commandModel.getCommandExtraPhrase()"+commandModel.getCommandExtraPhrase());
+        Intent intent =  new Intent(commandModel.getContext(), sendSmsActivity.class);
         intent.putExtra("EXTRA_SMS_OR_WHATS_APP","sms");
-        intent.putExtra(sendSmsActivity.EXTRA_RECIPIENT_NAME,predicate);
-        context.startActivity(intent);
+        if(commandModel.getCommandExtraPhrase().length()>1)
+        intent.putExtra(sendSmsActivity.EXTRA_RECIPIENT_NAME,commandModel.getCommandExtraPhrase());
+        commandModel.getContext().startActivity(intent);
 
     }
 
     @Override
     public String getDefaultPhrase() {
-        return "میسج بھیجو,میسج لکھیں,message karo,SMS send karo,message send karo,message likho,SMS bhejo,message bhejo,message lakho";
+        return "میسج بھیجو,میسج لکھیں,message karo,SMS send karo,message send karo,message likho,SMS bhejo,message bhejo,message lakho,message likh,message Likhna,message likhu";
     }
 
     @Override
