@@ -43,8 +43,8 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
     private static final int PICK_CONTACT_REQUEST = 1;
     private voiceRecgonizationFragment newIntance;
     protected Spinner callpickerSpinner;
-    private ImageView CallOk;
-    private ImageView CallCancle;
+    private TextView CallOk;
+    private TextView CallCancle;
     private boolean blockContectInternt = false;
     private ArrayList<String> spinnerList;
     private ArrayAdapter<String> adapter;
@@ -84,7 +84,7 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
                 showVoiceRegonizerDiloge("en-IN");
             }
         });
-        CallOk = (ImageView) findViewById(R.id.caling_yas);
+        CallOk = (TextView) findViewById(R.id.caling_yas);
         CallOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +93,7 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
 
             }
         });
-        CallCancle = (ImageView) findViewById(R.id.caling_cancle);
+        CallCancle = (TextView) findViewById(R.id.caling_cancle);
         CallCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

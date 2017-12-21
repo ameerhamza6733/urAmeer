@@ -24,7 +24,7 @@
 
             <TextView
                 android:paddingLeft="8dp"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 android:textColor="#212121"
                 android:id="@+id/making_call_in"
                 android:layout_width="303dp"
