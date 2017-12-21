@@ -1,13 +1,17 @@
 package com.ameerhamza6733.okAmeer.UI.Activitys;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.UI.customfonts.MyTextView;
+import com.ameerhamza6733.okAmeer.UI.fragment.voiceRecgonizationFragment;
 
 public class LoginOrLogout extends AppCompatActivity {
 
@@ -35,5 +39,40 @@ public class LoginOrLogout extends AppCompatActivity {
                 LoginOrLogout.this.startActivity(intent);
             }
         });
+
     }
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        int keyCode = event.getKeyCode();
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                showVoiceFragment();
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                showVoiceFragment();
+                return true;
+            default:
+                return super.dispatchKeyEvent(event);
+        }
+    }
+
+    private void showVoiceFragment() {
+        try {
+            if(!isFinishing()){
+
+                FragmentTransaction transactionFragment = getSupportFragmentManager().beginTransaction();
+                voiceRecgonizationFragment newIntance = voiceRecgonizationFragment.newInstance("en-IN", false, true);
+                newIntance.setStyle(1, R.style.AppTheme);
+                transactionFragment.add(android.R.id.content, newIntance).addToBackStack(null).commitAllowingStateLoss();
+
+            }
+
+
+        }catch (Exception e){
+            Toast.makeText(this, "error"+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }
+
+

@@ -123,8 +123,10 @@ public class voiceRecgonizationFragment extends DialogFragment {
             @Override
             public void onError(final int error) {
                 super.onError(error);
+
                 Log.d(TAG, "onError code" + error);
 
+                if(onGoogleSpeechRecognzerError!=null)
                 onGoogleSpeechRecognzerError.onError(error);
                 if (error == 4) {
 

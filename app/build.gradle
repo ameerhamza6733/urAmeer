@@ -54,6 +54,8 @@ dependencies {
     compile 'com.github.lolucosmin:PermissionsWrapper:version_1.0'
     testCompile 'junit:junit:4.12'
     compile files('libs/pocketsphinx-android-5prealpha-nolib.jar')
+    compile 'com.google.android.gms:play-services-location:11.6.2'
+    compile 'com.google.android.gms:play-services-maps:11.6.2'
 
 }
 apply plugin: 'com.google.gms.google-services'

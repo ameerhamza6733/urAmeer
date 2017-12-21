@@ -35,7 +35,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".UI.Activitys.MainActivity"
+            android:name=".UI.Activitys.LoginOrLogout"
             android:screenOrientation="portrait">
             <intent-filter android:priority="2147483647">
                 <action android:name="android.speech.action.WEB_SEARCH" />
@@ -120,9 +120,16 @@
             android:theme="@style/AppTheme.Titlebar" />
         <activity android:name=".assistant.commands.Receivers.BluetoothActivity" />
         <activity
-            android:name=".UI.Activitys.LoginOrLogout"
+            android:name=".UI.Activitys.MainActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".assistant.commands.Receivers.PostOnFacebook"></activity>
+        <activity android:name=".assistant.commands.Receivers.mapActivty"/>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyBcW_ug848fpZbXRibZQtUrBC9AkDpmjho" />
     </application>
 
 </manifest>

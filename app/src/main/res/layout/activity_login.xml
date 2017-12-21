@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Ok Ameer"
+            android:text="@string/app_name"
             android:textColor="#fff"
             android:textSize="34dp"
 
@@ -81,7 +81,7 @@
             android:layout_marginLeft="46dp"
             android:background="#0000"
             android:gravity="left"
-            android:hint="Email"
+            android:hint="User Name"
 
             android:padding="16dp"
             android:textColor="@color/colortext"

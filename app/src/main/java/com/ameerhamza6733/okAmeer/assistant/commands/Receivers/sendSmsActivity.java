@@ -176,7 +176,7 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
     private void SwitchBetweenLanguages(boolean isChecked) {
         if (isChecked) {
             mSmsBody.setText("");
-            showVoiceRegonizerDiloge("ur-PK");
+            showVoiceRegonizerDiloge("en-IN");
             FlagGetSmsBody=true;
             isNativeUrdu=true;
 

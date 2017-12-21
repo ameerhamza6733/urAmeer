@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="Ok Ameer"
+            android:text="@string/app_name"
             android:textColor="#fff"
             android:textSize="34dp" />
 
@@ -96,7 +96,7 @@
             android:gravity="center"
             android:lines="2"
             android:paddingBottom="21dp"
-            android:text="Pakistan first urdu assistant"
+            android:text="Pakistan first smart cane"
             android:textColor="@color/colorhint"
 
             />

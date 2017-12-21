@@ -86,11 +86,14 @@ public class LoginActivity extends Activity {
         userlogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(userEmail.getText().toString().isEmpty() || userPassword.getText().toString().isEmpty()){
-                    Toast.makeText(LoginActivity.this,"please enter Email and password both",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                LoginIntoFirebase();
+                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
+//                if(userEmail.getText().toString().isEmpty() || userPassword.getText().toString().isEmpty()){
+//                    Toast.makeText(LoginActivity.this,"please enter Email and password both",Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+               // LoginIntoFirebase();
             }
         });
 
