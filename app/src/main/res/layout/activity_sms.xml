@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/card_background"
+
     android:layout_height="match_parent">
 
     <android.support.v7.widget.CardView
@@ -17,13 +17,19 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="195dp"
-            android:layout_margin="8dp">
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp">
 
             <TextView
+                android:paddingLeft="8dp"
+                android:textSize="18sp"
+                android:textColor="#212121"
                 android:id="@+id/making_call_in"
                 android:layout_width="303dp"
                 android:layout_height="wrap_content"
-                android:text="Send Sms" />
+                android:text="Send a sms" />
 
             <Spinner
                 android:id="@+id/caling_spinner"
@@ -37,7 +43,8 @@
                 android:layout_toEndOf="@+id/making_call_in"
                 android:layout_toRightOf="@+id/making_call_in" />
 
-            <ImageButton
+            <TextView
+
                 android:id="@+id/caling_cancle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,10 +54,10 @@
                 android:layout_marginLeft="18dp"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="23dp"
-                android:background="@color/cardview_light_background"
-                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
-            <ImageButton
+               android:drawableStart="@drawable/ic_close_black_24dp" />
+
+            <TextView
                 android:id="@+id/caling_yas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -59,8 +66,8 @@
                 android:layout_alignTop="@+id/caling_cancle"
                 android:layout_marginEnd="18dp"
                 android:layout_marginRight="18dp"
-                android:background="@color/cardview_light_background"
-                app:srcCompat="@android:drawable/ic_menu_send" />
+               android:drawableStart="@drawable/ic_send_black_24dp"
+                />
 
             <EditText
                 android:id="@+id/smsBodayEdittext"
@@ -73,7 +80,7 @@
                 android:layout_below="@+id/caling_spinner"
 
 
-                android:hint="Sms" />
+                android:hint="Message" />
 
             <Switch
                 android:id="@+id/switch_turn_on_native_urdu"

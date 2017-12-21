@@ -2,7 +2,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+    }
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
     defaultConfig {

@@ -73,8 +73,8 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
 
     private EditText mSmsBody;
     private Spinner callpickerSpinner;
-    private ImageView smsOk;
-    private ImageView smsCancle;
+    private TextView smsOk;
+    private TextView smsCancle;
     private FloatingActionButton mFebRetry;
     private Switch mSwitchTurnOnNativeUrdu;
     private voiceRecgonizationFragment newIntance;
@@ -199,8 +199,8 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
         mSedingSmsIn = (TextView) findViewById(R.id.making_call_in);
         mSmsBody = (EditText) findViewById(R.id.smsBodayEdittext);
         mFebRetry = (FloatingActionButton) findViewById(R.id.febRetry);
-        smsOk = (ImageView) findViewById(R.id.caling_yas);
-        smsCancle = (ImageView) findViewById(R.id.caling_cancle);
+        smsOk = (TextView) findViewById(R.id.caling_yas);
+        smsCancle = (TextView) findViewById(R.id.caling_cancle);
 
     }
     //show voice regonizer input dialog to use
