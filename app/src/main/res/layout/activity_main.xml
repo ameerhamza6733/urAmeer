@@ -37,28 +37,29 @@
             app:srcCompat="@drawable/caller_id_mic" />
 
     <com.github.clans.fab.FloatingActionMenu
-            android:id="@+id/menu_yellow"
+        android:id="@+id/menu_yellow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="10dp"
+
+        fab:menu_animationDelayPerItem="0"
+        fab:menu_colorNormal="#FFB805"
+        fab:menu_colorPressed="#F2AB00"
+        fab:menu_colorRipple="#D99200"
+        fab:menu_shadowColor="#444">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_help"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_help_outline"
+            fab:fab_label="استعمال کرنے کا طریقہ" />
 
-            fab:menu_animationDelayPerItem="0"
-            fab:menu_colorNormal="#FFB805"
-            fab:menu_colorPressed="#F2AB00"
-            fab:menu_colorRipple="#D99200"
-            fab:menu_shadowColor="#444">
-
-            <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/fab_help"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_help_outline"
-                fab:fab_label="استعمال کرنے کا طریقہ" />
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_feedback"
 
@@ -66,19 +67,30 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_feedback_black_24dp"
             fab:fab_label="ہمیں اپنی رائے لکھیں" />
-            <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/fab_request_new_command"
-                style="@style/MenuButtonsStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_add_circle_outline_black_24dp"
-                fab:fab_label="Request new Command" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_request_new_command"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_circle_outline_black_24dp"
+            fab:fab_label="Request new Command" />
 
 
+    </com.github.clans.fab.FloatingActionMenu>
 
-        </com.github.clans.fab.FloatingActionMenu>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"
+        android:layout_marginTop="47dp"
+        android:layout_centerHorizontal="true"
+        android:text='Say "OK Ameer"'
+        android:textColor="#000"
 
-
+        android:textSize="24sp"
+         />
 
 
 </RelativeLayout>

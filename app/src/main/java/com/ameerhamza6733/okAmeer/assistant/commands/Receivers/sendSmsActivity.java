@@ -41,7 +41,7 @@ import android.widget.Toast;
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.UI.fragment.voiceRecgonizationFragment;
 import com.ameerhamza6733.okAmeer.interfacess.noNeedCommander;
-import com.ameerhamza6733.okAmeer.interfacess.onErrorSevenvoiceRecgoniztion;
+import com.ameerhamza6733.okAmeer.interfacess.onGoogleSpeechRecognzerError;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -53,7 +53,7 @@ import java.util.List;
 import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
 import lolodev.permissionswrapper.wrapper.PermissionWrapper;
 
-public class sendSmsActivity extends AppCompatActivity implements noNeedCommander, onErrorSevenvoiceRecgoniztion {
+public class sendSmsActivity extends AppCompatActivity implements noNeedCommander, onGoogleSpeechRecognzerError {
 
     public static final String EXTRA_RECIPIENT_NAME = "EXTRA_RECIPIENT_NAME";
     public static final String[] positiveWords = {"ji haan", "ha", "yas", "bhej do", "send kar do", "kar do"};
@@ -541,10 +541,11 @@ public class sendSmsActivity extends AppCompatActivity implements noNeedCommande
 
     /**
      * called when recognizer throw error 7
+     * @param Error
      */
     @Override
-    public void onError7() {
-        Toast.makeText(sendSmsActivity.this, "onError 7", Toast.LENGTH_SHORT).show();
+    public void onError(int Error) {
+        Toast.makeText(sendSmsActivity.this, "onSpeech Error "+Error, Toast.LENGTH_SHORT).show();
         if (newIntance != null)
             getSupportFragmentManager().beginTransaction().remove(newIntance).commitAllowingStateLoss();
     }

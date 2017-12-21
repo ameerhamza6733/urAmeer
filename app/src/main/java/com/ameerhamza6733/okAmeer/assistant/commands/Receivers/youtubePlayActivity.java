@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +16,7 @@ import android.widget.Toast;
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.UI.fragment.voiceRecgonizationFragment;
 import com.ameerhamza6733.okAmeer.interfacess.noNeedCommander;
-import com.ameerhamza6733.okAmeer.interfacess.onErrorSevenvoiceRecgoniztion;
+import com.ameerhamza6733.okAmeer.interfacess.onGoogleSpeechRecognzerError;
 import com.ameerhamza6733.okAmeer.utial.TTSService;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -36,12 +35,13 @@ import org.json.JSONObject;
  * Created by AmeerHamza on 7/5/2017.
  */
 
-public class youtubePlayActivity extends AppCompatActivity implements noNeedCommander , onErrorSevenvoiceRecgoniztion {
+public class youtubePlayActivity extends AppCompatActivity implements noNeedCommander , onGoogleSpeechRecognzerError {
     private BroadcastReceiver broadcastReceiver;
    
     private RequestQueue requestQueue;
     private Runnable runnable;
     private Handler handler = new Handler();
+    private voiceRecgonizationFragment newIntance;
 
 
     @Override
@@ -74,7 +74,7 @@ public class youtubePlayActivity extends AppCompatActivity implements noNeedComm
                 try {
                     if(!isFinishing()){
                         FragmentTransaction transactionFragment = getSupportFragmentManager().beginTransaction();
-                        voiceRecgonizationFragment newIntance = voiceRecgonizationFragment.newInstance("en-IN", false, false);
+                         newIntance = voiceRecgonizationFragment.newInstance("en-IN", false, false);
                         newIntance.setStyle(1, R.style.AppTheme);
                         transactionFragment.add(android.R.id.content, newIntance).addToBackStack(null).commitAllowingStateLoss();
 
@@ -172,7 +172,11 @@ public class youtubePlayActivity extends AppCompatActivity implements noNeedComm
     }
 
     @Override
-    public void onError7() {
+    public void onError(int Error) {
+        Toast.makeText(youtubePlayActivity.this, "onSpeech Error "+Error, Toast.LENGTH_SHORT).show();
+        if (newIntance != null)
+            getSupportFragmentManager().beginTransaction().remove(newIntance).commitAllowingStateLoss();
+
 
     }
 }

@@ -8,10 +8,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +21,7 @@ import android.widget.Toast;
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.UI.fragment.voiceRecgonizationFragment;
 import com.ameerhamza6733.okAmeer.interfacess.noNeedCommander;
-import com.ameerhamza6733.okAmeer.interfacess.onErrorSevenvoiceRecgoniztion;
+import com.ameerhamza6733.okAmeer.interfacess.onGoogleSpeechRecognzerError;
 import com.ameerhamza6733.okAmeer.utial.SMSUtils;
 import com.ameerhamza6733.okAmeer.utial.SmsMmsMessage;
 import com.ameerhamza6733.okAmeer.utial.TTSService;
@@ -41,7 +39,7 @@ import it.gmariotti.cardslib.library.view.CardListView;
 import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
 import lolodev.permissionswrapper.wrapper.PermissionWrapper;
 
-public class smsUnreadActivity extends AppCompatActivity implements noNeedCommander,onErrorSevenvoiceRecgoniztion {
+public class smsUnreadActivity extends AppCompatActivity implements noNeedCommander,onGoogleSpeechRecognzerError {
 
     private Handler handler;
     private Runnable runnable;
@@ -289,7 +287,7 @@ public class smsUnreadActivity extends AppCompatActivity implements noNeedComman
 
 
     @Override
-    public void onError7() {
+    public void onError(int Error) {
         voiceRecgonizerDismiss();
     }
 }
