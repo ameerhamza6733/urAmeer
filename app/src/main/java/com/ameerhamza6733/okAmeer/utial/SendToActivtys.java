@@ -8,19 +8,11 @@ import com.ameerhamza6733.okAmeer.interfacess.INoNeedCommander;
  * Created by AmeerHamza on 6/23/2017.
  */
 
-public class sendToActivtys {
+public class SendToActivtys {
     private INoNeedCommander nonHindiQurary;
-    public void sendingDataToActivitys(Context context , String date, String ActivtyName)throws Exception
-    {
 
-
+    public void sendingDataToActivitys(Context context, String date, String ActivtyName) throws Exception {
         nonHindiQurary = (INoNeedCommander) context;
-
-
-
-
-            nonHindiQurary.onNoCommandrExcute(date);
-
-
+        nonHindiQurary.onNoCommandrExcute(date);
     }
 }
