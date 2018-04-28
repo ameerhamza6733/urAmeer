@@ -12,7 +12,7 @@ import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.mapActivty;
  * Created by AmeerHamza on 12/21/2017.
  */
 
-public class mapCommand implements Command {
+public class MapCommand implements Command {
     @Override
     public void execute(CommandModel commandModel) {
         Intent i = new Intent(commandModel.getContext(), mapActivty.class);

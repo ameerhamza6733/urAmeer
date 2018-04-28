@@ -7,7 +7,7 @@
 
 
     <EditText
-        android:drawableEnd="@drawable/ic_mic_black_24dp"
+
         android:text="Enter your destination "
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

@@ -1,18 +1,15 @@
 package com.ameerhamza6733.okAmeer.assistant;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 
 import com.ameerhamza6733.okAmeer.assistant.commands.BluetoothOffCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.BluetoothOnCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.CallCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.FlashLightOffCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.FlashlightOnCommand;
-import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.smsUnreadActivity;
 import com.ameerhamza6733.okAmeer.assistant.commands.decreaseVolumeCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.increaseVolumeCommand;
-import com.ameerhamza6733.okAmeer.assistant.commands.mapCommand;
+import com.ameerhamza6733.okAmeer.assistant.commands.MapCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.nextSongCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.openCamra;
 import com.ameerhamza6733.okAmeer.assistant.commands.pauseMuusicCommand;
@@ -28,7 +25,6 @@ import com.ameerhamza6733.okAmeer.assistant.commands.silentCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.wifiOffCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.wifiOnCommand;
 import com.ameerhamza6733.okAmeer.assistant.commands.youtubePlayCommand;
-import com.ameerhamza6733.okAmeer.utial.TTSService;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 
 import java.util.ArrayList;
@@ -44,7 +40,7 @@ public class CommandInvoker {
         if(commands==null)
         {
             commands = new Command[] {new FlashlightOnCommand(),new FlashLightOffCommand(),new setAlarmCommand(),new CallCommand(),new readSmsCommand(),new pauseMuusicCommand(),new previousSongCommand(),new nextSongCommand(),new youtubePlayCommand(),new playMusicCommand()
-            ,new increaseVolumeCommand(),new decreaseVolumeCommand(),new sendWhatsAppCommand(), new sendSmsCommand(),new wifiOnCommand(),new wifiOffCommand(), new silentCommand(), new sendGmailCommand(), new BluetoothOnCommand(), new BluetoothOffCommand(), new postOnFaceBook(), new mapCommand(), new openCamra()};
+            ,new increaseVolumeCommand(),new decreaseVolumeCommand(),new sendWhatsAppCommand(), new sendSmsCommand(),new wifiOnCommand(),new wifiOffCommand(), new silentCommand(), new sendGmailCommand(), new BluetoothOnCommand(), new BluetoothOffCommand(), new postOnFaceBook(), new MapCommand(), new openCamra()};
         }
         return commands;
     }
