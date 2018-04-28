@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.UI.Activitys.MainActivity;
 import com.ameerhamza6733.okAmeer.R;
-import com.ameerhamza6733.okAmeer.UI.fragment.voiceRecgonizationFragment;
+import com.ameerhamza6733.okAmeer.UI.fragment.VoiceRecgonizationFragment;
 
 import java.io.IOException;
 
@@ -52,7 +52,7 @@ public class FlashLightActivtyReceiver extends FragmentActivity implements Surfa
     private static Camera mCamera;
     private static boolean currentlyOn = false;
 
-    private static voiceRecgonizationFragment newIntance;
+    private static VoiceRecgonizationFragment newIntance;
     Button button;
 
 
@@ -100,7 +100,7 @@ public class FlashLightActivtyReceiver extends FragmentActivity implements Surfa
             @Override
             public void onClick(View view) {
 
-                newIntance = voiceRecgonizationFragment.newInstance("en-IN", false, true);
+                newIntance = VoiceRecgonizationFragment.newInstance("en-IN", false, true);
                 newIntance.show(getSupportFragmentManager(), "fragment_voice_input");
             }
         });

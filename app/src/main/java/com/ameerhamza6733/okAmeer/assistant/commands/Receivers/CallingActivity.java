@@ -11,24 +11,21 @@ import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
-import com.ameerhamza6733.okAmeer.UI.fragment.voiceRecgonizationFragment;
-import com.ameerhamza6733.okAmeer.interfacess.noNeedCommander;
+import com.ameerhamza6733.okAmeer.UI.fragment.VoiceRecgonizationFragment;
+import com.ameerhamza6733.okAmeer.interfacess.INoNeedCommander;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 
 import java.util.ArrayList;
@@ -38,10 +35,10 @@ import java.util.List;
 import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
 import lolodev.permissionswrapper.wrapper.PermissionWrapper;
 
-public class CallingActivity extends AppCompatActivity implements noNeedCommander {
+public class CallingActivity extends AppCompatActivity implements INoNeedCommander {
 
     private static final int PICK_CONTACT_REQUEST = 1;
-    private voiceRecgonizationFragment newIntance;
+    private VoiceRecgonizationFragment newIntance;
     protected Spinner callpickerSpinner;
     private TextView CallOk;
     private TextView CallCancle;
@@ -118,7 +115,7 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
                 .addRequestPermissionsCallBack(new OnRequestPermissionsCallBack() {
                     @Override
                     public void onGrant() {
-                        Log.i(sendSmsActivity.class.getSimpleName(), "Permission was granted.");
+                        Log.i(SendSmsActivity.class.getSimpleName(), "Permission was granted.");
                         showVoiceRegonizerDiloge("en-IN");
 
 
@@ -126,7 +123,7 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
 
                     @Override
                     public void onDenied(String permission) {
-                        Log.i(sendSmsActivity.class.getSimpleName(), "Permission was not granted.");
+                        Log.i(SendSmsActivity.class.getSimpleName(), "Permission was not granted.");
                     }
                 }).build().request();
     }
@@ -324,7 +321,7 @@ public class CallingActivity extends AppCompatActivity implements noNeedCommande
                 try {
                     if(!isFinishing()){
                         FragmentTransaction transactionFragment = getSupportFragmentManager().beginTransaction();
-                        newIntance = voiceRecgonizationFragment.newInstance(s, false, false);
+                        newIntance = VoiceRecgonizationFragment.newInstance(s, false, false);
                         newIntance.setStyle(1, R.style.AppTheme);
                         transactionFragment.add(android.R.id.content, newIntance).addToBackStack(null).commitAllowingStateLoss();
 

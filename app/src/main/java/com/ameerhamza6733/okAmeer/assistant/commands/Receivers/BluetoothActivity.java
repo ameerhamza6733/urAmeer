@@ -4,13 +4,10 @@ import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
 
@@ -53,7 +50,7 @@ public class BluetoothActivity extends AppCompatActivity {
                 .addRequestPermissionsCallBack(new OnRequestPermissionsCallBack() {
                     @Override
                     public void onGrant() {
-                        Log.i(sendSmsActivity.class.getSimpleName(), "Permission was granted.");
+                        Log.i(SendSmsActivity.class.getSimpleName(), "Permission was granted.");
                       turnONorOfF();
 
 
@@ -61,7 +58,7 @@ public class BluetoothActivity extends AppCompatActivity {
 
                     @Override
                     public void onDenied(String permission) {
-                        Log.i(sendSmsActivity.class.getSimpleName(), "Permission was not granted.");
+                        Log.i(SendSmsActivity.class.getSimpleName(), "Permission was not granted.");
                     }
                 }).build().request();
     }

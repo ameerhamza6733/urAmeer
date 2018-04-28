@@ -5,23 +5,23 @@ import android.content.Intent;
 
 import com.ameerhamza6733.okAmeer.assistant.Command;
 import com.ameerhamza6733.okAmeer.assistant.CommandModel;
-import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.MapActivty;
+import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.SmsUnreadActivity;
 
 /**
- * Created by AmeerHamza on 12/21/2017.
+ * Created by AmeerHamza on 7/1/2017.
  */
 
-public class MapCommand implements Command {
+public class ReadSmsCommand implements Command {
     @Override
     public void execute(CommandModel commandModel) {
-        Intent i = new Intent(commandModel.getContext(), MapActivty.class);
-        i.putExtra("onOrOff", false);
-        commandModel.getContext().startActivity(i);
+        commandModel.getContext().startActivity(new Intent(commandModel.getContext(),SmsUnreadActivity.class));
+
     }
 
     @Override
     public String getDefaultPhrase() {
-        return "map";
+
+        return "پڑھو SMS ,میسج پڑھو,message padho";
     }
 
     @Override

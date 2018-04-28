@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.fragment.helpFragment">
+    tools:context=".UI.fragment.HelpFragment">
 
     <it.gmariotti.cardslib.library.view.CardListView
         android:id="@+id/my_help_list"

@@ -1,24 +1,12 @@
 package com.ameerhamza6733.okAmeer.utial;
 
-import android.annotation.TargetApi;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.speech.tts.TextToSpeech;
-import android.speech.tts.UtteranceProgressListener;
-import android.support.annotation.RequiresApi;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.ameerhamza6733.okAmeer.interfacess.mttsListener;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 
 /**

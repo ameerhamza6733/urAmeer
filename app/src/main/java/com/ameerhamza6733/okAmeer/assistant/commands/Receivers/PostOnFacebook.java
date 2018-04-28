@@ -18,13 +18,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
-import com.ameerhamza6733.okAmeer.UI.fragment.voiceRecgonizationFragment;
-import com.ameerhamza6733.okAmeer.interfacess.noNeedCommander;
+import com.ameerhamza6733.okAmeer.UI.fragment.VoiceRecgonizationFragment;
+import com.ameerhamza6733.okAmeer.interfacess.INoNeedCommander;
 import com.ameerhamza6733.okAmeer.utial.TTSService;
 
 import java.util.List;
 
-public class PostOnFacebook extends AppCompatActivity implements noNeedCommander {
+public class PostOnFacebook extends AppCompatActivity implements INoNeedCommander {
 
     private BroadcastReceiver broadcastReceiver;
     private Handler handler;
@@ -70,7 +70,7 @@ public class PostOnFacebook extends AppCompatActivity implements noNeedCommander
 
         try {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            voiceRecgonizationFragment newIntance = voiceRecgonizationFragment.newInstance("en-IN", false, false);
+            VoiceRecgonizationFragment newIntance = VoiceRecgonizationFragment.newInstance("en-IN", false, false);
             newIntance.show(fragmentManager, "postOnfacebook");
             newIntance.setStyle(1, R.style.Theme_AppCompat_Dialog_MinWidth);
         } catch (Exception e) {

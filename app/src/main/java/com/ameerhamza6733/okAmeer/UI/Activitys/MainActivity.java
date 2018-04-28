@@ -16,9 +16,9 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
-import com.ameerhamza6733.okAmeer.UI.fragment.voiceRecgonizationFragment;
-import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.sendSmsActivity;
-import com.ameerhamza6733.okAmeer.interfacess.onGoogleSpeechRecognzerError;
+import com.ameerhamza6733.okAmeer.UI.fragment.VoiceRecgonizationFragment;
+import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.SendSmsActivity;
+import com.ameerhamza6733.okAmeer.interfacess.IGoogleSpeechRecognzerError;
 import com.ameerhamza6733.okAmeer.utial.SpeechRecognizerManager;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 import com.github.clans.fab.FloatingActionButton;
@@ -31,8 +31,8 @@ import lolodev.permissionswrapper.wrapper.PermissionWrapper;
  * Created by AmeerHamza on 7/17/2017.
  */
 
-public class MainActivity extends AppCompatActivity implements onGoogleSpeechRecognzerError,SpeechRecognizerManager.OnMagicWordListener {
-    private voiceRecgonizationFragment newIntance;
+public class MainActivity extends AppCompatActivity implements IGoogleSpeechRecognzerError,SpeechRecognizerManager.OnMagicWordListener {
+    private VoiceRecgonizationFragment newIntance;
     private SpeechRecognizerManager mSpeechRecognizerManager;
     private boolean isSpeekButtonPressed=false;
 
@@ -63,14 +63,14 @@ public class MainActivity extends AppCompatActivity implements onGoogleSpeechRec
         FebRequestNewCommand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, votingActivity.class);
+                Intent intent = new Intent(MainActivity.this, VotingActivity.class);
                 startActivity(intent);
             }
         });
         FebHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, show_sample_commands_list.class);
+                Intent intent = new Intent(MainActivity.this, ShowSampleCommandsList.class);
                 startActivity(intent);
             }
         });
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements onGoogleSpeechRec
             if(!isFinishing()){
 
                 FragmentTransaction transactionFragment = getSupportFragmentManager().beginTransaction();
-                newIntance = voiceRecgonizationFragment.newInstance("en-IN", false, true);
+                newIntance = VoiceRecgonizationFragment.newInstance("en-IN", false, true);
                 newIntance.setStyle(1, R.style.AppTheme);
                 transactionFragment.add(android.R.id.content, newIntance).addToBackStack(null).commitAllowingStateLoss();
 
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements onGoogleSpeechRec
                 .addRequestPermissionsCallBack(new OnRequestPermissionsCallBack() {
                     @Override
                     public void onGrant() {
-                        Log.i(sendSmsActivity.class.getSimpleName(), "Permission was granted.");
+                        Log.i(SendSmsActivity.class.getSimpleName(), "Permission was granted.");
                         GoogleSpeechOROwn();
 
                     }

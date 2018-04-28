@@ -3,7 +3,7 @@ package com.ameerhamza6733.okAmeer.utial;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.ameerhamza6733.okAmeer.interfacess.tranlaterCallback;
+import com.ameerhamza6733.okAmeer.interfacess.ITranlaterCallback;
 
 
 import org.json.JSONArray;
@@ -21,7 +21,7 @@ import java.net.URLEncoder;
  */
 
 public class tranlater  {
-    private tranlaterCallback callback;
+    private ITranlaterCallback callback;
     private String Query;
     private String SourceLeng;
     private String TragmentLeng;
@@ -29,7 +29,7 @@ public class tranlater  {
     private String Conn_URL;
     private String TAGg="tranlaterTAG";
 
-    public tranlater(tranlaterCallback callback, String query, String sourceLeng, String tragmentLeng) {
+    public tranlater(ITranlaterCallback callback, String query, String sourceLeng, String tragmentLeng) {
         this.callback = callback;
         this.Query = query;
        this. SourceLeng = sourceLeng;

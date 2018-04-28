@@ -51,13 +51,13 @@
             android:name=".assistant.commands.Receivers.FlashLightActivtyReceiver"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".assistant.commands.Receivers.setAlarmActivty"
+            android:name=".assistant.commands.Receivers.SetAlarmActivty"
             android:screenOrientation="portrait" />
         <activity
             android:name=".assistant.commands.Receivers.CallingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".assistant.commands.Receivers.sendSmsActivity"
+            android:name=".assistant.commands.Receivers.SendSmsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".UI.Activitys.HandsetReceiverActivty"
@@ -81,10 +81,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".assistant.commands.Receivers.smsUnreadActivity"
+            android:name=".assistant.commands.Receivers.SmsUnreadActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".assistant.commands.Receivers.youtubePlayActivity"
+            android:name=".assistant.commands.Receivers.YoutubePlayActivity"
             android:screenOrientation="portrait" />
 
         <service android:name=".utial.TTSService" />
@@ -101,13 +101,13 @@
             android:value="AIzaSyA-C1pPmKSPZUONcWCFqMOyILan7DUFi7I" />
 
         <activity
-            android:name=".UI.Activitys.show_sample_commands_list"
+            android:name=".UI.Activitys.ShowSampleCommandsList"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".assistant.commands.Receivers.sendEmailActivity"
+            android:name=".assistant.commands.Receivers.SendEmailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".UI.Activitys.singUpActivity"
+            android:name=".UI.Activitys.SingUpActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
@@ -115,7 +115,7 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
-            android:name=".UI.Activitys.votingActivity"
+            android:name=".UI.Activitys.VotingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Titlebar" />
         <activity android:name=".assistant.commands.Receivers.BluetoothActivity" />
@@ -123,7 +123,7 @@
             android:name=".UI.Activitys.MainActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".assistant.commands.Receivers.PostOnFacebook"></activity>
-        <activity android:name=".assistant.commands.Receivers.mapActivty"/>
+        <activity android:name=".assistant.commands.Receivers.MapActivty"/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
