@@ -8,7 +8,7 @@ import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.UI.fragment.voiceRecgonizationFragment;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 
-public class handsetReceiverActivty extends AppCompatActivity{
+public class HandsetReceiverActivty extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,7 @@ public class handsetReceiverActivty extends AppCompatActivity{
     private void showVoiceDilogeFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         voiceRecgonizationFragment newIntance = voiceRecgonizationFragment.newInstance("en-IN", false, true);
-        newIntance.show(fragmentManager, "handsetReceiverActivty");
+        newIntance.show(fragmentManager, "HandsetReceiverActivty");
         newIntance.setStyle(1, R.style.AppTheme);
     }
 

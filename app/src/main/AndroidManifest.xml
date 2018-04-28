@@ -60,7 +60,7 @@
             android:name=".assistant.commands.Receivers.sendSmsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".UI.Activitys.handsetReceiverActivty"
+            android:name=".UI.Activitys.HandsetReceiverActivty"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:showOnLockScreen="true">
