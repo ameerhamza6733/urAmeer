@@ -3,18 +3,24 @@ package com.ameerhamza6733.okAmeer.utial;
 /**
  * Created by AmeerHamza on 7/2/2017.
  */
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.widget.Toast;
 
 
+import com.ameerhamza6733.okAmeer.UI.Activitys.MyTutorialActivity;
 import com.ameerhamza6733.okAmeer.utial.TTSService;
+import com.crashlytics.android.Crashlytics;
+import com.hololo.tutorial.library.TutorialActivity;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 public class TTSHelper extends UtteranceProgressListener implements TextToSpeech.OnInitListener {
     private final String language;
@@ -22,7 +28,7 @@ public class TTSHelper extends UtteranceProgressListener implements TextToSpeech
     private Context context;
     private String toSpeak;
     private LocalBroadcastManager localBroadcastManager;
-
+    private static String TAG = "TTSHelperTAG";
 
 
 
@@ -47,6 +53,8 @@ public class TTSHelper extends UtteranceProgressListener implements TextToSpeech
     public void onInit(int status) {
 
         if (status == TextToSpeech.SUCCESS) {
+            Log.d(TAG,"installed text to speech engines names "+tts.getEngines());
+            Crashlytics.log(Log.DEBUG,TAG,"installed text to speech engines names "+tts.getEngines());
 
             int result = 0;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -64,17 +72,9 @@ public class TTSHelper extends UtteranceProgressListener implements TextToSpeech
             Toast.makeText(context, "tts_failed Error code "+status, Toast.LENGTH_LONG).show();
             if(status == -1) //
             {
-                // this is will open play store if use have not install or disable google text to speach
-                try {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.tts"));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-
-                } catch (android.content.ActivityNotFoundException anfe) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.tts"));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-                }
+                Intent intent = new Intent(context, MyTutorialActivity.class);
+                intent.setAction(MyTutorialActivity.ACTION_GOOGLE_TTS_NOT_INSTALLED);
+                context.startActivity(intent);
             }else {
                 Toast.makeText(context, "please make sure you select Google text to speech in next screen ", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent();
@@ -111,5 +111,17 @@ public class TTSHelper extends UtteranceProgressListener implements TextToSpeech
     @Override
     public void onError(String s) {
 
+    }
+    public static final  void  openGooglePlayToInstallTTS(Application application){
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.tts"));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            application.startActivity(intent);
+
+        } catch (android.content.ActivityNotFoundException anfe) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.tts"));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            application.startActivity(intent);
+        }
     }
 }

@@ -6,8 +6,8 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,13 +16,17 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
+import com.ameerhamza6733.okAmeer.UI.fragment.EnterFeedBackFragment;
 import com.ameerhamza6733.okAmeer.UI.fragment.VoiceRecgonizationFragment;
 import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.SendSmsActivity;
 import com.ameerhamza6733.okAmeer.interfacess.IGoogleSpeechRecognzerError;
 import com.ameerhamza6733.okAmeer.utial.SpeechRecognizerManager;
+import com.ameerhamza6733.okAmeer.utial.ExtraUnits;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
+import com.crashlytics.android.Crashlytics;
 import com.github.clans.fab.FloatingActionButton;
-import com.webianks.easy_feedback.EasyFeedback;
+
+import org.jetbrains.annotations.NotNull;
 
 import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
 import lolodev.permissionswrapper.wrapper.PermissionWrapper;
@@ -31,34 +35,32 @@ import lolodev.permissionswrapper.wrapper.PermissionWrapper;
  * Created by AmeerHamza on 7/17/2017.
  */
 
-public class MainActivity extends AppCompatActivity implements IGoogleSpeechRecognzerError,SpeechRecognizerManager.OnMagicWordListener {
+public class MainActivity extends AppCompatActivity implements IGoogleSpeechRecognzerError, SpeechRecognizerManager.OnMagicWordListener, EnterFeedBackFragment.OnUserFeedbackListener {
+    private static final int TTS_CHECK_CODE = 9876;
     private VoiceRecgonizationFragment newIntance;
     private SpeechRecognizerManager mSpeechRecognizerManager;
-    private boolean isSpeekButtonPressed=false;
+    private boolean isSpeekButtonPressed = false;
+    private final String TAG= "MainActivityTAG";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Crashlytics.setUserIdentifier(ExtraUnits.GetUserMobileId(getApplicationContext()));
+        Crashlytics.log("MainActivity created");
         setContentView(R.layout.activity_main);
         ImageButton mSpeakButton = (ImageButton) findViewById(R.id.speakButton);
-
-        try {
-            myTextToSpeech.intiTextToSpeech(this, "hi", "");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         mSpeakButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-                isSpeekButtonPressed=true;
+                Crashlytics.log("speech button pressed");
+                isSpeekButtonPressed = true;
                 checkPermissionAndProcess();
             }
         });
         FloatingActionButton FebRequestNewCommand = (FloatingActionButton) findViewById(R.id.fab_request_new_command);
-        FloatingActionButton FebHelp= (FloatingActionButton) findViewById(R.id.fab_help);
+        FloatingActionButton FebHelp = (FloatingActionButton) findViewById(R.id.fab_help);
         FloatingActionButton FebFeedBack = (FloatingActionButton) findViewById(R.id.fab_feedback);
         FebRequestNewCommand.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,36 +79,36 @@ public class MainActivity extends AppCompatActivity implements IGoogleSpeechReco
         FebFeedBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new EasyFeedback.Builder(MainActivity.this)
-                        .withEmail("ameerhamza6733@gmail.com")
-                        .withSystemInfo()
+                EnterFeedBackFragment enterFeedbackFragemtn = new EnterFeedBackFragment();
+                enterFeedbackFragemtn.setStyle(DialogFragment.STYLE_NORMAL,R.style.CustomTheme_Dialog_Min_Hight);
+                enterFeedbackFragemtn.show(getSupportFragmentManager(),null);
 
-                        .build()
-                        .start();
+
             }
         });
 
-       checkPermissionAndProcess();
+
 
     }
 
     private void checkPermissionAndProcess() {
         try {
-            if(mSpeechRecognizerManager!=null){
+            if (mSpeechRecognizerManager != null) {
                 mSpeechRecognizerManager.destroy();
-                mSpeechRecognizerManager=null;
+                mSpeechRecognizerManager = null;
             }
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
         if (Build.VERSION.SDK_INT > 22) {
 
             if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
                 askRunTimePermissions();
-                return;
-            }else{
+
+            } else {
                 GoogleSpeechOROwn();
             }
 
-        } else{
+        } else {
             GoogleSpeechOROwn();
 
         }
@@ -114,17 +116,19 @@ public class MainActivity extends AppCompatActivity implements IGoogleSpeechReco
 
     }
 
+
     private void GoogleSpeechOROwn() {
-        if (isSpeekButtonPressed){
+        if (isSpeekButtonPressed) {
             showVoiceFragment();//Google speech recognizez
-        }else{
+        } else {
             registerSpeechRecognizer();//sphinx4 speech recoginizer
         }
     }
 
     private void showVoiceFragment() {
         try {
-            if(!isFinishing()){
+            StopOwnSpeechRecognizer();
+            if (!isFinishing()) {
 
                 FragmentTransaction transactionFragment = getSupportFragmentManager().beginTransaction();
                 newIntance = VoiceRecgonizationFragment.newInstance("en-IN", false, true);
@@ -134,25 +138,25 @@ public class MainActivity extends AppCompatActivity implements IGoogleSpeechReco
             }
 
 
-        }catch (Exception e){
-            Toast.makeText(this, "error"+e.getMessage(), Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(this, "error" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void onError(int Error) {
-        Log.d(getClass().getSimpleName(),"onError"+Error);
-        if(newIntance!=null)
+        Log.d(getClass().getSimpleName(), "onError" + Error);
+        if (newIntance != null)
             getSupportFragmentManager().beginTransaction().remove(newIntance).commitAllowingStateLoss();
 
-          registerSpeechRecognizer();
+        registerSpeechRecognizer();
 
     }
 
     private void askRunTimePermissions() {
 
         new PermissionWrapper.Builder(this)
-                .addPermissions(new String[]{ Manifest.permission.RECORD_AUDIO})
+                .addPermissions(new String[]{Manifest.permission.RECORD_AUDIO})
                 //enable rationale message with a custom message
 
                 //show settings dialog,in this case with default message base on requested permission/s
@@ -168,50 +172,81 @@ public class MainActivity extends AppCompatActivity implements IGoogleSpeechReco
 
                     @Override
                     public void onDenied(String permission) {
-                        Toast.makeText(MainActivity.this,"App need permission ",Toast.LENGTH_SHORT).show();
-                       finish();
+                        Toast.makeText(MainActivity.this, "App need permission ", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 }).build().request();
     }
 
     @Override
     public void OnMagicWordDeceted(String word) {
-        if (mSpeechRecognizerManager!=null){
+        if (mSpeechRecognizerManager != null) {
             mSpeechRecognizerManager.destroy();
-            mSpeechRecognizerManager=null;
+            mSpeechRecognizerManager = null;
         }
-       showVoiceFragment();
+        showVoiceFragment();
     }
+
 
     @Override
     protected void onPause() {
-        try {
-            if (mSpeechRecognizerManager!=null){
-                mSpeechRecognizerManager.destroy();
-                mSpeechRecognizerManager=null;
-            }
-
-        }catch (Exception e){e.printStackTrace();}
-        Log.d(getClass().getSimpleName(),"onPause");
+        StopOwnSpeechRecognizer();
+        Log.d(getClass().getSimpleName(), "onPause");
         super.onPause();
 
     }
 
+
+    @Override
+    protected void onStop() {
+        Log.d(getClass().getSimpleName(), "onPause");
+
+        super.onStop();
+    }
+
     @Override
     protected void onResume() {
-        registerSpeechRecognizer();
+        checkPermissionAndProcess();
         super.onResume();
     }
 
     private void registerSpeechRecognizer() {
-        try {
-            if(mSpeechRecognizerManager==null){
-                mSpeechRecognizerManager =new SpeechRecognizerManager(MainActivity.this);
-                mSpeechRecognizerManager.setOnResultListner(MainActivity.this);
-            }
-        }catch (Exception e){
-            Toast.makeText(MainActivity.this,"Error: "+e.getMessage(),Toast.LENGTH_SHORT).show();
+        if (mSpeechRecognizerManager == null) {
+            mSpeechRecognizerManager = new SpeechRecognizerManager(getApplicationContext(), new SpeechRecognizerManager.LifeCycle() {
+                @Override
+                public void onPocketSphinxStart() {
+                    try {
+                        myTextToSpeech.intiTextToSpeech(getApplicationContext(), "hi", "");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            mSpeechRecognizerManager.setOnResultListner(MainActivity.this);
         }
 
+
+    }
+
+    private void StopOwnSpeechRecognizer() {
+        if (mSpeechRecognizerManager != null) {
+            mSpeechRecognizerManager.destroy();
+            mSpeechRecognizerManager = null;
+
+        }
+    }
+
+    @Override
+    public void onFeedBack(@NotNull String feedback) {
+       try{
+        String  subject=    "Feedback about "+getString(R.string.app_name) +" from "+ExtraUnits.GetUserMobileId(getApplicationContext());
+           ExtraUnits.sendFeedbackEmail(new String[]{"develpore2017@gmail.com"},subject,getApplicationContext());
+           forceToCrash();
+       }catch (Exception e){
+           Crashlytics.logException(new Exception("new Feedback from "+ExtraUnits.GetUserMobileId(getApplicationContext()) ));
+       }
+    }
+    private Exception forceToCrash() throws Exception {
+        throw new Exception();
     }
 }

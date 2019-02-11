@@ -47,19 +47,24 @@ import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
 
 public class SpeechRecognizerManager {
 
-    /* Named searches allow to quickly reconfigure the decoder */
-    private static final String KWS_SEARCH = "wakeup";
     /* Keyword we are looking for to activate menu */
     public static final String OK_AMEER = "ok AMEER";
-    private edu.cmu.pocketsphinx.SpeechRecognizer mPocketSphinxRecognizer;
+    /* Named searches allow to quickly reconfigure the decoder */
+    private static final String KWS_SEARCH = "wakeup";
     private static final String TAG = SpeechRecognizerManager.class.getSimpleName();
+    private edu.cmu.pocketsphinx.SpeechRecognizer mPocketSphinxRecognizer;
     private Context mContext;
     private OnMagicWordListener onmagicWordListener;
+    private LifeCycle lifeCycle;
+    private AsyncTask<Void, Void, Exception> intiReconginerTask;
 
 
-    public SpeechRecognizerManager(Context context) {
+    public SpeechRecognizerManager(Context context, LifeCycle lifeCycle) {
         this.mContext = context;
+        this.lifeCycle = lifeCycle;
         initPockerSphinx();
+        if (intiReconginerTask != null)
+            intiReconginerTask.execute();
 
 
     }
@@ -67,7 +72,7 @@ public class SpeechRecognizerManager {
 
     private void initPockerSphinx() {
 
-        new AsyncTask<Void, Void, Exception>() {
+        intiReconginerTask = new AsyncTask<Void, Void, Exception>() {
             @Override
             protected Exception doInBackground(Void... params) {
                 try {
@@ -102,29 +107,36 @@ public class SpeechRecognizerManager {
 
             @Override
             protected void onPostExecute(Exception result) {
-                if (result != null) {
-                    Toast.makeText(mContext, "Failed to init mPocketSphinxRecognizer ", Toast.LENGTH_SHORT).show();
-                } else {
-                    restartSearch(KWS_SEARCH);
+                if (mPocketSphinxRecognizer != null) {
+                    if (result != null) {
+                        Toast.makeText(mContext, "Failed to init mPocketSphinxRecognizer ", Toast.LENGTH_SHORT).show();
+                    } else {
+                        lifeCycle.onPocketSphinxStart();
+                        restartSearch(KWS_SEARCH);
+                    }
                 }
+
+
             }
-        }.execute();
+        };
 
     }
 
 
-
-
     public void destroy() {
+        if (intiReconginerTask != null)
+            intiReconginerTask.cancel(true);
         if (mPocketSphinxRecognizer != null) {
             mPocketSphinxRecognizer.cancel();
             mPocketSphinxRecognizer.shutdown();
             mPocketSphinxRecognizer = null;
+            onmagicWordListener = null;
+            mContext = null;
         }
     }
 
-    public void cancel(){
-        if (mPocketSphinxRecognizer!=null)
+    public void cancel() {
+        if (mPocketSphinxRecognizer != null)
             mPocketSphinxRecognizer.cancel();
 
     }
@@ -132,15 +144,27 @@ public class SpeechRecognizerManager {
     public void restartSearch(String searchName) {
 
         mPocketSphinxRecognizer.stop();
-
         mPocketSphinxRecognizer.startListening(searchName);
 
     }
-    public void startListening(String word){
-        if (mPocketSphinxRecognizer!=null)
+
+    public void startListening(String word) {
+        if (mPocketSphinxRecognizer != null)
             mPocketSphinxRecognizer.startListening(OK_AMEER);
     }
 
+    public void setOnResultListner(OnMagicWordListener onmagicWordListener) {
+        this.onmagicWordListener = onmagicWordListener;
+    }
+
+
+    public interface OnMagicWordListener {
+        void OnMagicWordDeceted(String word);
+    }
+
+    public interface LifeCycle {
+        void onPocketSphinxStart();
+    }
 
     protected class PocketSphinxRecognitionListener implements edu.cmu.pocketsphinx.RecognitionListener {
 
@@ -156,9 +180,8 @@ public class SpeechRecognizerManager {
          */
         @Override
         public void onPartialResult(Hypothesis hypothesis) {
-            if (hypothesis == null)
-            {
-                Log.d(TAG,"null");
+            if (hypothesis == null) {
+                Log.d(TAG, "null");
 
 
                 return;
@@ -170,7 +193,8 @@ public class SpeechRecognizerManager {
 
             if (text.equalsIgnoreCase(OK_AMEER)) {
                 onmagicWordListener.OnMagicWordDeceted(text);
-                Toast.makeText(mContext, "You said: "+text, Toast.LENGTH_SHORT).show();
+                if (mContext!=null)
+                Toast.makeText(mContext, "You said: " + text, Toast.LENGTH_SHORT).show();
 
             }
         }
@@ -195,17 +219,5 @@ public class SpeechRecognizerManager {
         public void onTimeout() {
         }
 
-    }
-
-
-
-
-    public void setOnResultListner(OnMagicWordListener onmagicWordListener){
-        this.onmagicWordListener=onmagicWordListener;
-    }
-
-    public interface OnMagicWordListener
-    {
-         void OnMagicWordDeceted(String word);
     }
 }

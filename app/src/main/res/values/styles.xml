@@ -28,6 +28,7 @@
         <item name="fab_colorPressed">#F2AB00</item>
         <item name="fab_colorRipple">#D99200</item>
     </style>
+    <style name="CustomTheme.Dialog.Min.Hight" parent="Theme.AppCompat.Light.Dialog.MinWidth" />
 
 
 </resources>

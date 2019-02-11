@@ -28,7 +28,7 @@
             android:padding="8dp"
             android:text="TextView"
 
-            android:textColor="@color/card_section_title_color"
+            android:textColor="@color/colorPrimary"
             android:textSize="20sp" />
 
         <TextView

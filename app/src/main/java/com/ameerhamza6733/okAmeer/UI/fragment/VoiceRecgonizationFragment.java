@@ -20,6 +20,7 @@ import com.ameerhamza6733.okAmeer.assistant.CommandInvoker;
 import com.ameerhamza6733.okAmeer.interfacess.IGoogleSpeechRecognzerError;
 import com.ameerhamza6733.okAmeer.utial.TTSService;
 import com.ameerhamza6733.okAmeer.utial.SendToActivtys;
+import com.crashlytics.android.Crashlytics;
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
 import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter;
 
@@ -74,7 +75,7 @@ public class VoiceRecgonizationFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         int[] colors = new int[]{ContextCompat.getColor(getActivity(), R.color.color1), ContextCompat.getColor(getActivity(), R.color.color2), ContextCompat.getColor(getActivity(), R.color.color3), ContextCompat.getColor(getActivity(), R.color.color4), ContextCompat.getColor(getActivity(), R.color.color5)};
-        Log.d(TAG, "onViewCreated");
+        Crashlytics.log(Log.DEBUG,TAG, "onViewCreated");
 
 
         LANGUAGES = getArguments().getString(BUNDLE_KEY_EXTRA_LANGUAGES);
@@ -108,13 +109,13 @@ public class VoiceRecgonizationFragment extends DialogFragment {
 
             @Override
             public void onEndOfSpeech() {
-                Log.d(TAG, "onEndOfSpeech");
+                Crashlytics.log(Log.DEBUG,TAG, "onEndOfSpeech");
             }
 
             @Override
             public void onError(final int error) {
                 super.onError(error);
-                Log.d(TAG, "onError code" + error);
+                Crashlytics.log(Log.DEBUG,TAG, "onError: "+error);
                 if (onGoogleSpeechRecognzerError != null)
                     onGoogleSpeechRecognzerError.onError(error);
                 if (error == 4) {
@@ -150,6 +151,7 @@ public class VoiceRecgonizationFragment extends DialogFragment {
     private void showResults(Bundle results) throws Exception {
         final ArrayList<String> matches = results.getStringArrayList("results_recognition");
         assert matches != null;
+        Crashlytics.log(Log.DEBUG,TAG, "Text from google speech  "+matches.toString());
         Toast.makeText(getActivity(), "You said: " + matches.get(0), Toast.LENGTH_LONG).show();
         invokeCommander(results.getStringArrayList(android.speech.SpeechRecognizer.RESULTS_RECOGNITION));
 
@@ -199,7 +201,7 @@ public class VoiceRecgonizationFragment extends DialogFragment {
 
 
     private void doNotExecuteCommander(String date) throws Exception {
-        Log.d("voice regonizer", "do not excute commander");
+        Crashlytics.log(Log.DEBUG,TAG,"Don't execute commander and text is : "+date);
         toActivtys = new SendToActivtys();
         toActivtys.sendingDataToActivitys(getActivity(), date, getActivity().getClass().getSimpleName());
     }
@@ -208,6 +210,7 @@ public class VoiceRecgonizationFragment extends DialogFragment {
     private void startRecognition() throws Exception {
         Intent intent = new Intent("android.speech.action.RECOGNIZE_SPEECH");
         if (isAdded()) {
+            Crashlytics.log(Log.DEBUG,TAG,"start google speech recongnition ");
             intent.putExtra("calling_package", getActivity().getPackageName());
             intent.putExtra("android.speech.extra.LANGUAGE_MODEL", "free_form");
             intent.putExtra("android.speech.extra.LANGUAGE", LANGUAGES);
@@ -240,7 +243,7 @@ public class VoiceRecgonizationFragment extends DialogFragment {
         Log.d(TAG, "onPause");
         if (this.speechRecognizer != null) {
             {
-                Log.d(TAG, "stopListening");
+               Crashlytics.log(Log.DEBUG,TAG, "stopListening");
 
                 this.speechRecognizer.cancel();
                 speechRecognizer.destroy();

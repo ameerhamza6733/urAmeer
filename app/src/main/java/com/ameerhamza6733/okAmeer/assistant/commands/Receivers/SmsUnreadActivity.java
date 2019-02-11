@@ -8,14 +8,19 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
@@ -32,10 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
-import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
-import it.gmariotti.cardslib.library.internal.CardHeader;
-import it.gmariotti.cardslib.library.view.CardListView;
+
 import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
 import lolodev.permissionswrapper.wrapper.PermissionWrapper;
 
@@ -51,9 +53,7 @@ public class SmsUnreadActivity extends AppCompatActivity implements INoNeedComma
     private String[] mRomanUrdoPositiveWords = {"ji haan","ha","yas",};
     private boolean userWantToReadorNot = false;
     private ArrayList<SmsMmsMessage> unread;
-    private ArrayList<Card> cards;
-    private CardListView listView;
-    private CardArrayAdapter mCardArrayAdapter;
+
     private BroadcastReceiver broadcastReceiver;
 
     @Override
@@ -62,7 +62,6 @@ public class SmsUnreadActivity extends AppCompatActivity implements INoNeedComma
         setContentView(R.layout.activity_sms_unread);
 
 
-        cards = new ArrayList<Card>();
         if (Build.VERSION.SDK_INT > 22) {
 
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
@@ -99,25 +98,6 @@ public class SmsUnreadActivity extends AppCompatActivity implements INoNeedComma
             Toast.makeText(this, "no message to read ", Toast.LENGTH_SHORT).show();
         }
         Collections.reverse(unread);
-        for (SmsMmsMessage message : unread) {
-            Card card = new Card(this);
-            CardHeader header = new CardHeader(this);
-            header.setTitle(message.getContactName());
-            card.addCardHeader(header);
-            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-            String dateString = formatter.format(new Date(Long.parseLong(String.valueOf(message.getTimestamp()))));
-            card.setTitle(message.getMessageBody() + " time : " + dateString);
-            cards.add(card);
-
-        }
-
-
-        mCardArrayAdapter = new CardArrayAdapter(this, cards);
-
-        listView = (CardListView) findViewById(R.id.myList);
-        if (listView != null) {
-            listView.setAdapter(mCardArrayAdapter);
-        }
 
 
         try {
@@ -127,7 +107,46 @@ public class SmsUnreadActivity extends AppCompatActivity implements INoNeedComma
         }
     }
 
+    private class HelpListAdupter extends RecyclerView.Adapter<HelpListVIewHolder>{
 
+        @NonNull
+        @Override
+        public HelpListVIewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            View itemView = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.help_commands_list_view, viewGroup, false);
+
+            return new HelpListVIewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull HelpListVIewHolder helpListVIewHolder, int i) {
+
+            helpListVIewHolder.mCommandTitle.setText(unread.get(helpListVIewHolder.getAdapterPosition()).getContactName());
+            helpListVIewHolder.mCommandDescription.setText(unread.get(helpListVIewHolder.getAdapterPosition()).getMessageBody());
+        }
+
+        @Override
+        public int getItemCount() {
+            return unread.size();
+        }
+    }
+    private class HelpListVIewHolder extends  RecyclerView.ViewHolder{
+        private final TextView mCommandTitle;
+        private final TextView mCommandDescription;
+        public HelpListVIewHolder(@NonNull View itemView) {
+            super(itemView);
+            mCommandTitle=itemView.findViewById(R.id.tvCommandTitle);
+            mCommandDescription=itemView.findViewById(R.id.tvCommandDescription);
+        }
+
+        public TextView getmCommandDescription() {
+            return mCommandDescription;
+        }
+
+        public TextView getmCommandTitle() {
+            return mCommandTitle;
+        }
+    }
     private void intiTextToSpeech(final String LEN, final String text) {
         mTextToSpeechHandler = new Handler();
         mTextTOSpeechrunnable = new Runnable() {
