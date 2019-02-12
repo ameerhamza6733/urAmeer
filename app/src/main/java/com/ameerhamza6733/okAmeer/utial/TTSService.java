@@ -39,7 +39,8 @@ public class TTSService extends Service {
                     PendingIntent.getService(this, 51251, new Intent(getApplicationContext(),
                             TTSService.class).setAction("STOP"), 0)
             );
-            startForeground(12342, builder.build());
+          //  startForeground(12342, builder.build());
+            //startForeground(12342, builder.build());
             try {
                 helper.stop();
             } catch (Exception e) {

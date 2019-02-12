@@ -39,8 +39,8 @@ import android.widget.Toast;
 
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.UI.fragment.VoiceRecgonizationFragment;
-import com.ameerhamza6733.okAmeer.interfacess.INoNeedCommander;
 import com.ameerhamza6733.okAmeer.interfacess.IGoogleSpeechRecognzerError;
+import com.ameerhamza6733.okAmeer.interfacess.INoNeedCommander;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -67,7 +67,7 @@ public class SendSmsActivity extends AppCompatActivity implements INoNeedCommand
     private HashMap<String, String> mHashMapContacts = new HashMap<>();
     private CountDownTimer countDownTimer;
     private boolean isRecipientNumberFound = false;
-    private boolean isNativeUrdu=false;
+    private boolean isNativeUrdu = false;
 
 
     private EditText mSmsBody;
@@ -81,7 +81,6 @@ public class SendSmsActivity extends AppCompatActivity implements INoNeedCommand
     private TextToSpeech textToSpeech;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,17 +92,17 @@ public class SendSmsActivity extends AppCompatActivity implements INoNeedCommand
         mFebRetry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mSwitchTurnOnNativeUrdu.getVisibility() ==View.VISIBLE){
+                if (mSwitchTurnOnNativeUrdu.getVisibility() == View.VISIBLE) {
                     SwitchBetweenLanguages(mSwitchTurnOnNativeUrdu.isChecked());
-                }else
-                showVoiceRegonizerDiloge("en-IN");
+                } else
+                    showVoiceRegonizerDiloge("en-IN");
             }
         });
         smsOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    Toast.makeText(SendSmsActivity.this,"آپکا میسج بھیجا جا رہا ہے",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SendSmsActivity.this, "آپکا میسج بھیجا جا رہا ہے", Toast.LENGTH_SHORT).show();
                     SendSmsActivity.this.sendItNow(mHashMapContacts.get(SendSmsActivity.this.callpickerSpinner.getSelectedItem().toString()), mSmsBody.getText().toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -119,7 +118,7 @@ public class SendSmsActivity extends AppCompatActivity implements INoNeedCommand
                     SendSmsActivity.this.countDownTimer.cancel();
 
                 }
-                Toast.makeText(SendSmsActivity.this,"Message canceled",Toast.LENGTH_SHORT).show();
+                Toast.makeText(SendSmsActivity.this, "Message canceled", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -176,14 +175,14 @@ public class SendSmsActivity extends AppCompatActivity implements INoNeedCommand
         if (isChecked) {
             mSmsBody.setText("");
             showVoiceRegonizerDiloge("en-IN");
-            FlagGetSmsBody=true;
-            isNativeUrdu=true;
+            FlagGetSmsBody = true;
+            isNativeUrdu = true;
 
-        }else {
+        } else {
             mSmsBody.setText("");
             showVoiceRegonizerDiloge("en-IN");
-            FlagGetSmsBody=true;
-            isNativeUrdu=false;
+            FlagGetSmsBody = true;
+            isNativeUrdu = false;
         }
     }
 
@@ -301,7 +300,7 @@ public class SendSmsActivity extends AppCompatActivity implements INoNeedCommand
         else if (FlagGetSmsBody) { // after geting sms body ask user to where he/she want to send this sms or not?
             voiceRecgonizerDismiss();
             FlagGetSmsBody = false;
-            isNativeUrdu=false;
+            isNativeUrdu = false;
 
             mSwitchTurnOnNativeUrdu.setVisibility(View.INVISIBLE);
             intiTextToSpeech("hi", getResources().getString(R.string.send_kar_do_ya_badal_do));
@@ -345,12 +344,10 @@ public class SendSmsActivity extends AppCompatActivity implements INoNeedCommand
                 public void onDone(String utteranceId) {
 
 
-                    if(mSwitchTurnOnNativeUrdu.getVisibility() == View.VISIBLE){
+                    if (mSwitchTurnOnNativeUrdu.getVisibility() == View.VISIBLE) {
                         showVoiceRegonizerDiloge("ur-PK");
-                    }else
-                    showVoiceRegonizerDiloge("en-IN");
-
-
+                    } else
+                        showVoiceRegonizerDiloge("en-IN");
 
 
                 }
@@ -421,7 +418,6 @@ public class SendSmsActivity extends AppCompatActivity implements INoNeedCommand
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         super.onStop();
     }
-
 
 
     /**
@@ -530,21 +526,22 @@ public class SendSmsActivity extends AppCompatActivity implements INoNeedCommand
 
     @Override
     public void onBackPressed() {
-        if(getSupportFragmentManager().getBackStackEntryCount()>1)
-           getSupportFragmentManager(). popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1)
+            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         else
-        super.onBackPressed();
-        Log.d("send sms activty","onBackPressed");
+            super.onBackPressed();
+        Log.d("send sms activty", "onBackPressed");
 
     }
 
     /**
      * called when recognizer throw error 7
+     *
      * @param Error
      */
     @Override
     public void onError(int Error) {
-        Toast.makeText(SendSmsActivity.this, "onSpeech Error "+Error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(SendSmsActivity.this, "onSpeech Error " + Error, Toast.LENGTH_SHORT).show();
         if (newIntance != null)
             getSupportFragmentManager().beginTransaction().remove(newIntance).commitAllowingStateLoss();
     }
