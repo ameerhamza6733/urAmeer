@@ -147,7 +147,7 @@
             android:process=":session"></service>
         <service
             android:name=".DefualtIntentHandler.MainRecognitionService"
-            android:label="Test Voice Interaction Service">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.speech.RecognitionService" />
                 <category android:name="android.intent.category.DEFAULT" />
