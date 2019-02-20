@@ -16,15 +16,19 @@
 
 package com.ameerhamza6733.okAmeer.DefualtIntentHandler;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.service.voice.VoiceInteractionSession;
-import android.service.voice.VoiceInteractionSessionService;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 
-public class MainInteractionSessionService extends VoiceInteractionSessionService {
+import com.ameerhamza6733.okAmeer.R;
+
+/**
+ * Stub activity to test out settings selection for voice interactor.
+ */
+public class SettingsActivity extends AppCompatActivity {
     @Override
-    public VoiceInteractionSession onNewSession(Bundle args) {
-        Log.e("MaonSessionService","onnew");
-        return new MainInteractionSession(this);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.settings);
     }
 }

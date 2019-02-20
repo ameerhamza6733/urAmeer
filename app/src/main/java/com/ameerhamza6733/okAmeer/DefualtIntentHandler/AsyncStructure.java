@@ -18,19 +18,17 @@ package com.ameerhamza6733.okAmeer.DefualtIntentHandler;
 
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewStructure;
 import android.widget.TextView;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * Test for asynchronously creating additional assist structure.
  */
-@RequiresApi(api = Build.VERSION_CODES.M)
-public class AsyncStructure extends android.support.v7.widget.AppCompatTextView {
+public class AsyncStructure extends TextView {
     public AsyncStructure(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }

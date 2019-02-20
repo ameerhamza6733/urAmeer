@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 The Android Open Source Project
+ * Copyright (C) 2015 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,19 @@
 
 package com.ameerhamza6733.okAmeer.DefualtIntentHandler;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.service.voice.VoiceInteractionSession;
-import android.service.voice.VoiceInteractionSessionService;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 
-public class MainInteractionSessionService extends VoiceInteractionSessionService {
+public class AssistProxyActivity extends AppCompatActivity {
+
     @Override
-    public VoiceInteractionSession onNewSession(Bundle args) {
-        Log.e("MaonSessionService","onnew");
-        return new MainInteractionSession(this);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        finish();
+        Intent intent = new Intent(this, MainInteractionService.class);
+        intent.setAction(Intent.ACTION_ASSIST);
+        startService(intent);
     }
 }

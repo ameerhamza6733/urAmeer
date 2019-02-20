@@ -13,8 +13,8 @@ android {
         applicationId "com.ameerhamza6733.okAmeer"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 16
-        versionName "1.11.4"
+        versionCode 18
+        versionName "1.11.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 

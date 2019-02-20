@@ -24,10 +24,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.service.voice.VoiceInteractionSession;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -38,7 +36,6 @@ import android.widget.TextView;
 import com.ameerhamza6733.okAmeer.R;
 import com.ameerhamza6733.okAmeer.UI.Activitys.InitializationAppActivity;
 
-@RequiresApi(api = Build.VERSION_CODES.M)
 public class MainInteractionSession extends VoiceInteractionSession
         implements View.OnClickListener {
     static final String TAG = "MainInteractionSession";
@@ -87,10 +84,10 @@ public class MainInteractionSession extends VoiceInteractionSession
     @Override
     public void onCreate() {
         super.onCreate();
-        ActivityManager am = getContext().getSystemService(ActivityManager.class);
-        am.setWatchHeapLimit(40 * 1024 * 1024);
+        Intent intent = new Intent(getContext(), InitializationAppActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        getContext().startActivity(intent);
     }
-
 
     @Override
     public void onShow(Bundle args, int showFlags) {
@@ -99,7 +96,7 @@ public class MainInteractionSession extends VoiceInteractionSession
         mState = STATE_IDLE;
         mStartIntent = args != null ? (Intent)args.getParcelable("intent") : null;
         if (mStartIntent == null) {
-            mStartIntent = new Intent(getContext(), InitializationAppActivity.class);
+            mStartIntent = new Intent(getContext(), TestInteractionActivity.class);
         }
         if (mAssistVisualizer != null) {
             mAssistVisualizer.clearAssistData();
@@ -107,6 +104,7 @@ public class MainInteractionSession extends VoiceInteractionSession
         onHandleScreenshot(null);
         updateState();
         refreshOptions();
+        onHide();
     }
 
     @Override
@@ -212,25 +210,29 @@ public class MainInteractionSession extends VoiceInteractionSession
         }
     }
 
-    void updateState() {
-        if (mState == STATE_IDLE) {
-            mTopContent.setVisibility(View.VISIBLE);
-            mBottomContent.setVisibility(View.GONE);
-            mAssistVisualizer.setVisibility(View.VISIBLE);
-        } else if (mState == STATE_DONE) {
-            mTopContent.setVisibility(View.GONE);
-            mBottomContent.setVisibility(View.GONE);
-            mAssistVisualizer.setVisibility(View.GONE);
-        } else {
-            mTopContent.setVisibility(View.GONE);
-            mBottomContent.setVisibility(View.VISIBLE);
-            mAssistVisualizer.setVisibility(View.GONE);
-        }
-        mStartButton.setEnabled(mState == STATE_IDLE);
-        mConfirmButton.setEnabled(mState == STATE_CONFIRM || mState == STATE_PICK_OPTION
-                || mState == STATE_COMMAND);
-        mAbortButton.setEnabled(mState == STATE_ABORT_VOICE);
-        mCompleteButton.setEnabled(mState == STATE_COMPLETE_VOICE);
+    void updateState()  {
+
+
+             if (mState == STATE_IDLE) {
+                 mTopContent.setVisibility(View.VISIBLE);
+                 mBottomContent.setVisibility(View.GONE);
+                 mAssistVisualizer.setVisibility(View.VISIBLE);
+             } else if (mState == STATE_DONE) {
+                 mTopContent.setVisibility(View.GONE);
+                 mBottomContent.setVisibility(View.GONE);
+                 mAssistVisualizer.setVisibility(View.GONE);
+             } else {
+                 mTopContent.setVisibility(View.GONE);
+                 mBottomContent.setVisibility(View.VISIBLE);
+                 mAssistVisualizer.setVisibility(View.GONE);
+             }
+             mStartButton.setEnabled(mState == STATE_IDLE);
+             mConfirmButton.setEnabled(mState == STATE_CONFIRM || mState == STATE_PICK_OPTION
+                     || mState == STATE_COMMAND);
+             mAbortButton.setEnabled(mState == STATE_ABORT_VOICE);
+             mCompleteButton.setEnabled(mState == STATE_COMPLETE_VOICE);
+
+
     }
 
     public void onClick(View v) {

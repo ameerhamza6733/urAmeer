@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ameerhamza6733.okAmeer">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -34,17 +35,12 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/caller_id_mic"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".UI.Activitys.InitializationAppActivity">
             <intent-filter android:priority="2147483647">
-                <action android:name="android.speech.action.WEB_SEARCH" />
-                <action android:name="android.intent.action.ASSIST" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.VOICE" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -57,6 +53,7 @@
         <activity
             android:name=".assistant.commands.Receivers.SetAlarmActivty"
             android:screenOrientation="portrait" />
+        <activity android:name=".UI.Activitys.AgreeToPolicyActivty"/>
         <activity
             android:name=".assistant.commands.Receivers.CallingActivity"
             android:screenOrientation="portrait" />
@@ -128,35 +125,62 @@
         </activity>
         <activity android:name=".assistant.commands.Receivers.PostOnFacebook" />
         <activity android:name=".UI.Activitys.MyTutorialActivity" />
+        <activity android:name=".DefualtIntentHandler.VoiceInteractionMain" android:label="Voice Interaction"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".DefualtIntentHandler.AssistProxyActivity"
+            android:label="@string/app_name"
 
-        <service
-            android:name=".DefualtIntentHandler.MainInteractionService"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity="">
+            <intent-filter>
+                <action android:name="android.intent.action.ASSIST" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".DefualtIntentHandler.SettingsActivity"
+            android:label="Voice Interaction Settings">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <service android:name=".DefualtIntentHandler.MainInteractionService"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_VOICE_INTERACTION"
             android:process=":interactor">
-            <meta-data
-                android:name="android.voice_interaction"
+            <meta-data android:name="android.voice_interaction"
                 android:resource="@xml/interaction_service" />
             <intent-filter>
                 <action android:name="android.service.voice.VoiceInteractionService" />
             </intent-filter>
         </service>
-        <service
-            android:name=".DefualtIntentHandler.MainInteractionSessionService"
+        <service android:name=".DefualtIntentHandler.MainInteractionSessionService"
             android:permission="android.permission.BIND_VOICE_INTERACTION"
-            android:process=":session"></service>
-        <service
-            android:name=".DefualtIntentHandler.MainRecognitionService"
+            android:process=":session">
+        </service>
+        <service android:name=".DefualtIntentHandler.MainRecognitionService"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.speech.RecognitionService" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <meta-data
-                android:name="android.speech"
-                android:resource="@xml/recognition_service" />
+            <meta-data android:name="android.speech" android:resource="@xml/recognition_service" />
         </service>
-
+        <activity android:name=".DefualtIntentHandler.TestInteractionActivity" android:label="Voice Interaction Target"
+           >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.VOICE" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

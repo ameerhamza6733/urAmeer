@@ -32,7 +32,7 @@
         android:text="@string/secure"
         />
 
-    <com.android.test.voiceinteraction.AsyncStructure
+    <com.ameerhamza6733.okAmeer.DefualtIntentHandler.AsyncStructure
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="64dp"

@@ -17,20 +17,17 @@
 package com.ameerhamza6733.okAmeer.DefualtIntentHandler;
 
 import android.content.Intent;
-import android.os.Build;
 import android.service.voice.AlwaysOnHotwordDetector;
 import android.service.voice.AlwaysOnHotwordDetector.Callback;
 import android.service.voice.AlwaysOnHotwordDetector.EventPayload;
 import android.service.voice.VoiceInteractionService;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import java.util.Locale;
 
-@RequiresApi(api = Build.VERSION_CODES.M)
 public class MainInteractionService extends VoiceInteractionService {
     static final String TAG = "MainInteractionService";
-    private AlwaysOnHotwordDetector mHotwordDetector;
+
     private final Callback mHotwordCallback = new Callback() {
         @Override
         public void onAvailabilityChanged(int status) {
@@ -59,17 +56,17 @@ public class MainInteractionService extends VoiceInteractionService {
         }
     };
 
+    private AlwaysOnHotwordDetector mHotwordDetector;
+
     @Override
     public void onReady() {
         super.onReady();
         Log.i(TAG, "Creating " + this);
-        // Log.i(TAG, "Keyphrase enrollment error? " + getKeyphraseEnrollmentInfo().getParseError());
-        //Log.i(TAG, "Keyphrase enrollment meta-data: " + Arrays.toString(getKeyphraseEnrollmentInfo().listKeyphraseMetadata()));
+       // Log.i(TAG, "Keyphrase enrollment error? " + getKeyphraseEnrollmentInfo().getParseError());
 
         mHotwordDetector = createAlwaysOnHotwordDetector(
                 "Hello There", Locale.forLanguageTag("en-US"), mHotwordCallback);
     }
-
 
     private void hotwordAvailabilityChangeHelper(int availability) {
         Log.i(TAG, "Hotword availability = " + availability);
@@ -88,11 +85,7 @@ public class MainInteractionService extends VoiceInteractionService {
                 break;
             case AlwaysOnHotwordDetector.STATE_KEYPHRASE_ENROLLED:
                 Log.i(TAG, "STATE_KEYPHRASE_ENROLLED - starting recognition");
-                if (mHotwordDetector.startRecognition(AlwaysOnHotwordDetector.RECOGNITION_FLAG_CAPTURE_TRIGGER_AUDIO)) {
-                    Log.i(TAG, "startRecognition succeeded");
-                } else {
-                    Log.i(TAG, "startRecognition failed");
-                }
+
                 break;
         }
     }

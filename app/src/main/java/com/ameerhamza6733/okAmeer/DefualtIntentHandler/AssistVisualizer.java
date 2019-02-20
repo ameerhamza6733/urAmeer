@@ -16,22 +16,20 @@
 
 package com.ameerhamza6733.okAmeer.DefualtIntentHandler;
 
-
 import android.app.assist.AssistStructure;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.os.Build;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
-@RequiresApi(api = Build.VERSION_CODES.M)
+
 public class AssistVisualizer extends View {
     static final String TAG = "AssistVisualizer";
 
@@ -44,7 +42,6 @@ public class AssistVisualizer extends View {
         final int scrollY;
         final int[] lineCharOffsets;
         final int[] lineBaselines;
-
 
         TextEntry(AssistStructure.ViewNode node, int parentLeft, int parentTop, Matrix matrix) {
             int left = parentLeft+node.getLeft();
@@ -107,6 +104,7 @@ public class AssistVisualizer extends View {
 
     public void logTree() {
         if (mAssistStructure != null) {
+
         }
     }
 
