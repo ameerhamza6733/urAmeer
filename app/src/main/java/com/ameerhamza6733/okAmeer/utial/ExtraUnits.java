@@ -36,4 +36,6 @@ public class ExtraUnits {
         editor.putBoolean("AGREET_TO_PRIVACY_POLICY",isAgree).apply();
 
     }
+
+
 }

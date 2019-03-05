@@ -344,7 +344,7 @@ public class SendSmsActivity extends AppCompatActivity implements INoNeedCommand
                 public void onDone(String utteranceId) {
 
 
-                    if (mSwitchTurnOnNativeUrdu.getVisibility() == View.VISIBLE) {
+                    if (mSwitchTurnOnNativeUrdu.isChecked()) {
                         showVoiceRegonizerDiloge("ur-PK");
                     } else
                         showVoiceRegonizerDiloge("en-IN");

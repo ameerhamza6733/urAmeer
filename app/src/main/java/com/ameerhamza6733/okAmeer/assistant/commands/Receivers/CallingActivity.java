@@ -49,7 +49,7 @@ public class CallingActivity extends AppCompatActivity implements INoNeedCommand
     private CountDownTimer countDownTimer;
     private TextView mMakingCallingIn;
     public static final String EXTRA_NAME = "EXTRA_NAME";
-
+    private AsyncTask<Void, Void, Void> taskFindnumber;
 
 
     @Override
@@ -153,7 +153,7 @@ public class CallingActivity extends AppCompatActivity implements INoNeedCommand
         Toast.makeText(this, Queary, Toast.LENGTH_LONG).show();
         if (newIntance != null)
             newIntance.dismiss();
-        new myRecipientCallingNumberFinder(Queary).execute();
+          taskFindnumber=   new myRecipientCallingNumberFinder(Queary).execute();
 
 
     }
@@ -215,6 +215,8 @@ public class CallingActivity extends AppCompatActivity implements INoNeedCommand
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if (taskFindnumber!=null )
+            taskFindnumber.cancel(true);
         super.onDestroy();
 
     }
@@ -245,7 +247,7 @@ public class CallingActivity extends AppCompatActivity implements INoNeedCommand
                         String name = cur.getString(cur.getColumnIndex(
                                 ContactsContract.Contacts.DISPLAY_NAME));
                         Log.d("callingActivty", "Name from phone Book " + name);
-                        if (Queary.toLowerCase().contains(name.toLowerCase())) {
+                        if (Queary.toLowerCase().contains(name.toLowerCase()) || name.toLowerCase().contains(Queary.toLowerCase())) {
                             Log.d("callingActivty", "requiredName found" + name);
                             mNameListFounded.add(name);
                             isRecipientNumberFound = true;
@@ -320,13 +322,9 @@ public class CallingActivity extends AppCompatActivity implements INoNeedCommand
             public void run() {
                 try {
                     if(!isFinishing()){
-                        FragmentTransaction transactionFragment = getSupportFragmentManager().beginTransaction();
                         newIntance = VoiceRecgonizationFragment.newInstance(s, false, false);
                         newIntance.setStyle(1, R.style.AppTheme);
-                        transactionFragment.add(android.R.id.content, newIntance).addToBackStack(null).commitAllowingStateLoss();
-
-
-                        //  newIntance.show(fragmentManager, "fragment_voice_input");
+                         newIntance.show(getSupportFragmentManager(), "call activty");
 
                     }
 

@@ -12,8 +12,70 @@
 -keep class org.apache.http.** { *; }
 -dontwarn org.apache.http.**
 -dontwarn android.net.**
+-keep class com.squareup.okhttp.** { *;}
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+# Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+    **[] $VALUES;
+    public *;
+}
+-keep class org.jsoup.**
+-keep public class com.bumptech.glide.load.resource.gif.GifDrawable**
+-keepclassmembers class  com.bumptech.glide.load.resource.gif.GifDrawable** {*;}
+-keep class  com.bumptech.glide.load.resource.gif.*{
+*;}
+-keep public  class com.bumptech.glide.load.resource.gif.GifFrameLoader
+-keep public  class com.ameerhamza.animatedgiflivewallpapers.Extra.AnimatedGifEncoder
+-dontwarn com.squareup.picasso.**
+-keep class com.android.vending.billing.**
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
 
+-dontwarn com.applovin.**
+# For communication with AdColony's WebView
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
 
+# Keep ADCNative class members unobfuscated
+-keepclassmembers class com.adcolony.sdk.ADCNative** {
+    *;
+ }
+-keep class com.applovin.** { *; }
+-keep class com.google.android.gms.ads.identifier.** { *; }
+-keep class com.applovin.** { *; }
+-dontwarn com.applovin.**
+-keep class com.microsoft.azure.storage.table.** { *; }
+-dontwarn com.fasterxml.jackson.core**
+
+-keep class com.microsoft.windowsazure.mobileservices.** { *; }
+-dontwarn android.os.**
+-dontwarn com.microsoft.windowsazure.mobileservices.RequestAsyncTask
+-keep class com.firebase.** { *; }
+-keep class org.apache.** { *; }
+-keepnames class com.fasterxml.jackson.** { *; }
+-keepnames class javax.servlet.** { *; }
+-keepnames class org.ietf.jgss.** { *; }
+-dontwarn org.w3c.dom.**
+-dontwarn org.joda.time.**
+-dontwarn org.shaded.apache.**
+-dontwarn org.ietf.jgss.**
+-keepattributes Signature
+
+-keepattributes Annotation
+
+-keep class okhttp3.** { *; }
+
+-keep interface okhttp3.** { *; }
+
+-dontwarn okhttp3.**
 
 
 # Add any project specific keep options here:

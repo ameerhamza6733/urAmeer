@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,15 +54,16 @@ public class SmsUnreadActivity extends AppCompatActivity implements INoNeedComma
     private String[] mRomanUrdoPositiveWords = {"ji haan","ha","yas",};
     private boolean userWantToReadorNot = false;
     private ArrayList<SmsMmsMessage> unread;
-
     private BroadcastReceiver broadcastReceiver;
+
+    private RecyclerView mMessageList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sms_unread);
 
-
+        mMessageList=findViewById(R.id.myList);
         if (Build.VERSION.SDK_INT > 22) {
 
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
@@ -98,8 +100,9 @@ public class SmsUnreadActivity extends AppCompatActivity implements INoNeedComma
             Toast.makeText(this, "no message to read ", Toast.LENGTH_SHORT).show();
         }
         Collections.reverse(unread);
-
-
+        MessageListAdupter messageListAdupter = new MessageListAdupter();
+        mMessageList.setLayoutManager(new LinearLayoutManager(this));
+        mMessageList.setAdapter(messageListAdupter);
         try {
             intiTextToSpeech("hi-IN", "आपको कई मैसेज आए हैं  क्या आप चाहते हैं इसे सुनना");
         } catch (Exception e) {
@@ -107,7 +110,7 @@ public class SmsUnreadActivity extends AppCompatActivity implements INoNeedComma
         }
     }
 
-    private class HelpListAdupter extends RecyclerView.Adapter<HelpListVIewHolder>{
+    private class MessageListAdupter extends RecyclerView.Adapter<HelpListVIewHolder>{
 
         @NonNull
         @Override

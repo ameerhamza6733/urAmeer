@@ -84,9 +84,8 @@ public class MainInteractionSession extends VoiceInteractionSession
     @Override
     public void onCreate() {
         super.onCreate();
-        Intent intent = new Intent(getContext(), InitializationAppActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        getContext().startActivity(intent);
+
+
     }
 
     @Override
@@ -104,6 +103,9 @@ public class MainInteractionSession extends VoiceInteractionSession
         onHandleScreenshot(null);
         updateState();
         refreshOptions();
+        Intent intent = new Intent(getContext(), InitializationAppActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK );
+        getContext().startActivity(intent);
         onHide();
     }
 

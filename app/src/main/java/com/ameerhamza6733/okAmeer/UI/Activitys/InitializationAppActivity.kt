@@ -8,7 +8,7 @@ import com.ameerhamza6733.okAmeer.R
 import com.ameerhamza6733.okAmeer.utial.ExtraUnits
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech
 
-class InitializationAppActivity : AppCompatActivity() {
+class InitializationAppActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +22,7 @@ class InitializationAppActivity : AppCompatActivity() {
             ttsSettingIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             if (!ExtraUnits.getPolicyFlag(this)){
                 startActivity(Intent(this@InitializationAppActivity,AgreeToPolicyActivty::class.java))
+
                 finish()
             }else
             startActivity(ttsSettingIntent)

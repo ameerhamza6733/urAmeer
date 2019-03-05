@@ -30,6 +30,8 @@ class AgreeToPolicyActivty : AppCompatActivity() {
             if (agreeToPrivicyPolicy){
                 ExtraUnits.SaveAgreeToPolicyFlag(this@AgreeToPolicyActivty, true)
                 startActivity(Intent(this@AgreeToPolicyActivty, MainActivity::class.java))
+                startActivity(Intent(this@AgreeToPolicyActivty,RecodeCommandsStepsActivty::class.java))
+
                 finish()
             }else{
                 Toast.makeText(this@AgreeToPolicyActivty,"Please agree to privacy policy ",Toast.LENGTH_LONG).show()

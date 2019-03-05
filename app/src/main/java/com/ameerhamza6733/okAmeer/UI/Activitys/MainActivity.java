@@ -20,7 +20,6 @@ import com.ameerhamza6733.okAmeer.UI.fragment.EnterFeedBackFragment;
 import com.ameerhamza6733.okAmeer.UI.fragment.VoiceRecgonizationFragment;
 import com.ameerhamza6733.okAmeer.assistant.commands.Receivers.SendSmsActivity;
 import com.ameerhamza6733.okAmeer.interfacess.IGoogleSpeechRecognzerError;
-import com.ameerhamza6733.okAmeer.utial.SpeechRecognizerManager;
 import com.ameerhamza6733.okAmeer.utial.ExtraUnits;
 import com.ameerhamza6733.okAmeer.utial.myTextToSpeech;
 import com.crashlytics.android.Crashlytics;
@@ -35,10 +34,10 @@ import lolodev.permissionswrapper.wrapper.PermissionWrapper;
  * Created by AmeerHamza on 7/17/2017.
  */
 
-public class MainActivity extends AppCompatActivity implements IGoogleSpeechRecognzerError, SpeechRecognizerManager.OnMagicWordListener, EnterFeedBackFragment.OnUserFeedbackListener {
+public class MainActivity extends AppCompatActivity implements IGoogleSpeechRecognzerError, EnterFeedBackFragment.OnUserFeedbackListener {
     private static final int TTS_CHECK_CODE = 9876;
     private VoiceRecgonizationFragment newIntance;
-    private SpeechRecognizerManager mSpeechRecognizerManager;
+
     private boolean isSpeekButtonPressed = false;
     private final String TAG= "MainActivityTAG";
 
@@ -59,16 +58,9 @@ public class MainActivity extends AppCompatActivity implements IGoogleSpeechReco
                 checkPermissionAndProcess();
             }
         });
-        FloatingActionButton FebRequestNewCommand = (FloatingActionButton) findViewById(R.id.fab_request_new_command);
         FloatingActionButton FebHelp = (FloatingActionButton) findViewById(R.id.fab_help);
         FloatingActionButton FebFeedBack = (FloatingActionButton) findViewById(R.id.fab_feedback);
-        FebRequestNewCommand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, VotingActivity.class);
-                startActivity(intent);
-            }
-        });
+
         FebHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,10 +85,7 @@ public class MainActivity extends AppCompatActivity implements IGoogleSpeechReco
 
     private void checkPermissionAndProcess() {
         try {
-            if (mSpeechRecognizerManager != null) {
-                mSpeechRecognizerManager.destroy();
-                mSpeechRecognizerManager = null;
-            }
+
         } catch (Exception e) {
         }
         if (Build.VERSION.SDK_INT > 22) {
@@ -121,24 +110,23 @@ public class MainActivity extends AppCompatActivity implements IGoogleSpeechReco
         if (isSpeekButtonPressed) {
             showVoiceFragment();//Google speech recognizez
         } else {
-            registerSpeechRecognizer();//sphinx4 speech recoginizer
+            //registerSpeechRecognizer();//sphinx4 speech recoginizer
         }
     }
 
     private void showVoiceFragment() {
         try {
-            StopOwnSpeechRecognizer();
+
             if (!isFinishing()) {
 
-                FragmentTransaction transactionFragment = getSupportFragmentManager().beginTransaction();
                 newIntance = VoiceRecgonizationFragment.newInstance("en-IN", false, true);
                 newIntance.setStyle(1, R.style.AppTheme);
-                transactionFragment.add(android.R.id.content, newIntance).addToBackStack(null).commitAllowingStateLoss();
-
+                newIntance.show(getSupportFragmentManager(),"mainActivty");
             }
 
 
         } catch (Exception e) {
+            e.printStackTrace();
             Toast.makeText(this, "error" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
@@ -178,19 +166,12 @@ public class MainActivity extends AppCompatActivity implements IGoogleSpeechReco
                 }).build().request();
     }
 
-    @Override
-    public void OnMagicWordDeceted(String word) {
-        if (mSpeechRecognizerManager != null) {
-            mSpeechRecognizerManager.destroy();
-            mSpeechRecognizerManager = null;
-        }
-        showVoiceFragment();
-    }
+
 
 
     @Override
     protected void onPause() {
-        StopOwnSpeechRecognizer();
+
         Log.d(getClass().getSimpleName(), "onPause");
         super.onPause();
 
@@ -211,30 +192,13 @@ public class MainActivity extends AppCompatActivity implements IGoogleSpeechReco
     }
 
     private void registerSpeechRecognizer() {
-        if (mSpeechRecognizerManager == null) {
-            mSpeechRecognizerManager = new SpeechRecognizerManager(getApplicationContext(), new SpeechRecognizerManager.LifeCycle() {
-                @Override
-                public void onPocketSphinxStart() {
-                    try {
-                        myTextToSpeech.intiTextToSpeech(getApplicationContext(), "hi", "");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            mSpeechRecognizerManager.setOnResultListner(MainActivity.this);
-        }
+        myTextToSpeech.intiTextToSpeech(getApplicationContext(), "hi", "");
+
 
 
     }
 
-    private void StopOwnSpeechRecognizer() {
-        if (mSpeechRecognizerManager != null) {
-            mSpeechRecognizerManager.destroy();
-            mSpeechRecognizerManager = null;
 
-        }
-    }
 
     @Override
     public void onFeedBack(@NotNull String feedback) {

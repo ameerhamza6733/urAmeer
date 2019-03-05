@@ -71,19 +71,19 @@
         <item>Wi-Fi on karne ke liye</item>
     </string-array>
     <string-array name="command_dir">
-        <item>کہو لائٹ آن کرو,فلیش لائٹ آن کرو </item>
-        <item>کہو فلیش لائٹ بند کر,لائٹ بند کرو </item>
-        <item>کہو گانا لگاؤ </item>
-        <item>کہو اگلا گانا لگاؤ</item>
+        <item> لائٹ آن کرو,فلیش لائٹ آن کرو </item>
+        <item> فلیش لائٹ بند کر,لائٹ بند کرو </item>
+        <item> گانا لگاؤ </item>
+        <item> اگلا گانا لگاؤ</item>
         <item>پچھلا گانا لگاؤ</item>
-        <item>کہو گانا بند کرو</item>
-        <item>کہو یوٹیوب سے گانا لگاؤ </item>
-        <item>کہو کال کرو</item>
-        <item>کہو میسج لکھیں اور پھر نام بولو</item>
-        <item> کہو وائی فائی آن کرو</item>
-        <item>کہو بلوٹوت آن کرو</item>
+        <item> گانا بند کرو</item>
+        <item> یوٹیوب سے گانا لگاؤ </item>
+        <item> کال کرو</item>
+        <item> میسج لکھیں اور پھر نام بولو</item>
+        <item>  وائی فائی آن کرو</item>
+        <item> بلوٹوت آن کرو</item>
         <item>ای میل لکھیں</item>
-        <item>کہو میسج پڑھو </item>
+        <item> میسج پڑھو </item>
         <item>Facebook par post karo</item>
         <item>alarm set karo</item>
         <item>silent lagao,silent karo</item>
@@ -95,7 +95,44 @@
 
 
     </string-array>
+
+    <string name="recoding_message_to_user">برائے مہربانی مائیک کے بٹن پر دبائیں اور نیچے دی گئی کمانڈز بول کر ریکارڈ کروائیں </string>
+    <string name="recoding_meeage_to_user_english">Please press the mic and recode below command</string>
     <string name="title_activity_login">Sign in</string>
+<string-array name="recoding_text_urdu">
+    <item>او کے امیر</item>
+    <item>فلیش لائٹ آن کرو</item>
+    <item> فلیش لائٹ بند کرو</item>
+    <item> یوٹیوب سے گانا لگاؤ </item>
+    <item> اگلا گانا لگاؤ</item>
+    <item>پچھلا گانا لگاؤ</item>
+    <item> کال کرو</item>
+    <item> میسج پڑھو </item>
+    <item> میسج لھکو </item>
+    <item> ای میل لھکو </item>
+    <item>وٹس اپ میسج لھکو</item>
+    <item>ولیم زیادہ کرو</item>
+    <item>ولیم زیادہ کرو</item>
+    <item>ولیم کم کرو</item>
+    <item>فسبک پر پوسٹ کرو</item>
+</string-array>
+
+    <string-array name="recoding_text_roman_urdu">
+        <item>OK Ameer</item>
+        <item>Flash light on karo</item>
+        <item>Flash light band karo</item>
+        <item> YouTube say gana lagao</item>
+        <item>Agla gana lagao </item>
+        <item>Pichhala gana lagao</item>
+        <item>Call karo </item>
+        <item>Message Padho</item>
+        <item>Message likho </item>
+        <item>Email likho</item>
+        <item>Whats app message likho</item>
+        <item>Volume zayda karo</item>
+        <item>Voluem kam karo </item>
+        <item>facebook par post karo</item>
+    </string-array>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
