@@ -31,6 +31,7 @@ public class MainRecognitionService extends RecognitionService {
     public void onCreate() {
         super.onCreate();
         Log.i(TAG, "onCreate");
+        stopSelf();
     }
 
     @Override

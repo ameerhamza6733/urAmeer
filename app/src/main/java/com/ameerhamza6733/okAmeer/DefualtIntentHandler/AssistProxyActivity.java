@@ -27,8 +27,6 @@ public class AssistProxyActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         finish();
-        Intent intent = new Intent(this, MainInteractionService.class);
-        intent.setAction(Intent.ACTION_ASSIST);
-        startService(intent);
+
     }
 }

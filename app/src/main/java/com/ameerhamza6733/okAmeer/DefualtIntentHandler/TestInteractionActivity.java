@@ -16,7 +16,6 @@
 
 package com.ameerhamza6733.okAmeer.DefualtIntentHandler;
 
-import android.app.Activity;
 import android.app.VoiceInteractor;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -30,6 +29,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.ameerhamza6733.okAmeer.R;
+import com.ameerhamza6733.okAmeer.UI.Activitys.InitializationAppActivity;
 
 public class TestInteractionActivity extends AppCompatActivity implements View.OnClickListener {
     static final String TAG = "TestInteractionActivity";
@@ -54,7 +54,8 @@ public class TestInteractionActivity extends AppCompatActivity implements View.O
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        startActivity(new Intent(this, InitializationAppActivity.class));
+        finish();
         if (!isVoiceInteraction()) {
             Log.w(TAG, "Not running as a voice interaction!");
             finish();
@@ -69,26 +70,26 @@ public class TestInteractionActivity extends AppCompatActivity implements View.O
         }
 
         setContentView(R.layout.test_interaction);
-        mLog = (TextView)findViewById(R.id.log);
-        mAirplaneButton = (Button)findViewById(R.id.airplane);
+        mLog = (TextView) findViewById(R.id.log);
+        mAirplaneButton = (Button) findViewById(R.id.airplane);
         mAirplaneButton.setOnClickListener(this);
-        mAbortButton = (Button)findViewById(R.id.abort);
+        mAbortButton = (Button) findViewById(R.id.abort);
         mAbortButton.setOnClickListener(this);
-        mCompleteButton = (Button)findViewById(R.id.complete);
+        mCompleteButton = (Button) findViewById(R.id.complete);
         mCompleteButton.setOnClickListener(this);
-        mCommandButton = (Button)findViewById(R.id.command);
+        mCommandButton = (Button) findViewById(R.id.command);
         mCommandButton.setOnClickListener(this);
-        mPickButton = (Button)findViewById(R.id.pick);
+        mPickButton = (Button) findViewById(R.id.pick);
         mPickButton.setOnClickListener(this);
-        mJumpOutButton = (Button)findViewById(R.id.jump);
+        mJumpOutButton = (Button) findViewById(R.id.jump);
         mJumpOutButton.setOnClickListener(this);
-        mCancelButton = (Button)findViewById(R.id.cancel);
+        mCancelButton = (Button) findViewById(R.id.cancel);
         mCancelButton.setOnClickListener(this);
 
         mInteractor = getVoiceInteractor();
 
         VoiceInteractor.Request[] active = mInteractor.getActiveRequests();
-        for (int i=0; i<active.length; i++) {
+        for (int i = 0; i < active.length; i++) {
             Log.i(TAG, "Active #" + i + " / " + active[i].getName() + ": " + active[i]);
         }
 
@@ -109,12 +110,12 @@ public class TestInteractionActivity extends AppCompatActivity implements View.O
                 }
             };
             mInteractor.submitRequest(mCurrentRequest, REQUEST_CONFIRM);
-            String[] cmds = new String[] {
+            String[] cmds = new String[]{
                     "com.android.test.voiceinteraction.COMMAND",
                     "com.example.foo.bar"
             };
             boolean sup[] = mInteractor.supportsCommands(cmds);
-            for (int i=0; i<cmds.length; i++) {
+            for (int i = 0; i < cmds.length; i++) {
                 mLog.append(cmds[i] + ": " + (sup[i] ? "SUPPORTED" : "NOT SUPPORTED") + "\n");
             }
         } else {
@@ -146,11 +147,11 @@ public class TestInteractionActivity extends AppCompatActivity implements View.O
         } else if (v == mPickButton) {
             VoiceInteractor.PickOptionRequest.Option[] options =
                     new VoiceInteractor.PickOptionRequest.Option[5];
-            options[0] = new VoiceInteractor.PickOptionRequest.Option("One",0);
-            options[1] = new VoiceInteractor.PickOptionRequest.Option("Two",1);
-            options[2] = new VoiceInteractor.PickOptionRequest.Option("Three",2);
-            options[3] = new VoiceInteractor.PickOptionRequest.Option("Four",3);
-            options[4] = new VoiceInteractor.PickOptionRequest.Option("Five",4);
+            options[0] = new VoiceInteractor.PickOptionRequest.Option("One", 0);
+            options[1] = new VoiceInteractor.PickOptionRequest.Option("Two", 1);
+            options[2] = new VoiceInteractor.PickOptionRequest.Option("Three", 2);
+            options[3] = new VoiceInteractor.PickOptionRequest.Option("Four", 3);
+            options[4] = new VoiceInteractor.PickOptionRequest.Option("Five", 4);
             VoiceInteractor.PickOptionRequest req = new TestPickOption(options);
             mInteractor.submitRequest(req, REQUEST_PICK);
         } else if (v == mJumpOutButton) {
@@ -175,13 +176,17 @@ public class TestInteractionActivity extends AppCompatActivity implements View.O
         public TestAbortVoice() {
             super(new VoiceInteractor.Prompt("Dammit, we suck :("), null);
         }
-        @Override public void onCancel() {
+
+        @Override
+        public void onCancel() {
             Log.i(TAG, "Canceled!");
-            ((TestInteractionActivity)getActivity()).mLog.append("Canceled abort\n");
+            ((TestInteractionActivity) getActivity()).mLog.append("Canceled abort\n");
         }
-        @Override public void onAbortResult(Bundle result) {
+
+        @Override
+        public void onAbortResult(Bundle result) {
             Log.i(TAG, "Abort result: result=" + result);
-            ((TestInteractionActivity)getActivity()).mLog.append("Abort: result=" + result + "\n");
+            ((TestInteractionActivity) getActivity()).mLog.append("Abort: result=" + result + "\n");
             getActivity().finish();
         }
     }
@@ -190,13 +195,17 @@ public class TestInteractionActivity extends AppCompatActivity implements View.O
         public TestCompleteVoice() {
             super(new VoiceInteractor.Prompt("Woohoo, completed!"), null);
         }
-        @Override public void onCancel() {
+
+        @Override
+        public void onCancel() {
             Log.i(TAG, "Canceled!");
-            ((TestInteractionActivity)getActivity()).mLog.append("Canceled complete\n");
+            ((TestInteractionActivity) getActivity()).mLog.append("Canceled complete\n");
         }
-        @Override public void onCompleteResult(Bundle result) {
+
+        @Override
+        public void onCompleteResult(Bundle result) {
             Log.i(TAG, "Complete result: result=" + result);
-            ((TestInteractionActivity)getActivity()).mLog.append("Complete: result="
+            ((TestInteractionActivity) getActivity()).mLog.append("Complete: result="
                     + result + "\n");
             getActivity().finish();
         }
@@ -206,10 +215,19 @@ public class TestInteractionActivity extends AppCompatActivity implements View.O
         public TestCommand(String arg) {
             super("com.android.test.voiceinteraction.COMMAND", makeBundle(arg));
         }
-        @Override public void onCancel() {
-            Log.i(TAG, "Canceled!");
-            ((TestInteractionActivity)getActivity()).mLog.append("Canceled command\n");
+
+        static Bundle makeBundle(String arg) {
+            Bundle b = new Bundle();
+            b.putString("key", arg);
+            return b;
         }
+
+        @Override
+        public void onCancel() {
+            Log.i(TAG, "Canceled!");
+            ((TestInteractionActivity) getActivity()).mLog.append("Canceled command\n");
+        }
+
         @Override
         public void onCommandResult(boolean finished, Bundle result) {
             Log.i(TAG, "Command result: finished=" + finished + " result=" + result);
@@ -224,12 +242,7 @@ public class TestInteractionActivity extends AppCompatActivity implements View.O
             }
             sb.append(result);
             sb.append("\n");
-            ((TestInteractionActivity)getActivity()).mLog.append(sb.toString());
-        }
-        static Bundle makeBundle(String arg) {
-            Bundle b = new Bundle();
-            b.putString("key", arg);
-            return b;
+            ((TestInteractionActivity) getActivity()).mLog.append(sb.toString());
         }
     }
 
@@ -237,10 +250,13 @@ public class TestInteractionActivity extends AppCompatActivity implements View.O
         public TestPickOption(Option[] options) {
             super(new VoiceInteractor.Prompt("Need to pick something"), options, null);
         }
-        @Override public void onCancel() {
+
+        @Override
+        public void onCancel() {
             Log.i(TAG, "Canceled!");
-            ((TestInteractionActivity)getActivity()).mLog.append("Canceled pick\n");
+            ((TestInteractionActivity) getActivity()).mLog.append("Canceled pick\n");
         }
+
         @Override
         public void onPickOptionResult(boolean finished, Option[] selections, Bundle result) {
             Log.i(TAG, "Pick result: finished=" + finished + " selections=" + selections
@@ -251,14 +267,14 @@ public class TestInteractionActivity extends AppCompatActivity implements View.O
             } else {
                 sb.append("Pick intermediate result: ");
             }
-            for (int i=0; i<selections.length; i++) {
+            for (int i = 0; i < selections.length; i++) {
                 if (i >= 1) {
                     sb.append(", ");
                 }
                 sb.append(selections[i].getLabel());
             }
             sb.append("\n");
-            ((TestInteractionActivity)getActivity()).mLog.append(sb.toString());
+            ((TestInteractionActivity) getActivity()).mLog.append(sb.toString());
         }
     }
 }
